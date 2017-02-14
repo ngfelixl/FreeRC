@@ -68,9 +68,9 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 unsigned long lastScreenUpdate = 0;
 
 struct peripheralData {
-	unsigned int statusId[2] = { 0,0 }; //[radio, ps4]
+	unsigned int statusId[2] = { 0,0 }; // [radio, ps4]
 	unsigned int lastStatusId[2] = { 1,1 };
-	String message[4] = { "Initialize", "Connected", "No connection", "No connection" };
+	String messages[3] = { "Initialize", "Connected", "No connection"};
 }peripheralData;
 
 
@@ -203,10 +203,10 @@ void updateStatusMessages(int id) {
 		tft.fillRect(150, 40 + 10 * id, 320, 10, BLACK);
 		tft.setCursor(150, 40 + 10 * id);
 		if (peripheralData.statusId[id]<2) {
-			tft.println(peripheralData.message[peripheralData.statusId[id]]);
+			tft.println(peripheralData.messages[peripheralData.statusId[id]]);
 		}
 		else {
-			tft.println(peripheralData.message[2 + id]);
+			tft.println(peripheralData.messages[2]);
 		}
 		peripheralData.lastStatusId[id] = peripheralData.statusId[id];
 	}
@@ -279,17 +279,16 @@ void drawServoDefaults() {
 */
 void setupUsb() {
 	if (Usb.Init() == -1) {
-		Serial.print("USB failed");
-		while (1); // Halt
+		statusId[2] = 2;
 	}
 }
 
 void setupRadio() {
-	Serial.print("radio");
+	// Serial.print("radio");
 	radio.begin();
 
 	// Use PALevel low for testing purposes only (default: high)
-	radio.setPALevel(RF24_PA_LOW);
+	radio.setPALevel(RF24_PA_HIGH);
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	if (radioNumber) {
