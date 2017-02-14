@@ -42,7 +42,6 @@
 #define MAGENTA 0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
-#define PROORANGE 0xEA65
 
 // Declare radio data
 byte addresses[][6] = { "1Node","2Node" };
