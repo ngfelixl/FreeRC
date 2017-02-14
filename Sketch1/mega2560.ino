@@ -68,15 +68,13 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 unsigned long lastScreenUpdate = 0;
 
 struct peripheralData {
-	unsigned int statusId[2] = { 0,0 }; // [radio, ps4]
-	unsigned int lastStatusId[2] = { 1,1 };
+	unsigned int statusId[3] = { 0,0,0 }; // [radio, usb, ps4]
+	unsigned int lastStatusId[3] = { 1,1,1 };
 	String messages[3] = { "Initialize", "Connected", "No connection"};
 }peripheralData;
 
 
-/*
-* ========== Arduino Setup Function ==============
-*/
+// ========== Arduino Setup Function ==============
 void setup() {
 	Serial.begin(9600);
 	// Reset and initialize TFT Screen (SDFP5408)
@@ -84,6 +82,9 @@ void setup() {
 	tft.begin(0x9341);
 	tft.setRotation(3);
 	initScreen();
+	updateStatusMessages(0);
+	updateStatusMessages(1);
+	updateStatusMessages(2);
 
 	// Setup NRF24L01+ and USB Host Shield
 	setupUsb();
@@ -91,18 +92,13 @@ void setup() {
 }
 
 
-/*
-* ========== Arduino Loop Function ==============
-*/
+// ========== Arduino Loop Function ==============
 void loop() {
 	// Activate USB
 	Usb.Task();
-
-	// Check if DS4 is correctly recognized and
-	// get DS4 Data
+	// Check if DS4 is correctly recognized and get DS4 Data
 	if (PS4.connected()) {
-		// Print: DS4 works correctly
-		peripheralData.statusId[1] = 1;
+		peripheralData.statusId[2] = 1; // update status
 		// Read DS4 Data
 		ds4read();
 
@@ -113,16 +109,15 @@ void loop() {
 	}
 	else {
 		// Print: DS4 Error
-		peripheralData.statusId[1] = 2;
+		peripheralData.statusId[2] = 2;
 	}
 
 	// Write the radioData struct to the NRF24L01 module to send the data
 	// and print success or error message
-	if (!radio.write(&radioData, sizeof(radioData))) {
-		peripheralData.statusId[0] = 2;
-	}
-	else {
-		peripheralData.statusId[0] = 1;
+	if (radio.write(&radioData, sizeof(radioData))) {
+		peripheralData.statusId[0] = 1; // success
+	} else {
+		peripheralData.statusId[0] = 2; // failed
 	}
 
 	// Update Screen Information
@@ -130,13 +125,12 @@ void loop() {
 }
 
 
-/*
-* ========== Screen related functions ==============
-*/
+// ========== Screen related functions ==============
 void screenUpdate() {
 	if (millis() - lastScreenUpdate>ScreenUpdate) {
 		updateStatusMessages(0);
 		updateStatusMessages(1);
+		updateStatusMessages(2);
 		ds4feedback();
 		motorFeedback();
 		lastScreenUpdate = millis();
@@ -194,7 +188,7 @@ void ds4feedback() {
 
 void updateStatusMessages(int id) {
 	switch (peripheralData.statusId[id]) {
-	case 0: tft.setTextColor(WHITE); break;
+	case 0: tft.setTextColor(YELLOW); break;
 	case 1: tft.setTextColor(GREEN); break;
 	case 2: tft.setTextColor(RED); break;
 	}
@@ -226,6 +220,8 @@ void initScreen() {
 	tft.setCursor(10, 40);
 	tft.println("NRF24L01+");
 	tft.setCursor(10, 50);
+	tft.println("USB Host Shield");
+	tft.setCursor(10, 60);
 	tft.println("PS4 Controller");
 
 	// Add subsection titles
@@ -274,12 +270,12 @@ void drawServoDefaults() {
 	tft.drawLine(67 + 20, 100 + 130 / 2, 67 + 175 - 20, 100 + 130 / 2, GREEN);
 }
 
-/*
-* ========== Periphal Setup functions ==============
-*/
+// ========== Periphal Setup functions ==============
 void setupUsb() {
 	if (Usb.Init() == -1) {
-		statusId[2] = 2;
+		peripheralData.statusId[1] = 2;
+	} else {
+		peripheralData.statusId[1] = 1;
 	}
 }
 
