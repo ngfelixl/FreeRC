@@ -15,7 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Sketch1.ino" />
+    <ClInclude Include="__vm\.Sketch1.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
- 
+  <ItemGroup>
+    <None Include="mega2560.ino" />
+  </ItemGroup>
 </Project>
