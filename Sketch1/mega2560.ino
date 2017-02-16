@@ -158,9 +158,12 @@ void screenUpdate() {
 
 void refreshMotorOnScreen() {
 	// POS 10,100 DIM 25x130
+	float motorVal = ((float)motorFeedback - 20.0) / 140.0;
 	if (motor[0] != motor[1]) {
-		tft.fillRect(11, 101, 23, 128 - motor[0] / 100 * 128, BLACK);
-		tft.fillRect(11, 101 + 128 - motor[0] / 100 * 128, 23, motor[0] / 100 * 128, RED);
+		tft.fillRect(11, 101, 11, 128 - motor[0] / 100 * 128, BLACK);
+		tft.fillRect(11, 101 + 128 - motor[0] / 100 * 128, 11, motor[0] / 100 * 128, RED);
+		tft.fillRect(23, 101, 11, 128 - motorVal * 128, BLACK);
+		tft.fillRect(23, 101 + 128 - motorVal * 128, 11, motorVal * 128, RED);
 		motor[1] = motor[0];
 	}
 }
