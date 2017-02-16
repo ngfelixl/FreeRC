@@ -59,13 +59,14 @@ struct radioData {
 // Declare DualShock 4 Data
 USB Usb;
 PS4USB PS4(&Usb);
-int ds4mid = 127;
-int ds4deadzone = 50;
-int ds4val[8]; // rx, ry, lx, ly
+uint8_t ds4mid = 127;
+uint8_t ds4deadzone = 50;
+uint8_t ds4val[8]; // rx, ry, lx, ly
 
-			   // Declare TFT Data
+
+// Declare TFT Data
 Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
-unsigned long lastScreenUpdate = 0;
+unsigned int lastScreenUpdate = 0;
 
 struct peripheralData {
 	unsigned int statusId[3] = { 0,0,0 }; // [radio, usb, ps4]
