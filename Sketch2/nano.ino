@@ -61,6 +61,7 @@ void setup() {
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openReadingPipe(1, readingPipe);
+	radio.openWritingPipe(writingPipe);
 
 	// Start the radio listening for data
 	//radio.setPayloadSize(sizeof(radioData));
