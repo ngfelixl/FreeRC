@@ -35,9 +35,11 @@
 
 Servo servo[5]; // 4=motor, 0=left, 1=right=-left, 2=height-ctr, 3=side-ctr
 
-byte addresses[][6] = { "1Node","2Node" };
-bool radioNumber = 1; // radio ID
+//byte addresses[][6] = { "1Node","2Node" };
+uint64_t readingPipe = 0xF0F0F0F0AA;
+//bool radioNumber = 1; // radio ID
 RF24 radio(CE_PIN, CSN_PIN);
+int radioRead=0, servoWrite;
 
 float motor = 160;
 unsigned int motor_config[3] = { 90, 30, 60 }; // {offset, threshold 1, threshold 2}
@@ -50,21 +52,16 @@ struct {
 }radioData;
 
 void setup() {
+	Serial.begin(9600);
 	radio.begin();
 
 	// Set the PA Level low to prevent power supply related issues since this is a
 	// getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
 	radio.setPALevel(RF24_PA_HIGH);
+	radio.setPayloadSize(sizeof(radioData));
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
-	if (radioNumber) {
-		radio.openWritingPipe(addresses[1]);
-		radio.openReadingPipe(1, addresses[0]);
-	}
-	else {
-		radio.openWritingPipe(addresses[0]);
-		radio.openReadingPipe(1, addresses[1]);
-	}
+	radio.openReadingPipe(1, readingPipe);
 
 	// Start the radio listening for data
 	//radio.setPayloadSize(sizeof(radioData));
@@ -78,14 +75,22 @@ void setup() {
 }
 
 void loop() {
-	if (radio.available()) {
-		// As long as getting data -> read it
+	//if (radio.available() && millis() - radioRead > 50) {
+		//while(radio.available())
+	if(radio.available())
+		radio.read(&radioData, sizeof(radioData));
+		//radioRead = millis();
+	//}
+
+	// As long as getting data -> read it
 
 
-		while (radio.available()) {
-			radio.read(&radioData, sizeof(radioData));
-		}
+	//while (radio.available()) {
+	//}
+	//Serial.println(radioData.motor);
 
+	if (millis() - servoWrite > 100) {
+		Serial.println(radioData.motor);
 		// MOTOR SERVO
 		if (radioData.motor >= 0 && radioData.motor <= 180) {
 			servo[4].write(radioData.motor);
@@ -103,5 +108,6 @@ void loop() {
 		if (radioData.servo[2] >= 0 && radioData.servo[2] <= 180) {
 			servo[3].write(radioData.servo[2]);
 		}
+		servoWrite = millis();
 	}
 }

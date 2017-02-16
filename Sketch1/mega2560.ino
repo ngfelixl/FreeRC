@@ -44,9 +44,12 @@
 #define WHITE   0xFFFF
 
 // Declare radio data
-byte addresses[][6] = { "1Node","2Node" };
-bool radioNumber = 0; // radio ID;
+//byte addresses[][6] = { "1Node","2Node" };
+uint64_t writingPipe = 0xF0F0F0F0AA;
+uint64_t readingPipe = 0xF0F0F0F0BB;
+//bool radioNumber = 0; // radio ID;
 RF24 radio(CE_pin, CSN_pin);
+int radioTransmission = 0;
 
 float motor[2] = { 100,0 }; // new,old
 int dmotor = 0;
@@ -113,10 +116,16 @@ void loop() {
 
 	// Write the radioData struct to the NRF24L01 module to send the data
 	// and print success or error message
-	if (radio.write(&radioData, sizeof(radioData))) {
-		peripheralData.statusId[0] = 1; // success
-	} else {
-		peripheralData.statusId[0] = 2; // failed
+	if (millis() - radioTransmission > 20) {
+		radio.stopListening();
+		radio.writeFast(&radioData, sizeof(radioData));
+		if (radio.txStandBy()) {
+			peripheralData.statusId[0] = 1; // success
+		}
+		else {
+			peripheralData.statusId[0] = 2; // failed
+		}
+		radioTransmission = millis();
 	}
 
 	// Update Screen Information
@@ -284,14 +293,9 @@ void setupRadio() {
 
 	// Use PALevel low for testing purposes only (default: high)
 	radio.setPALevel(RF24_PA_HIGH);
+	radio.setPayloadSize(sizeof(radioData));
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
-	if (radioNumber) {
-		radio.openWritingPipe(addresses[1]);
-		radio.openReadingPipe(1, addresses[0]);
-	}
-	else {
-		radio.openWritingPipe(addresses[0]);
-		radio.openReadingPipe(1, addresses[1]);
-	}
+	radio.openWritingPipe(writingPipe);
+	radio.openReadingPipe(1,readingPipe);
 }
