@@ -59,7 +59,7 @@ void setup() {
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openReadingPipe(1, readingPipe);
-	//radio.openWritingPipe(writingPipe);
+	radio.startListening();
 
 	servo[4].attach(MOTOR_PIN);
 	servo[0].attach(SERVO_LEFT_PIN);
@@ -69,7 +69,6 @@ void setup() {
 }
 
 void loop() {
-	radio.startListening();
 	if (radio.available()) {
 		radio.read(&radioData, sizeof(radioData));
 	}

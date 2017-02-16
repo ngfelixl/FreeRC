@@ -124,8 +124,8 @@ void loop() {
 	// and print success or error message
 	if (millis() - radioTransmission > 20) {
 		radio.stopListening();
-		radio.startWrite(&radioData, sizeof(radioData), false);
-		radio.whatHappened(tx_ok, tx_fail, rx_ready);
+		radio.writeFast(&radioData, sizeof(radioData), false);
+		bool tx_ok = radio.txStandBy();
 		if (tx_ok) {
 			peripheralData.statusId[0] = 1; // success
 		}
