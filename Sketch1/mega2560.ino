@@ -54,8 +54,8 @@ unsigned int radioTransmission = 0, readUsb = 0;
 float motor[2] = { 100,0 }; // new,old
 int dmotor = 0;
 struct radioData {
-	unsigned int servo[3];
-	unsigned int motor;
+	uint8_t servo[3];
+	uint8_t motor;
 }radioData;
 
 // Declare DualShock 4 Data
