@@ -35,9 +35,8 @@
 
 Servo servo[5]; // 4=motor, 0=left, 1=right=-left, 2=height-ctr, 3=side-ctr
 
-//byte addresses[][6] = { "1Node","2Node" };
 uint64_t readingPipe = 0xF0F0F0F0AA;
-//bool radioNumber = 1; // radio ID
+uint64_t writingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_PIN, CSN_PIN);
 unsigned int radioRead=0, servoWrite;
 
@@ -47,8 +46,8 @@ unsigned int motorCtrlPause = 500; // [ms]
 unsigned int motorCtrlLast = 0;
 
 struct {
-	unsigned int servo[3]; // 0=roll, 1=height, 2=side
-	unsigned int motor; // servo position values
+	uint8_t servo[3]; // 0=roll, 1=height, 2=side
+	uint8_t motor; // servo position values
 }radioData;
 
 void setup() {
@@ -74,41 +73,27 @@ void setup() {
 }
 
 void loop() {
-	//if (radio.available() && millis() - radioRead > 50) {
-		//while(radio.available())
+
 	radio.startListening();
 	if (radio.available()) {
 		radio.read(&radioData, sizeof(radioData));
 	}
-		//radioRead = millis();
-	//}
-
-	// As long as getting data -> read it
-
-
-	//while (radio.available()) {
-	//}
-	//Serial.println(radioData.motor);
 
 	if (millis() - servoWrite > 200) {
 		Serial.println(radioData.motor);
 		// MOTOR SERVO
-		if (radioData.motor >= 0 && radioData.motor <= 180) {
-			servo[4].write(radioData.motor);
-		}
+		setServo(4, radioData.motor);
+		setServo(0, radioData.servo[0]);
+		setServo(1, 180-radioData.servo[0]);
+		setServo(2, radioData.servo[1]);
+		setServo(3, radioData.servo[2]);
 
-		// CONTROL SERVOS
-		if (radioData.servo[0] >= 0 && radioData.servo[0] <= 180) {
-			servo[0].write(radioData.servo[0]);
-			servo[1].write(180 - radioData.servo[0]);
-		}
-		if (radioData.servo[1] >= 0 && radioData.servo[1] <= 180) {
-			servo[2].write(radioData.servo[1]);
-		}
-
-		if (radioData.servo[2] >= 0 && radioData.servo[2] <= 180) {
-			servo[3].write(radioData.servo[2]);
-		}
 		servoWrite = millis();
+	}
+}
+
+void setServo(uint8_t id, uint8_t value) {
+	if (value >= 0 && value <= 180) {
+		servo[id].write(value)
 	}
 }
