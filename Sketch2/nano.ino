@@ -74,7 +74,6 @@ void setup() {
 }
 
 void loop() {
-
 	radio.startListening();
 	if (radio.available()) {
 		radio.read(&radioData, sizeof(radioData));
@@ -95,6 +94,6 @@ void loop() {
 
 void setServo(uint8_t id, uint8_t value) {
 	if (value >= 0 && value <= 180) {
-		servo[id].write(value)
+		servo[id].write(value);
 	}
 }

@@ -44,10 +44,8 @@
 #define WHITE   0xFFFF
 
 // Declare radio data
-//byte addresses[][6] = { "1Node","2Node" };
 uint64_t writingPipe = 0xF0F0F0F0AA;
 uint64_t readingPipe = 0xF0F0F0F0BB;
-//bool radioNumber = 0; // radio ID;
 RF24 radio(CE_pin, CSN_pin);
 unsigned int radioTransmission = 0, readUsb = 0;
 
