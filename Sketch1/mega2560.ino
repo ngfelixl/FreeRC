@@ -49,7 +49,7 @@ uint64_t writingPipe = 0xF0F0F0F0AA;
 uint64_t readingPipe = 0xF0F0F0F0BB;
 //bool radioNumber = 0; // radio ID;
 RF24 radio(CE_pin, CSN_pin);
-int radioTransmission = 0;
+unsigned int radioTransmission = 0, readUsb = 0;
 
 float motor[2] = { 100,0 }; // new,old
 int dmotor = 0;
@@ -96,22 +96,25 @@ void setup() {
 
 // ========== Arduino Loop Function ==============
 void loop() {
-	// Activate USB
-	Usb.Task();
-	// Check if DS4 is correctly recognized and get DS4 Data
-	if (PS4.connected()) {
-		peripheralData.statusId[2] = 1; // update status
-		// Read DS4 Data
-		ds4read();
+	if (millis() - readUsb > 20) {
+		// Activate USB
+		Usb.Task();
+		// Check if DS4 is correctly recognized and get DS4 Data
+		if (PS4.connected()) {
+			peripheralData.statusId[2] = 1; // update status
+			// Read DS4 Data
+			ds4read();
 
-		// Store DS4 Data in structure to transmit to Nano
-		radioData.servo[0] = map(ds4val[0], 0, 255, 20, 160);
-		radioData.servo[1] = map(ds4val[1], 0, 255, 20, 160);
-		radioData.servo[2] = map(ds4val[2], 0, 255, 20, 160);
-	}
-	else {
-		// Print: DS4 Error
-		peripheralData.statusId[2] = 2;
+			// Store DS4 Data in structure to transmit to Nano
+			radioData.servo[0] = map(ds4val[0], 0, 255, 20, 160);
+			radioData.servo[1] = map(ds4val[1], 0, 255, 20, 160);
+			radioData.servo[2] = map(ds4val[2], 0, 255, 20, 160);
+		}
+		else {
+			// Print: DS4 Error
+			peripheralData.statusId[2] = 2;
+		}
+		readUsb = millis();
 	}
 
 	// Write the radioData struct to the NRF24L01 module to send the data
@@ -297,5 +300,5 @@ void setupRadio() {
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openWritingPipe(writingPipe);
-	radio.openReadingPipe(1,readingPipe);
+	radio.openReadingPipe(1, readingPipe);
 }

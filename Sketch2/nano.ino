@@ -39,7 +39,7 @@ Servo servo[5]; // 4=motor, 0=left, 1=right=-left, 2=height-ctr, 3=side-ctr
 uint64_t readingPipe = 0xF0F0F0F0AA;
 //bool radioNumber = 1; // radio ID
 RF24 radio(CE_PIN, CSN_PIN);
-int radioRead=0, servoWrite;
+unsigned int radioRead=0, servoWrite;
 
 float motor = 160;
 unsigned int motor_config[3] = { 90, 30, 60 }; // {offset, threshold 1, threshold 2}
@@ -65,7 +65,6 @@ void setup() {
 
 	// Start the radio listening for data
 	//radio.setPayloadSize(sizeof(radioData));
-	radio.startListening();
 
 	servo[4].attach(MOTOR_PIN);
 	servo[0].attach(SERVO_LEFT_PIN);
@@ -77,8 +76,10 @@ void setup() {
 void loop() {
 	//if (radio.available() && millis() - radioRead > 50) {
 		//while(radio.available())
-	if(radio.available())
+	radio.startListening();
+	if (radio.available()) {
 		radio.read(&radioData, sizeof(radioData));
+	}
 		//radioRead = millis();
 	//}
 
@@ -89,7 +90,7 @@ void loop() {
 	//}
 	//Serial.println(radioData.motor);
 
-	if (millis() - servoWrite > 100) {
+	if (millis() - servoWrite > 200) {
 		Serial.println(radioData.motor);
 		// MOTOR SERVO
 		if (radioData.motor >= 0 && radioData.motor <= 180) {
