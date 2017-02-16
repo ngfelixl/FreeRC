@@ -70,8 +70,8 @@ void loop() {
 	radio.startListening();
 	if (radio.available()) {
 		radio.read(&radioData, sizeof(radioData));
-		radio.writeAckPayload(1, &radioData.motor, sizeof(radioData.motor));
 	}
+	radio.writeAckPayload(1, &radioData.motor, sizeof(radioData.motor));
 
 	if (millis() - servoWrite > 200) {
 		Serial.println(radioData.motor);
