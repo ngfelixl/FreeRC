@@ -40,11 +40,6 @@ uint64_t writingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_PIN, CSN_PIN);
 unsigned int radioRead=0, servoWrite;
 
-float motor = 160;
-unsigned int motor_config[3] = { 90, 30, 60 }; // {offset, threshold 1, threshold 2}
-unsigned int motorCtrlPause = 500; // [ms]
-unsigned int motorCtrlLast = 0;
-
 struct {
 	uint8_t servo[3]; // 0=roll, 1=height, 2=side
 	uint8_t motor; // servo position values
