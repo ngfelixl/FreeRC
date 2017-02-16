@@ -53,6 +53,7 @@ void setup() {
 	// getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
 	radio.setPALevel(RF24_PA_HIGH);
 	radio.setPayloadSize(sizeof(radioData));
+	radio.enableAckPayload();
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openReadingPipe(1, readingPipe);
@@ -69,6 +70,7 @@ void loop() {
 	radio.startListening();
 	if (radio.available()) {
 		radio.read(&radioData, sizeof(radioData));
+		radio.writeAckPayload(1, &radioData.motor, sizeof(radioData.motor));
 	}
 
 	if (millis() - servoWrite > 200) {
