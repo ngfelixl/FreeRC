@@ -15,18 +15,18 @@
 96	
 97	// ========== Arduino Loop Function ==============
 98	void loop() {
-99		if (millis() - readUsb &gt; 20) {
-100			// Activate USB
---&gt;101			Usb.Task();
-102			// Check if DS4 is correctly recognized and get DS4 Data
-103			if (PS4.connected()) {
-104				peripheralData.statusId[2] = 1; // update status
-105				// Read DS4 Data
-106				ds4read();
-107	
-108				// Store DS4 Data in structure to transmit to Nano
-109				radioData.servo[0] = map(ds4val[0], 0, 255, 20, 160);
-110				radioData.servo[1] = map(ds4val[1], 0, 255, 20, 160);
+99		// x = x0 + dx / dt, 0.02s*100 = 2s
+100		if (millis() - readUsb &gt; 20) {
+--&gt;101			// Activate USB
+102			Usb.Task();
+103			// Check if DS4 is correctly recognized and get DS4 Data
+104			if (PS4.connected()) {
+105				peripheralData.statusId[2] = 1; // update status
+106				// Read DS4 Data
+107				ds4read();
+108	
+109				// Store DS4 Data in structure to transmit to Nano
+110				radioData.servo[0] = map(ds4val[0], 0, 255, 20, 160);
 </Source>
         <MessageVariables>
           <MessageVariable Name="millis()" Index="1" />

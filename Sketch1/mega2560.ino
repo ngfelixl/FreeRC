@@ -29,7 +29,7 @@
 #define LCD_WR A1
 #define LCD_RD A0
 #define LCD_RESET A4
-#define ScreenUpdate 100 // Update screen every x[ms]
+#define SCREENUPDATE 100 // Update screen every x[ms]
 
 #define CE_pin 53
 #define CSN_pin 49
@@ -96,6 +96,7 @@ void setup() {
 
 // ========== Arduino Loop Function ==============
 void loop() {
+	// x = x0 + dx / dt, 0.02s*100 = 2s
 	if (millis() - readUsb > 20) {
 		// Activate USB
 		Usb.Task();
@@ -138,7 +139,7 @@ void loop() {
 
 // ========== Screen related functions ==============
 void screenUpdate() {
-	if (millis() - lastScreenUpdate>ScreenUpdate) {
+	if (millis() - lastScreenUpdate>SCREENUPDATE) {
 		updateStatusMessages(0);
 		updateStatusMessages(1);
 		updateStatusMessages(2);
