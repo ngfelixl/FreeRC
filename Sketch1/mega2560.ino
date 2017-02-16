@@ -163,8 +163,8 @@ void ds4read() {
 	ds4val[0] = PS4.getAnalogHat(RightHatX);
 	ds4val[1] = PS4.getAnalogHat(RightHatY);
 	ds4val[2] = PS4.getAnalogHat(LeftHatX);
-	ds4val[3] = PS4.getAnalogHat(LeftHatY);
-
+	//ds4val[3] = PS4.getAnalogHat(LeftHatY);
+	Serial.println(PS4.getAnalogButton(L2));
 	// Apply deadzones
 	if (abs(ds4val[0] - ds4mid)<ds4deadzone)
 		ds4val[0] = ds4mid;
@@ -172,17 +172,28 @@ void ds4read() {
 		ds4val[1] = ds4mid;
 	if (abs(ds4val[2] - ds4mid)<ds4deadzone)
 		ds4val[2] = ds4mid;
-	if (ds4val[3]>ds4mid + ds4deadzone && motor[0]>0) {
-		dmotor = -1;
+	if (PS4.getAnalogButton(L2) > 50 && PS4.getAnalogButton(R2) <= 50) {
+		dmotor = -(PS4.getAnalogButton(L2)-50.0) / 205.0 * 3.0;
 	}
-	else if (ds4val[3]<ds4mid - ds4deadzone && motor[0]<100) {
-		dmotor = +1;
+	else if (PS4.getAnalogButton(R2) > 50 && PS4.getAnalogButton(L2) <= 50) {
+		dmotor = (PS4.getAnalogButton(R2)-50.0) / 205.0 * 3.0;
 	}
 	else {
 		dmotor = 0;
 	}
+	/*if (ds4val[3]>ds4mid + ds4deadzone && motor[0]>0) {
+		dmotor = -1;
+	}
+	else if (ds4val[3]<ds4mid - ds4deadzone ) {
+		dmotor = +1;
+	}
+	else {
+		dmotor = 0;
+	}*/
 
 	motor[0] = motor[0] + (float)dmotor;
+	if (motor[0] > 100.0) motor[0] = 100.0;
+	else if (motor[0] < 0.0) motor[0] = 0.0;
 	radioData.motor = (int)map(motor[0], 0, 100, 20, 160);
 }
 
