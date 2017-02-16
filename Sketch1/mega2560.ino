@@ -44,7 +44,7 @@
 #define WHITE   0xFFFF
 
 // Declare radio data
-uint64_t writingPipe = 0xF0F0F0F0AA;
+uint64_t writingPipe = 0xE7D3F03577LL;
 uint64_t readingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_pin, CSN_pin);
 unsigned int radioTransmission = 0, readUsb = 0;
@@ -63,6 +63,8 @@ uint8_t ds4mid = 127;
 uint8_t ds4deadzone = 50;
 uint8_t ds4val[8]; // rx, ry, lx, ly
 uint8_t motorFeedback;
+
+bool tx_ok, tx_fail, rx_ready;
 
 
 // Declare TFT Data
@@ -122,8 +124,9 @@ void loop() {
 	// and print success or error message
 	if (millis() - radioTransmission > 20) {
 		radio.stopListening();
-		radio.writeFast(&radioData, sizeof(radioData));
-		if (radio.txStandBy()) {
+		radio.startWrite(&radioData, sizeof(radioData), false);
+		radio.whatHappened(tx_ok, tx_fail, rx_ready);
+		if (tx_ok) {
 			peripheralData.statusId[0] = 1; // success
 		}
 		else {
@@ -302,11 +305,13 @@ void setupRadio() {
 	radio.begin();
 
 	// Use PALevel low for testing purposes only (default: high)
-	radio.setPALevel(RF24_PA_HIGH);
+	radio.setPALevel(RF24_PA_LOW);
 	radio.setPayloadSize(sizeof(radioData));
 	radio.enableAckPayload();
+	radio.setDataRate(RF24_250KBPS);
+	radio.setChannel(108);
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openWritingPipe(writingPipe);
-	radio.openReadingPipe(1, readingPipe);
+	//radio.openReadingPipe(1, readingPipe);
 }

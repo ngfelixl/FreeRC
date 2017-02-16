@@ -35,7 +35,7 @@
 
 Servo servo[5]; // 4=motor, 0=left, 1=right=-left, 2=height-ctr, 3=side-ctr
 
-uint64_t readingPipe = 0xF0F0F0F0AA;
+uint64_t readingPipe = 0xE7D3F03577LL;
 uint64_t writingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_PIN, CSN_PIN);
 unsigned int radioRead=0, servoWrite=0;
@@ -54,10 +54,12 @@ void setup() {
 	radio.setPALevel(RF24_PA_LOW);
 	radio.setPayloadSize(sizeof(radioData));
 	radio.enableAckPayload();
+	radio.setDataRate(RF24_250KBPS);
+	radio.setChannel(108);
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openReadingPipe(1, readingPipe);
-	radio.openWritingPipe(writingPipe);
+	//radio.openWritingPipe(writingPipe);
 
 	servo[4].attach(MOTOR_PIN);
 	servo[0].attach(SERVO_LEFT_PIN);
