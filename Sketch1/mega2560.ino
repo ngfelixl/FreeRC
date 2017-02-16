@@ -62,6 +62,7 @@ PS4USB PS4(&Usb);
 uint8_t ds4mid = 127;
 uint8_t ds4deadzone = 50;
 uint8_t ds4val[8]; // rx, ry, lx, ly
+uint8_t motorFeedback;
 
 
 // Declare TFT Data
@@ -130,6 +131,10 @@ void loop() {
 		}
 		radioTransmission = millis();
 	}
+	if (radio.isAckPayloadAvailable()) {
+		radio.read(&motorFeedback, sizeof(motorFeedback));
+		Serial.println(motorFeedback);
+	}
 
 	// Update Screen Information
 	screenUpdate();
@@ -143,12 +148,12 @@ void screenUpdate() {
 		updateStatusMessages(1);
 		updateStatusMessages(2);
 		ds4feedback();
-		motorFeedback();
+		refreshMotorOnScreen();
 		lastScreenUpdate = millis();
 	}
 }
 
-void motorFeedback() {
+void refreshMotorOnScreen() {
 	// POS 10,100 DIM 25x130
 	if (motor[0] != motor[1]) {
 		tft.fillRect(11, 101, 23, 128 - motor[0] / 100 * 128, BLACK);
@@ -299,6 +304,7 @@ void setupRadio() {
 	// Use PALevel low for testing purposes only (default: high)
 	radio.setPALevel(RF24_PA_HIGH);
 	radio.setPayloadSize(sizeof(radioData));
+	radio.enableAckPayload();
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openWritingPipe(writingPipe);
