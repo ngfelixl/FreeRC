@@ -16,7 +16,7 @@
 */
 
 // Include required libraries
-#include <SPI.h>
+#include <SPI.h> // das ist eine spi bib
 #include "RF24.h"
 #include "printf.h"
 #include <PS4USB.h>
