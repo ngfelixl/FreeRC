@@ -25,11 +25,11 @@
 #include <SPFD5408_Adafruit_TFTLCD.h>
 #include "screen/Screen.h"
 
-#define LCD_CS A3
+/*#define LCD_CS A3
 #define LCD_CD A2
 #define LCD_WR A1
 #define LCD_RD A0
-#define LCD_RESET A4
+#define LCD_RESET A4*/
 #define SCREENUPDATE 100 // Update screen every x[ms]
 
 #define CE_pin 53
@@ -66,8 +66,10 @@ uint8_t ds4val[8]; // rx, ry, lx, ly
 
 
 // Declare TFT Data
-Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
+//Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 unsigned int lastScreenUpdate = 0;
+
+Screen screen;
 
 struct peripheralData {
 	unsigned int statusId[3] = { 0,0,0 }; // [radio, usb, ps4]
@@ -78,15 +80,11 @@ struct peripheralData {
 
 // ========== Arduino Setup Function ==============
 void setup() {
+	screen.init();
+	screen.print_peripheral_status(0, YELLOW, "Hello world!");
 	Serial.begin(9600);
-	// Reset and initialize TFT Screen (SDFP5408)
-	tft.reset();
-	tft.begin(0x9341);
-	tft.setRotation(3);
-	initScreen();
-	updateStatusMessages(0);
-	updateStatusMessages(1);
-	updateStatusMessages(2);
+
+	screen.print_peripheral_status(1, YELLOW, "Dicke Titten");
 
 	// Setup NRF24L01+ and USB Host Shield
 	setupUsb();
@@ -152,8 +150,8 @@ void screenUpdate() {
 void motorFeedback() {
 	// POS 10,100 DIM 25x130
 	if (motor[0] != motor[1]) {
-		tft.fillRect(11, 101, 23, 128 - motor[0] / 100 * 128, BLACK);
-		tft.fillRect(11, 101 + 128 - motor[0] / 100 * 128, 23, motor[0] / 100 * 128, RED);
+		//tft.fillRect(11, 101, 23, 128 - motor[0] / 100 * 128, BLACK);
+		//tft.fillRect(11, 101 + 128 - motor[0] / 100 * 128, 23, motor[0] / 100 * 128, RED);
 		motor[1] = motor[0];
 	}
 }
@@ -192,8 +190,9 @@ void ds4feedback() {
 	for (int i = 0; i<2; i++) {
 		for (int j = 0; j<2; j++) {
 			if (ds4val[i + 2 * j] != ds4val[i + 2 * j + 4]) {
-				tft.fillRect(261 + i * 30, 101 + j * 75 + (53 - ((float)ds4val[i + 2 * j] / 255) * 53), 18, ((float)ds4val[i + 2 * j] / 255) * 53, BLUE);
-				tft.fillRect(261 + i * 30, 101 + j * 75, 18, 53 - ((float)ds4val[i + 2 * j] / 255) * 53, BLACK);
+				screen.update_analog_axis(0, (float)ds4val[i + 2 * j]);
+				//tft.fillRect(261 + i * 30, 101 + j * 75 + (53 - ((float)ds4val[i + 2 * j] / 255) * 53), 18, ((float)ds4val[i + 2 * j] / 255) * 53, BLUE);
+				//tft.fillRect(261 + i * 30, 101 + j * 75, 18, 53 - ((float)ds4val[i + 2 * j] / 255) * 53, BLACK);
 				ds4val[i + 2 * j + 4] = ds4val[i + 2 * j];
 			}
 		}
@@ -201,87 +200,24 @@ void ds4feedback() {
 }
 
 void updateStatusMessages(int id) {
-	switch (peripheralData.statusId[id]) {
-	case 0: tft.setTextColor(YELLOW); break;
-	case 1: tft.setTextColor(GREEN); break;
-	case 2: tft.setTextColor(RED); break;
-	}
+	/*switch (peripheralData.statusId[id]) {
+	case 0: //tft.setTextColor(YELLOW); break;
+	case 1: //tft.setTextColor(GREEN); break;
+	case 2: //tft.setTextColor(RED); break;
+	}*/
 
 	if (peripheralData.lastStatusId[id] != peripheralData.statusId[id]) {
-		tft.fillRect(150, 40 + 10 * id, 320, 10, BLACK);
-		tft.setCursor(150, 40 + 10 * id);
+		//tft.fillRect(150, 40 + 10 * id, 320, 10, BLACK);
+		//tft.setCursor(150, 40 + 10 * id);
 		if (peripheralData.statusId[id]<2) {
-			tft.println(peripheralData.messages[peripheralData.statusId[id]]);
+			//tft.println(peripheralData.messages[peripheralData.statusId[id]]);
 		}
 		else {
-			tft.println(peripheralData.messages[2]);
+			//tft.println(peripheralData.messages[2]);
 		}
 		peripheralData.lastStatusId[id] = peripheralData.statusId[id];
 	}
-	tft.setTextColor(WHITE);
-}
-
-void initScreen() {
-	tft.fillScreen(BLACK);
-	tft.setCursor(10, 10);
-	tft.setTextColor(RED);
-	tft.setTextSize(2);
-	tft.println("RC Flight Control");
-	tft.setTextColor(WHITE);
-	tft.setTextSize(1);
-
-	// Add peripherals entry under title
-	tft.setCursor(10, 40);
-	tft.println("NRF24L01+");
-	tft.setCursor(10, 50);
-	tft.println("USB Host Shield");
-	tft.setCursor(10, 60);
-	tft.println("PS4 Controller");
-
-	// Add subsection titles
-	tft.setTextColor(MAGENTA);
-	tft.setCursor(10, 75);
-	tft.println("Nano Feedback");
-	tft.drawLine(10, 85, 242, 85, MAGENTA);
-	tft.setCursor(260, 75);
-	tft.println("DS4");
-	tft.drawLine(260, 85, 310, 85, MAGENTA);
-	tft.setTextColor(WHITE);
-
-	// Draw Motor Status box
-	tft.setCursor(10, 90);
-	tft.println("Motor");
-	tft.drawRect(10, 100, 25, 130, WHITE);
-	tft.setTextColor(CYAN);
-	tft.setCursor(40, 95);
-	tft.println("100");
-	tft.setCursor(40, 160);
-	tft.println("50");
-	tft.setCursor(40, 225);
-	tft.println("0");
-	tft.setTextColor(WHITE);
-
-	// Draw Global Servo Status box
-	tft.setCursor(67, 90);
-	tft.println("Servo");
-	tft.drawRect(67, 100, 175, 130, WHITE);
-	drawServoDefaults();
-
-	// Draw PS4 Status box
-	for (int i = 0; i<2; i++) {
-		for (int j = 0; j<2; j++) {
-			tft.drawRect(260 + i * 30, 100 + j * 75, 20, 55, WHITE);
-			tft.drawLine(256 + i * 30, 101 + 26 + j * 75, 259 + i * 30, 101 + 26 + j * 75, WHITE);
-			tft.drawLine(256 + i * 30, 101 + 53 / 2 + ((float)ds4deadzone / 255) * 53 + j * 75, 259 + i * 30, 101 + 53 / 2 + ((float)ds4deadzone / 255) * 53 + j * 75, RED);
-			tft.drawLine(256 + i * 30, 101 + 53 / 2 - ((float)ds4deadzone / 255) * 53 + j * 75, 259 + i * 30, 101 + 53 / 2 - ((float)ds4deadzone / 255) * 53 + j * 75, RED);
-		}
-	}
-}
-
-void drawServoDefaults() {
-	// Servo field dim 175x130, pos 67,100
-	tft.drawLine(67 + 175 / 2, 120, 67 + 175 / 2, 210, GREEN);
-	tft.drawLine(67 + 20, 100 + 130 / 2, 67 + 175 - 20, 100 + 130 / 2, GREEN);
+	//tft.setTextColor(WHITE);
 }
 
 // ========== Periphal Setup functions ==============
