@@ -82,7 +82,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="screen\Screen.h" />
     <ClInclude Include="__vm\.Sketch1.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="screen\screen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

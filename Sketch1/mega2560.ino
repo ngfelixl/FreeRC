@@ -23,6 +23,7 @@
 #include <usbhub.h>
 #include <SPFD5408_Adafruit_GFX.h>
 #include <SPFD5408_Adafruit_TFTLCD.h>
+#include "screen/Screen.h"
 
 #define LCD_CS A3
 #define LCD_CD A2
