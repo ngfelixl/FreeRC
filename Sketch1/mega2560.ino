@@ -27,11 +27,6 @@
 #define CE_pin  53
 #define CSN_pin 49
 
-#define RED     0xF800
-#define GREEN   0x07E0
-#define YELLOW  0xFFE0
-#define WHITE   0xFFFF
-
 // Declare radio data
 uint64_t writingPipe = 0xF0F0F0F0AA;
 uint64_t readingPipe = 0xF0F0F0F0BB;
@@ -45,34 +40,26 @@ struct radioData {
 	uint8_t motor;
 }radioData;
 
-// Declare DualShock 4 Data
-//USB usb;
-//PS4USB PS4(&usb);
-
-//uint8_t ds4mid = 127;
-//uint8_t ds4deadzone = 50;
-//uint8_t ds4val[8]; // rx, ry, lx, ly
-
 Screen screen;
 Ds4 controller;
 
-struct peripheralData {
+/*struct peripheralData {
 	unsigned int statusId[3] = { 0,0,0 }; // [radio, usb, ps4]
 	unsigned int lastStatusId[3] = { 1,1,1 };
 	String messages[3] = { "Initialize", "Connected", "No connection"};
-}peripheralData;
+}peripheralData;*/
 
 
 // ========== Arduino Setup Function ==============
 void setup() {
-	screen.init();
-	screen.print_peripheral_status(0, "success", "Hello world!");
 	Serial.begin(9600);
 
-	controller.usb_setup();
+	screen.init();
+	screen.print_peripheral_status(0, "success", "Hello world!");
 
-	// Setup NRF24L01+ and USB Host Shield
-	//setupUsb();
+	controller.init();
+
+	// Setup NRF24L01+
 	setupRadio();
 }
 
@@ -83,23 +70,10 @@ void loop() {
 	if (millis() - readUsb > 20) {
 		controller.get();
 		Serial.println(controller.button.x);
-		// Activate USB
-		/*Usb.Task();
-		// Check if DS4 is correctly recognized and get DS4 Data
-		if (PS4.connected()) {
-			peripheralData.statusId[2] = 1; // update status
-			// Read DS4 Data
-			//ds4read();
-
-			// Store DS4 Data in structure to transmit to Nano
-			radioData.servo[0] = map(ds4val[0], 0, 255, 20, 160);
-			radioData.servo[1] = map(ds4val[1], 0, 255, 20, 160);
-			radioData.servo[2] = map(ds4val[2], 0, 255, 20, 160);
-		}
-		else {
-			// Print: DS4 Error
-			peripheralData.statusId[2] = 2;
-		}*/
+		screen.update_analog_axis(0, controller.axis[0]);
+		screen.update_analog_axis(1, controller.axis[1]);
+		screen.update_analog_axis(2, controller.axis[2]);
+		screen.update_analog_axis(3, controller.axis[3]);
 		readUsb = millis();
 	}
 
@@ -109,35 +83,35 @@ void loop() {
 		radio.stopListening();
 		radio.writeFast(&radioData, sizeof(radioData));
 		if (radio.txStandBy()) {
-			peripheralData.statusId[0] = 1; // success
+			//peripheralData.statusId[0] = 1; // success
 		}
 		else {
-			peripheralData.statusId[0] = 2; // failed
+			//peripheralData.statusId[0] = 2; // failed
 		}
 		radioTransmission = millis();
 	}
 
 	// Update Screen Information
-	print_to_view();
+	//print_to_view();
 }
 
 
 // ========== Screen related functions ==============
-void print_to_view() {
+/*void print_to_view() {
 	if(screen.update()) {
 		//ds4feedback();
 		motorFeedback();
 	}
-}
+}*/
 
-void motorFeedback() {
+/*void motorFeedback() {
 	// POS 10,100 DIM 25x130
 	if (motor[0] != motor[1]) {
 		//tft.fillRect(11, 101, 23, 128 - motor[0] / 100 * 128, BLACK);
 		//tft.fillRect(11, 101 + 128 - motor[0] / 100 * 128, 23, motor[0] / 100 * 128, RED);
 		motor[1] = motor[0];
 	}
-}
+}*/
 
 // Show DS4 Values on screen
 /*void ds4read() {
@@ -167,42 +141,6 @@ void motorFeedback() {
 	if (motor[0] > 100.0) motor[0] = 100.0;
 	else if (motor[0] < 0.0) motor[0] = 0.0;
 	radioData.motor = (int)map(motor[0], 0, 100, 20, 160);
-}*/
-
-/*void ds4feedback() {
-	screen.update_analog_axis(0, (float)ds4val[0]);
-	screen.update_analog_axis(1, (float)ds4val[1]);
-	screen.update_analog_axis(2, (float)ds4val[2]);
-}*/
-
-/*void updateStatusMessages(int id) {
-	switch (peripheralData.statusId[id]) {
-	case 0: //tft.setTextColor(YELLOW); break;
-	case 1: //tft.setTextColor(GREEN); break;
-	case 2: //tft.setTextColor(RED); break;
-	}
-
-	if (peripheralData.lastStatusId[id] != peripheralData.statusId[id]) {
-		//tft.fillRect(150, 40 + 10 * id, 320, 10, BLACK);
-		//tft.setCursor(150, 40 + 10 * id);
-		if (peripheralData.statusId[id]<2) {
-			//tft.println(peripheralData.messages[peripheralData.statusId[id]]);
-		}
-		else {
-			//tft.println(peripheralData.messages[2]);
-		}
-		peripheralData.lastStatusId[id] = peripheralData.statusId[id];
-	}
-	//tft.setTextColor(WHITE);
-}*/
-
-// ========== Periphal Setup functions ==============
-/*void setupUsb() {
-	if (Usb.Init() == -1) {
-		peripheralData.statusId[1] = 2;
-	} else {
-		peripheralData.statusId[1] = 1;
-	}
 }*/
 
 void setupRadio() {

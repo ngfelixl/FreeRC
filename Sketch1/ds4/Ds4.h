@@ -12,6 +12,7 @@ private:
 
 	uint8_t middle = 127;
 	uint8_t deadzone = 50;
+	void usb_setup();
 	//bool x, circle, square, triangle;
 	//uint8_t axis[6];
 
@@ -25,5 +26,4 @@ public:
 	void init();
 	void get();
 	bool status();
-	void usb_setup();
 };
