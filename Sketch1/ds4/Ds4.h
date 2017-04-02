@@ -13,17 +13,16 @@ private:
 	uint8_t middle = 127;
 	uint8_t deadzone = 50;
 	void usb_setup();
-	//bool x, circle, square, triangle;
-	//uint8_t axis[6];
 
 public:
+	char *status;
 	uint8_t axis[6];
 	struct button {
-		bool x, circle, square, triangle;
+		bool x, circle, square, triangle, up, down, left, right, options;
 	}button;
 
 	Ds4();
 	void init();
 	void get();
-	bool status();
+	bool connected();
 };

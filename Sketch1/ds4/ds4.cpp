@@ -3,6 +3,8 @@
 Ds4::Ds4() {}
 
 void Ds4::init() {
+	USB usb;
+	PS4USB ps4 = PS4USB(&usb);
 	usb_setup();
 }
 
@@ -18,22 +20,26 @@ void Ds4::get() {
 		axis[4] = ps4.getAnalogButton(L2);
 		axis[5] = ps4.getAnalogButton(R2);
 
+		button.options = ps4.getButtonClick(OPTIONS);
+		button.up = ps4.getButtonClick(UP);
+		button.down = ps4.getButtonClick(DOWN);
+		button.left = ps4.getButtonClick(LEFT);
+		button.right = ps4.getButtonClick(RIGHT);
 		button.x = ps4.getButtonClick(X);
 	}
 }
 
 void Ds4::usb_setup() {
 	if (usb.Init() == -1) {
-		//peripheralData.statusId[1] = 2;
 	}
 	else {
-		//peripheralData.statusId[1] = 1;
 	}
 }
 
-bool Ds4::status() {
+bool Ds4::connected() {
+	bool flag = false;
 	usb.Task();
 	if (ps4.connected())
-		return true;
-	return false;
+		flag = true;
+	return flag;
 }

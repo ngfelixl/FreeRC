@@ -1,13 +1,19 @@
 #include"Screen.h"
 
-#define BLACK   0x0000
-#define BLUE    0x001F
-#define RED     0xF800
-#define GREEN   0x07E0
-#define CYAN    0x07FF
-#define MAGENTA 0xF81F
-#define YELLOW  0xFFE0
-#define WHITE   0xFFFF
+#define BLACK     0x0000
+#define BLUE      0x001F
+#define RED       int(238/8*2048) + int(0) + int(0)
+#define GREEN     0x07E0
+#define CYAN      0x07FF
+#define MAGENTA   0xF81F
+#define YELLOW    0xFFE0
+#define WHITE     0xFFFF
+#define DARKGREEN int(255/8*2048) + int(255/4*32) + int(0/8)
+#define DARKGRAY  int(70/8*2048)  + int(70/4*32)  + int(70/8)
+#define LIGHTGRAY int(180/8*2048) + int(180/4*32) + int(180/8)
+#define ORANGE    int(255/8*2048) + int(120/4*32) + int(0/8)
+#define TEALBLUE  int(56/8*2048)  + int(142/4*32) + int(142/8)
+#define TURQUISE  int(0/8*2048)  + int(245/4*32) + int(255/8)
 
 Screen::Screen() {
 	tft = new Adafruit_TFTLCD(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
@@ -26,8 +32,7 @@ bool Screen::update() {
 		update_counter = millis();
 		return true;
 	}
-	else
-		return false;
+	return false;
 }
 
 void Screen::print_peripheral_status(int id, char *type, char *message) {
@@ -55,14 +60,66 @@ void Screen::update_analog_axis(int axis, float value) {
 	// axis 3 -> right y
 	int i = axis%2;
 	int j = floor(axis / 2);
-	tft->fillRect(261 + i * 30, 101 + j * 75 + (53 - (value / 255) * 53), 18, (value / 255) * 53, BLUE);
-	tft->fillRect(261 + i * 30, 101 + j * 75, 18, 53 - (value / 255) * 53, BLACK);
+	tft->fillRect(261 + i * 30, 101 + j * 75 + (53 - (value / 255) * 53), 18, (value / 255) * 53, ORANGE);
+	tft->fillRect(261 + i * 30, 101 + j * 75, 18, 53 - (value / 255) * 53, DARKGRAY);
 }
+
+void Screen::update_motor(float value) {
+	tft->fillRect(11, 101, 23, 128 - value / 100 * 128, DARKGRAY);
+	tft->fillRect(11, 101 + 128 - value / 100 * 128, 23, value / 100 * 128, ORANGE);
+}
+
+void Screen::switch_view(String change_to) {
+	view = change_to;
+	if (view == "control") initial_view();
+	else if (view == "options") options_view();
+	delay(500);
+}
+
+
+void Screen::options_view() {
+	tft->fillScreen(BLACK);
+	tft->setTextColor(ORANGE);
+	tft->setTextSize(2);
+	tft->setCursor(10, 10);
+	tft->println("Options");
+	tft->setTextColor(WHITE);
+	tft->setTextSize(1.6);
+
+	// Add options table
+	tft->setCursor(20, 60);
+	tft->println("Adjust Channels");
+	tft->drawLine(20, 78, 300, 78, DARKGRAY);
+	tft->setCursor(20, 90);
+	tft->println("NRF24 PA Level");
+	tft->drawLine(20, 108, 300, 108, DARKGRAY);
+	tft->setCursor(20, 120);
+	tft->println("Exit");
+	tft->drawLine(20, 138, 300, 138, DARKGRAY);
+	switch_marker();
+}
+
+void Screen::options_navigate(char* direction) {
+	if (direction == "up") {
+		option_selected = (option_selected - 1);
+	}
+	else if (direction == "down") {
+		option_selected = (option_selected + 1) % 3;
+	}
+	if (option_selected == -1) option_selected = 2;
+	switch_marker();
+}
+
+void Screen::switch_marker() {
+	tft->fillRect(0, 60, 20, 200, BLACK);
+	tft->fillRect(5, 60 + 30 * option_selected, 10, 10, ORANGE);
+}
+
 
 void Screen::initial_view() {
 	tft->fillScreen(BLACK);
 	tft->setCursor(10, 10);
-	tft->setTextColor(RED);
+	tft->setTextColor(ORANGE);
 	tft->setTextSize(2);
 	tft->println("RC Flight Control");
 	tft->setTextColor(WHITE);
@@ -77,20 +134,20 @@ void Screen::initial_view() {
 	tft->println("PS4 Controller");
 
 	// Add subsection titles
-	tft->setTextColor(MAGENTA);
+	tft->setTextColor(ORANGE);
 	tft->setCursor(10, 75);
-	tft->println("Nano Feedback");
-	tft->drawLine(10, 85, 242, 85, MAGENTA);
+	tft->println("Device Feedback");
+	tft->drawLine(10, 85, 242, 85, ORANGE);
 	tft->setCursor(260, 75);
 	tft->println("DS4");
-	tft->drawLine(260, 85, 310, 85, MAGENTA);
+	tft->drawLine(260, 85, 310, 85, ORANGE);
 	tft->setTextColor(WHITE);
 
 	// Draw Motor Status box
 	tft->setCursor(10, 90);
 	tft->println("Motor");
 	tft->drawRect(10, 100, 25, 130, WHITE);
-	tft->setTextColor(CYAN);
+	tft->setTextColor(TEALBLUE);
 	tft->setCursor(40, 95);
 	tft->println("100");
 	tft->setCursor(40, 160);
@@ -109,8 +166,6 @@ void Screen::initial_view() {
 		for (int j = 0; j<2; j++) {
 			tft->drawRect(260 + i * 30, 100 + j * 75, 20, 55, WHITE);
 			tft->drawLine(256 + i * 30, 101 + 26 + j * 75, 259 + i * 30, 101 + 26 + j * 75, WHITE);
-			//tft->drawLine(256 + i * 30, 101 + 53 / 2 + ((float)ds4deadzone / 255) * 53 + j * 75, 259 + i * 30, 101 + 53 / 2 + ((float)ds4deadzone / 255) * 53 + j * 75, RED);
-			//tft->drawLine(256 + i * 30, 101 + 53 / 2 - ((float)ds4deadzone / 255) * 53 + j * 75, 259 + i * 30, 101 + 53 / 2 - ((float)ds4deadzone / 255) * 53 + j * 75, RED);
 		}
 	}
 }

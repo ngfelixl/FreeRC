@@ -27,11 +27,13 @@
 #define CE_pin  53
 #define CSN_pin 49
 
+#define CHECK_STATUS 1000
+
 // Declare radio data
 uint64_t writingPipe = 0xF0F0F0F0AA;
 uint64_t readingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_pin, CSN_pin);
-unsigned int radioTransmission = 0, readUsb = 0;
+unsigned int radioTransmission = 0, readUsb = 0, counter_check_status = 0;
 
 float motor[2] = { 100,0 }; // new,old
 int dmotor = 0;
@@ -43,14 +45,7 @@ struct radioData {
 Screen screen;
 Ds4 controller;
 
-/*struct peripheralData {
-	unsigned int statusId[3] = { 0,0,0 }; // [radio, usb, ps4]
-	unsigned int lastStatusId[3] = { 1,1,1 };
-	String messages[3] = { "Initialize", "Connected", "No connection"};
-}peripheralData;*/
 
-
-// ========== Arduino Setup Function ==============
 void setup() {
 	Serial.begin(9600);
 
@@ -64,22 +59,40 @@ void setup() {
 }
 
 
-// ========== Arduino Loop Function ==============
 void loop() {
 	// x = x0 + dx / dt, 0.02s*100 = 2s
 	if (millis() - readUsb > 20) {
 		controller.get();
-		Serial.println(controller.button.x);
-		screen.update_analog_axis(0, controller.axis[0]);
-		screen.update_analog_axis(1, controller.axis[1]);
-		screen.update_analog_axis(2, controller.axis[2]);
-		screen.update_analog_axis(3, controller.axis[3]);
+		if (screen.view == "control") {
+			//Serial.println(controller.button.x);
+			screen.update_analog_axis(0, controller.axis[0]);
+			screen.update_analog_axis(1, controller.axis[1]);
+			screen.update_analog_axis(2, controller.axis[2]);
+			screen.update_analog_axis(3, controller.axis[3]);
+			screen.update_motor((float)controller.axis[4] / 255.0*100.0);
+			if (controller.button.options) {
+				screen.switch_view("options");
+			}
+		}
+		else if (screen.view == "options") {
+			if (controller.button.up) {
+				screen.options_navigate("up");
+			}
+			else if (controller.button.down) {
+				screen.options_navigate("down");
+			}
+			if (controller.button.options) {
+				screen.switch_view("control");
+			}
+		}
+		//screen.print_peripheral_status(2, "success", "Connected");
 		readUsb = millis();
 	}
 
-	// Write the radioData struct to the NRF24L01 module to send the data
-	// and print success or error message
+	
 	if (millis() - radioTransmission > 20) {
+		// Write the radioData struct to the NRF24L01 module to send the data
+		// and print success or error message
 		radio.stopListening();
 		radio.writeFast(&radioData, sizeof(radioData));
 		if (radio.txStandBy()) {
@@ -91,8 +104,22 @@ void loop() {
 		radioTransmission = millis();
 	}
 
-	// Update Screen Information
-	//print_to_view();
+	if (millis() - counter_check_status > CHECK_STATUS) {
+		if (controller.connected()) {
+			if (controller.status != "Connected") {
+				controller.status = "Connected";
+				screen.print_peripheral_status(2, "success", controller.status);
+			}
+		}
+		else {
+			if (controller.status != "Error") {
+				controller.status = "Error";
+				screen.print_peripheral_status(2, "danger", controller.status);
+			}
+		}
+
+		counter_check_status = millis();
+	}
 }
 
 
