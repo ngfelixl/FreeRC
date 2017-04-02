@@ -25,22 +25,11 @@
 #include <SPFD5408_Adafruit_TFTLCD.h>
 #include "screen/Screen.h"
 
-/*#define LCD_CS A3
-#define LCD_CD A2
-#define LCD_WR A1
-#define LCD_RD A0
-#define LCD_RESET A4*/
-#define SCREENUPDATE 100 // Update screen every x[ms]
-
-#define CE_pin 53
+#define CE_pin  53
 #define CSN_pin 49
 
-#define BLACK   0x0000
-#define BLUE    0x001F
 #define RED     0xF800
 #define GREEN   0x07E0
-#define CYAN    0x07FF
-#define MAGENTA 0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
 
@@ -63,11 +52,6 @@ PS4USB PS4(&Usb);
 uint8_t ds4mid = 127;
 uint8_t ds4deadzone = 50;
 uint8_t ds4val[8]; // rx, ry, lx, ly
-
-
-// Declare TFT Data
-//Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
-unsigned int lastScreenUpdate = 0;
 
 Screen screen;
 
@@ -131,19 +115,18 @@ void loop() {
 	}
 
 	// Update Screen Information
-	screenUpdate();
+	print_to_view();
 }
 
 
 // ========== Screen related functions ==============
-void screenUpdate() {
-	if (millis() - lastScreenUpdate>SCREENUPDATE) {
+void print_to_view() {
+	if(screen.update()) {
 		//updateStatusMessages(0);
 		//updateStatusMessages(1);
 		//updateStatusMessages(2);
 		ds4feedback();
 		motorFeedback();
-		lastScreenUpdate = millis();
 	}
 }
 

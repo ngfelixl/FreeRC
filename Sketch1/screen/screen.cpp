@@ -21,6 +21,15 @@ void Screen::init() {
 	print_servo_default();
 }
 
+bool Screen::update() {
+	if (millis() - update_counter > SCREENUPDATE) {
+		update_counter = millis();
+		return true;
+	}
+	else
+		return false;
+}
+
 void Screen::print_peripheral_status(int id, int color, char *message) {
 	tft->setTextColor(color);
 	tft->setCursor(150, 40 + 10 * id);
