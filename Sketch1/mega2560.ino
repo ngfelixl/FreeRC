@@ -187,7 +187,10 @@ void ds4read() {
 }
 
 void ds4feedback() {
-	for (int i = 0; i<2; i++) {
+	screen.update_analog_axis(0, (float)ds4val[0]);
+	screen.update_analog_axis(1, (float)ds4val[1]);
+	screen.update_analog_axis(2, (float)ds4val[2]);
+	/*for (int i = 0; i<2; i++) {
 		for (int j = 0; j<2; j++) {
 			if (ds4val[i + 2 * j] != ds4val[i + 2 * j + 4]) {
 				screen.update_analog_axis(0, (float)ds4val[i + 2 * j]);
@@ -196,7 +199,7 @@ void ds4feedback() {
 				ds4val[i + 2 * j + 4] = ds4val[i + 2 * j];
 			}
 		}
-	}
+	}*/
 }
 
 void updateStatusMessages(int id) {
