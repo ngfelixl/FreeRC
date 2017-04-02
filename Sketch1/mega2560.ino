@@ -46,14 +46,15 @@ struct radioData {
 }radioData;
 
 // Declare DualShock 4 Data
-USB Usb;
-PS4USB PS4(&Usb);
-uint8_t ds4mid = 127;
-uint8_t ds4deadzone = 50;
-uint8_t ds4val[8]; // rx, ry, lx, ly
+//USB usb;
+//PS4USB PS4(&usb);
+
+//uint8_t ds4mid = 127;
+//uint8_t ds4deadzone = 50;
+//uint8_t ds4val[8]; // rx, ry, lx, ly
 
 Screen screen;
-Ds4 ds4;
+Ds4 controller;
 
 struct peripheralData {
 	unsigned int statusId[3] = { 0,0,0 }; // [radio, usb, ps4]
@@ -68,7 +69,7 @@ void setup() {
 	screen.print_peripheral_status(0, "success", "Hello world!");
 	Serial.begin(9600);
 
-	ds4.init();
+	controller.usb_setup();
 
 	// Setup NRF24L01+ and USB Host Shield
 	//setupUsb();
@@ -80,8 +81,8 @@ void setup() {
 void loop() {
 	// x = x0 + dx / dt, 0.02s*100 = 2s
 	if (millis() - readUsb > 20) {
-		ds4.get();
-		Serial.println(ds4.status());
+		controller.get();
+		Serial.println(controller.button.x);
 		// Activate USB
 		/*Usb.Task();
 		// Check if DS4 is correctly recognized and get DS4 Data
@@ -124,7 +125,7 @@ void loop() {
 // ========== Screen related functions ==============
 void print_to_view() {
 	if(screen.update()) {
-		ds4feedback();
+		//ds4feedback();
 		motorFeedback();
 	}
 }
@@ -168,11 +169,11 @@ void motorFeedback() {
 	radioData.motor = (int)map(motor[0], 0, 100, 20, 160);
 }*/
 
-void ds4feedback() {
+/*void ds4feedback() {
 	screen.update_analog_axis(0, (float)ds4val[0]);
 	screen.update_analog_axis(1, (float)ds4val[1]);
 	screen.update_analog_axis(2, (float)ds4val[2]);
-}
+}*/
 
 /*void updateStatusMessages(int id) {
 	switch (peripheralData.statusId[id]) {
@@ -196,13 +197,13 @@ void ds4feedback() {
 }*/
 
 // ========== Periphal Setup functions ==============
-void setupUsb() {
+/*void setupUsb() {
 	if (Usb.Init() == -1) {
 		peripheralData.statusId[1] = 2;
 	} else {
 		peripheralData.statusId[1] = 1;
 	}
-}
+}*/
 
 void setupRadio() {
 	// Serial.print("radio");

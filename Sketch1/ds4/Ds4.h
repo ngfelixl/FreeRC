@@ -7,20 +7,23 @@
 
 class Ds4 {
 private:
-	USB Usb;
-	PS4USB PS4(USB);
+	USB usb;
+	PS4USB ps4 = PS4USB(&usb);
 
 	uint8_t middle = 127;
 	uint8_t deadzone = 50;
-	bool x, circle, square, triangle;
+	//bool x, circle, square, triangle;
 	//uint8_t axis[6];
-	void usb_setup();
 
 public:
 	uint8_t axis[6];
+	struct button {
+		bool x, circle, square, triangle;
+	}button;
 
 	Ds4();
 	void init();
 	void get();
 	bool status();
+	void usb_setup();
 };
