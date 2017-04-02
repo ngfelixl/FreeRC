@@ -23,7 +23,7 @@ public:
 	void initial_view();
 
 	void print_servo_default();
-	void print_peripheral_status(int id, int color, char *message);
+	void print_peripheral_status(int id, char* type, char *message);
 	void update_analog_axis(int axis, float value);
 	bool update();
 };

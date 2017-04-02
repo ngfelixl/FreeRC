@@ -21,9 +21,8 @@
 #include "printf.h"
 #include <PS4USB.h>
 #include <usbhub.h>
-#include <SPFD5408_Adafruit_GFX.h>
-#include <SPFD5408_Adafruit_TFTLCD.h>
 #include "screen/Screen.h"
+#include "ds4/Ds4.h"
 
 #define CE_pin  53
 #define CSN_pin 49
@@ -54,6 +53,7 @@ uint8_t ds4deadzone = 50;
 uint8_t ds4val[8]; // rx, ry, lx, ly
 
 Screen screen;
+Ds4 ds4;
 
 struct peripheralData {
 	unsigned int statusId[3] = { 0,0,0 }; // [radio, usb, ps4]
@@ -65,13 +65,13 @@ struct peripheralData {
 // ========== Arduino Setup Function ==============
 void setup() {
 	screen.init();
-	screen.print_peripheral_status(0, YELLOW, "Hello world!");
+	screen.print_peripheral_status(0, "success", "Hello world!");
 	Serial.begin(9600);
 
-	screen.print_peripheral_status(1, YELLOW, "Dicke Titten");
+	ds4.init();
 
 	// Setup NRF24L01+ and USB Host Shield
-	setupUsb();
+	//setupUsb();
 	setupRadio();
 }
 
@@ -80,13 +80,15 @@ void setup() {
 void loop() {
 	// x = x0 + dx / dt, 0.02s*100 = 2s
 	if (millis() - readUsb > 20) {
+		ds4.get();
+		Serial.println(ds4.status());
 		// Activate USB
-		Usb.Task();
+		/*Usb.Task();
 		// Check if DS4 is correctly recognized and get DS4 Data
 		if (PS4.connected()) {
 			peripheralData.statusId[2] = 1; // update status
 			// Read DS4 Data
-			ds4read();
+			//ds4read();
 
 			// Store DS4 Data in structure to transmit to Nano
 			radioData.servo[0] = map(ds4val[0], 0, 255, 20, 160);
@@ -96,7 +98,7 @@ void loop() {
 		else {
 			// Print: DS4 Error
 			peripheralData.statusId[2] = 2;
-		}
+		}*/
 		readUsb = millis();
 	}
 
@@ -122,9 +124,6 @@ void loop() {
 // ========== Screen related functions ==============
 void print_to_view() {
 	if(screen.update()) {
-		//updateStatusMessages(0);
-		//updateStatusMessages(1);
-		//updateStatusMessages(2);
 		ds4feedback();
 		motorFeedback();
 	}
@@ -140,7 +139,7 @@ void motorFeedback() {
 }
 
 // Show DS4 Values on screen
-void ds4read() {
+/*void ds4read() {
 	ds4val[0] = PS4.getAnalogHat(RightHatX);
 	ds4val[1] = PS4.getAnalogHat(RightHatY);
 	ds4val[2] = PS4.getAnalogHat(LeftHatX);
@@ -167,22 +166,12 @@ void ds4read() {
 	if (motor[0] > 100.0) motor[0] = 100.0;
 	else if (motor[0] < 0.0) motor[0] = 0.0;
 	radioData.motor = (int)map(motor[0], 0, 100, 20, 160);
-}
+}*/
 
 void ds4feedback() {
 	screen.update_analog_axis(0, (float)ds4val[0]);
 	screen.update_analog_axis(1, (float)ds4val[1]);
 	screen.update_analog_axis(2, (float)ds4val[2]);
-	/*for (int i = 0; i<2; i++) {
-		for (int j = 0; j<2; j++) {
-			if (ds4val[i + 2 * j] != ds4val[i + 2 * j + 4]) {
-				screen.update_analog_axis(0, (float)ds4val[i + 2 * j]);
-				//tft.fillRect(261 + i * 30, 101 + j * 75 + (53 - ((float)ds4val[i + 2 * j] / 255) * 53), 18, ((float)ds4val[i + 2 * j] / 255) * 53, BLUE);
-				//tft.fillRect(261 + i * 30, 101 + j * 75, 18, 53 - ((float)ds4val[i + 2 * j] / 255) * 53, BLACK);
-				ds4val[i + 2 * j + 4] = ds4val[i + 2 * j];
-			}
-		}
-	}*/
 }
 
 /*void updateStatusMessages(int id) {

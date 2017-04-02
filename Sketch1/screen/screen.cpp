@@ -30,7 +30,12 @@ bool Screen::update() {
 		return false;
 }
 
-void Screen::print_peripheral_status(int id, int color, char *message) {
+void Screen::print_peripheral_status(int id, char *type, char *message) {
+	int color = WHITE;
+	if (type == "success") color = GREEN;
+	else if (type == "warning") color = YELLOW;
+	else if (type == "danger") color = RED;
+
 	tft->setTextColor(color);
 	tft->setCursor(150, 40 + 10 * id);
 	tft->fillRect(150, 40 + 10 * id, 320, 10, BLACK);

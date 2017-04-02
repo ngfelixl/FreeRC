@@ -82,10 +82,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ds4\Ds4.h" />
     <ClInclude Include="screen\Screen.h" />
     <ClInclude Include="__vm\.Sketch1.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ds4\ds4.cpp" />
     <ClCompile Include="screen\screen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
