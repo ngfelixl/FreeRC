@@ -138,9 +138,9 @@ void loop() {
 // ========== Screen related functions ==============
 void screenUpdate() {
 	if (millis() - lastScreenUpdate>SCREENUPDATE) {
-		updateStatusMessages(0);
-		updateStatusMessages(1);
-		updateStatusMessages(2);
+		//updateStatusMessages(0);
+		//updateStatusMessages(1);
+		//updateStatusMessages(2);
 		ds4feedback();
 		motorFeedback();
 		lastScreenUpdate = millis();
@@ -202,12 +202,12 @@ void ds4feedback() {
 	}*/
 }
 
-void updateStatusMessages(int id) {
-	/*switch (peripheralData.statusId[id]) {
+/*void updateStatusMessages(int id) {
+	switch (peripheralData.statusId[id]) {
 	case 0: //tft.setTextColor(YELLOW); break;
 	case 1: //tft.setTextColor(GREEN); break;
 	case 2: //tft.setTextColor(RED); break;
-	}*/
+	}
 
 	if (peripheralData.lastStatusId[id] != peripheralData.statusId[id]) {
 		//tft.fillRect(150, 40 + 10 * id, 320, 10, BLACK);
@@ -221,7 +221,7 @@ void updateStatusMessages(int id) {
 		peripheralData.lastStatusId[id] = peripheralData.statusId[id];
 	}
 	//tft.setTextColor(WHITE);
-}
+}*/
 
 // ========== Periphal Setup functions ==============
 void setupUsb() {
