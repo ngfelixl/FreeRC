@@ -1,22 +1,9 @@
 #include"Screen.h"
 
-#define BLACK     0x0000
-#define BLUE      0x001F
-#define RED       int(238/8*2048) + int(0) + int(0)
-#define GREEN     0x07E0
-#define CYAN      0x07FF
-#define MAGENTA   0xF81F
-#define YELLOW    0xFFE0
-#define WHITE     0xFFFF
-#define DARKGREEN int(255/8*2048) + int(255/4*32) + int(0/8)
-#define DARKGRAY  int(70/8*2048)  + int(70/4*32)  + int(70/8)
-#define LIGHTGRAY int(180/8*2048) + int(180/4*32) + int(180/8)
-#define ORANGE    int(255/8*2048) + int(120/4*32) + int(0/8)
-#define TEALBLUE  int(56/8*2048)  + int(142/4*32) + int(142/8)
-#define TURQUISE  int(0/8*2048)  + int(245/4*32) + int(255/8)
 
 Screen::Screen() {
 	tft = new Adafruit_TFTLCD(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
+	menu = new Options(*tft);
 }
 
 void Screen::init() {
@@ -25,6 +12,7 @@ void Screen::init() {
 	tft->setRotation(3);
 	initial_view();
 	print_servo_default();
+	menu->init();
 }
 
 bool Screen::update() {
@@ -72,13 +60,13 @@ void Screen::update_motor(float value) {
 void Screen::switch_view(String change_to) {
 	view = change_to;
 	if (view == "control") initial_view();
-	else if (view == "options") options_view();
+	else if (view == "options") menu->print("main");
 	delay(500);
 }
 
 
 void Screen::options_view() {
-	tft->fillScreen(BLACK);
+	/*tft->fillScreen(BLACK);
 	tft->setTextColor(ORANGE);
 	tft->setTextSize(2);
 	tft->setCursor(10, 10);
@@ -96,7 +84,7 @@ void Screen::options_view() {
 	tft->setCursor(20, 120);
 	tft->println("Exit");
 	tft->drawLine(20, 138, 300, 138, DARKGRAY);
-	switch_marker();
+	switch_marker();*/
 }
 
 void Screen::options_navigate(char* direction) {

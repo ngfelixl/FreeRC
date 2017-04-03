@@ -26,6 +26,9 @@ void Ds4::get() {
 		button.left = ps4.getButtonClick(LEFT);
 		button.right = ps4.getButtonClick(RIGHT);
 		button.x = ps4.getButtonClick(X);
+		button.circle = ps4.getButtonClick(CIRCLE);
+		button.square = ps4.getButtonClick(SQUARE);
+		button.triangle = ps4.getButtonClick(TRIANGLE);
 	}
 }
 

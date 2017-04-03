@@ -27,7 +27,7 @@
 #define CE_pin  53
 #define CSN_pin 49
 
-#define CHECK_STATUS 1000
+#define CHECK_STATUS 500
 
 // Declare radio data
 uint64_t writingPipe = 0xF0F0F0F0AA;
@@ -72,17 +72,19 @@ void loop() {
 			screen.update_motor((float)controller.axis[4] / 255.0*100.0);
 			if (controller.button.options) {
 				screen.switch_view("options");
+				delay(500);
 			}
 		}
 		else if (screen.view == "options") {
 			if (controller.button.up) {
-				screen.options_navigate("up");
+				screen.menu->previous();
 			}
 			else if (controller.button.down) {
-				screen.options_navigate("down");
+				screen.menu->next();
 			}
 			if (controller.button.options) {
 				screen.switch_view("control");
+				delay(500);
 			}
 		}
 		//screen.print_peripheral_status(2, "success", "Connected");
