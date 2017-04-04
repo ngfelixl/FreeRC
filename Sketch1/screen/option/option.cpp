@@ -6,14 +6,22 @@ void Option::display() {
 
 }
 
-void Option::init(char *name, char *type, String *params, uint8_t params_count, uint8_t selected) {
+void Option::init(char *name, char *type, String *params, uint8_t selected) {
 	this->name = name;
 	this->params = params;
-	this->params_count = params_count;
 	this->type = type;
 	this->selected = selected;
 }
 
-String Option::get() {
-	return params[selected];
+void Option::operate(char *operation) {
+	if (this->type == "select") {
+		if (operation == "next") {
+			if (selected < (ARRAY_SIZE(params) - 1))
+				selected = selected + 1;
+		}
+		else if(operation == "previous") {
+			if (selected > 0)
+				selected = selected - 1;
+		}
+	}
 }

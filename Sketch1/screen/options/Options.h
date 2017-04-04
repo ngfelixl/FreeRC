@@ -7,18 +7,15 @@
 #define ORANGE    int(255/8*2048) + int(120/4*32) + int(0/8)
 #define WHITE     0xFFFF
 
+#define ARRAY_SIZE(X) sizeof(X)/sizeof(X[0])
+
 #include<SPFD5408_Adafruit_GFX.h>
 #include<SPFD5408_Adafruit_TFTLCD.h>
 #include"../option/Option.h"
 
 class Options {
 private:
-	Option menu[3] = {
-		Option(),
-		Option(),
-		Option()
-	};
-	uint8_t menu_count = 3;
+	Option menu[3];
 	Adafruit_TFTLCD *tft;
 	char *active_option_view;
 
