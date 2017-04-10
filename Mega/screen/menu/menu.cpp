@@ -38,7 +38,7 @@ void Menu::init_main() {
 }
 
 void Menu::next() {
-	uint8_t index = getActiveElement();
+	int8_t index = getActiveElement();
 	options[index].active = false;
 	if (index == options_size-1) {
 		index = 0;
@@ -51,7 +51,7 @@ void Menu::next() {
 }
 
 void Menu::previous() {
-	uint8_t index = getActiveElement();
+	int8_t index = getActiveElement();
 	options[index].active = false;
 	if (index == 0) {
 		index = options_size - 1;
@@ -68,9 +68,9 @@ void Menu::setMarker(uint8_t position) {
 	tft->fillRect(5, 60 + 30 * position, 6, 6, ORANGE);
 }
 
-uint8_t Menu::getActiveElement() {
-	uint8_t index = -1;
-	for (uint8_t i = 0; i < options_size; i++) {
+int8_t Menu::getActiveElement() {
+	int8_t index = -1;
+	for (int8_t i = 0; i < options_size; i++) {
 		if (options[i].active) {
 			index = i;
 			break;
@@ -80,7 +80,7 @@ uint8_t Menu::getActiveElement() {
 }
 
 char* Menu::execute(bool left, bool right, bool x, bool circle) {
-	uint8_t active = getActiveElement();
+	int8_t active = getActiveElement();
 	char *action = "";
 	if (active == 2) { // NRF24
 		if (left) {
