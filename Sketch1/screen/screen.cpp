@@ -12,7 +12,7 @@ void Screen::init() {
 	tft->setRotation(3);
 	initial_view();
 	print_servo_default();
-	menu.init();
+	//menu.init();
 }
 
 bool Screen::update() {
@@ -60,31 +60,8 @@ void Screen::update_motor(float value) {
 void Screen::switch_view(String change_to) {
 	view = change_to;
 	if (view == "control") initial_view();
-	else if (view == "options") menu.print("main");
+	else if (view == "options") menu.display("");
 	delay(500);
-}
-
-
-void Screen::options_view() {
-	/*tft->fillScreen(BLACK);
-	tft->setTextColor(ORANGE);
-	tft->setTextSize(2);
-	tft->setCursor(10, 10);
-	tft->println("Options");
-	tft->setTextColor(WHITE);
-	tft->setTextSize(1.6);
-
-	// Add options table
-	tft->setCursor(20, 60);
-	tft->println("Adjust Channels");
-	tft->drawLine(20, 78, 300, 78, DARKGRAY);
-	tft->setCursor(20, 90);
-	tft->println("NRF24 PA Level");
-	tft->drawLine(20, 108, 300, 108, DARKGRAY);
-	tft->setCursor(20, 120);
-	tft->println("Exit");
-	tft->drawLine(20, 138, 300, 138, DARKGRAY);
-	switch_marker();*/
 }
 
 void Screen::options_navigate(char* direction) {

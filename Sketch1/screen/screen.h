@@ -43,7 +43,6 @@ public:
 	Screen();
 	void init();
 	void initial_view();
-	void options_view();
 	void options_navigate(char* direction);
 
 	void switch_marker();

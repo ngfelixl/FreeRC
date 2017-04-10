@@ -1,5 +1,7 @@
 #include"Menu.h"
 
+Menu::Menu() {}
+
 Menu::Menu(Adafruit_TFTLCD *tft) {
 	this->tft = tft;
 }
