@@ -33,7 +33,7 @@ class Screen {
 private:
 	Adafruit_TFTLCD *tft;
 	unsigned int update_counter = 0;
-	short option_selected = 0;
+	//short option_selected = 0;
 	//Options menu;
 
 public:

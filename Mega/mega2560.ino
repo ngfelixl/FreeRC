@@ -1,30 +1,22 @@
 /*
  Name:		Sketch1.ino
- Created:	13.02.2017 23:54:21
- Author:	felix 
+ Created:	10.04.2017 12:00:00
+ Author:	Felix Lemke
 
 *  NRF24 Wiring (Arduino AtMeta 2560)
-*  CE   - 40
-*  CSN  - 53
-*  MOSI - 50
-*  MISO - 51
-*  SCK  - 52
-*  GND  - GND
-*  VCC  - 3.3V
+*  CE 40, CSN 53, MOSI - 50, MISO - 51
+*  SCK 52, GND GND, VCC 3.3V
 *
 *  USB Host Shield plugged in
 */
 
-// Include required libraries
-#include <SPI.h> // das ist eine spi bib
+#include <SPI.h>
 #include "RF24.h"
 #include "printf.h"
 #include <PS4USB.h>
 #include <usbhub.h>
 #include "screen/Screen.h"
 #include "ds4/Ds4.h"
-
-
 
 #define CE_pin  53
 #define CSN_pin 49
@@ -35,7 +27,7 @@
 uint64_t writingPipe = 0xF0F0F0F0AA;
 uint64_t readingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_pin, CSN_pin);
-unsigned int radioTransmission = 0, readUsb = 0, counter_check_status = 0;
+unsigned long radioTransmission = 0, readUsb = 0, counter_check_status = 0;
 
 float motor[2] = { 100,0 }; // new,old
 int dmotor = 0;
@@ -50,7 +42,6 @@ Ds4 controller;
 
 void setup() {
 	Serial.begin(9600);
-
 	screen.init();
 	screen.print_peripheral_status(0, "success", "Hello world!");
 
@@ -62,11 +53,10 @@ void setup() {
 
 
 void loop() {
-	// x = x0 + dx / dt, 0.02s*100 = 2s
 	if (millis() - readUsb > 20) {
 		controller.get();
+		Serial.println(controller.axis[0]);
 		if (screen.view == "control") {
-			//Serial.println(controller.button.x);
 			screen.update_analog_axis(0, controller.axis[0]);
 			screen.update_analog_axis(1, controller.axis[1]);
 			screen.update_analog_axis(2, controller.axis[2]);
@@ -83,16 +73,15 @@ void loop() {
 			else if (controller.button.down) {
 				screen.menu.next();
 			}
-			if (controller.button.options) {
+			if (controller.button.options || controller.button.circle) {
 				screen.switch_view("control");
 			}
 		}
-		//screen.print_peripheral_status(2, "success", "Connected");
 		readUsb = millis();
 	}
 
 	
-	if (millis() - radioTransmission > 20) {
+	/*if (millis() - radioTransmission > 20) {
 		// Write the radioData struct to the NRF24L01 module to send the data
 		// and print success or error message
 		radio.stopListening();
@@ -104,9 +93,9 @@ void loop() {
 			//peripheralData.statusId[0] = 2; // failed
 		}
 		radioTransmission = millis();
-	}
+	}*/
 
-	if (millis() - counter_check_status > CHECK_STATUS) {
+	if (millis() - counter_check_status > CHECK_STATUS && screen.view == "control") {
 		if (controller.connected()) {
 			if (controller.status != "Connected") {
 				controller.status = "Connected";
@@ -124,48 +113,8 @@ void loop() {
 	}
 }
 
-
-// ========== Screen related functions ==============
-/*void print_to_view() {
-	if(screen.update()) {
-		//ds4feedback();
-		motorFeedback();
-	}
-}*/
-
-/*void motorFeedback() {
-	// POS 10,100 DIM 25x130
-	if (motor[0] != motor[1]) {
-		//tft.fillRect(11, 101, 23, 128 - motor[0] / 100 * 128, BLACK);
-		//tft.fillRect(11, 101 + 128 - motor[0] / 100 * 128, 23, motor[0] / 100 * 128, RED);
-		motor[1] = motor[0];
-	}
-}*/
-
 // Show DS4 Values on screen
 /*void ds4read() {
-	ds4val[0] = PS4.getAnalogHat(RightHatX);
-	ds4val[1] = PS4.getAnalogHat(RightHatY);
-	ds4val[2] = PS4.getAnalogHat(LeftHatX);
-	// Apply deadzones
-	if (abs(ds4val[0] - ds4mid)<ds4deadzone)
-		ds4val[0] = ds4mid;
-	if (abs(ds4val[1] - ds4mid)<ds4deadzone)
-		ds4val[1] = ds4mid;
-	if (abs(ds4val[2] - ds4mid)<ds4deadzone)
-		ds4val[2] = ds4mid;
-
-	// Control motor with L2/R2
-	if (PS4.getAnalogButton(L2) > 50 && PS4.getAnalogButton(R2) <= 50) {
-		dmotor = -(PS4.getAnalogButton(L2)-50.0) / 205.0 * 3.0;
-	}
-	else if (PS4.getAnalogButton(R2) > 50 && PS4.getAnalogButton(L2) <= 50) {
-		dmotor = (PS4.getAnalogButton(R2)-50.0) / 205.0 * 3.0;
-	}
-	else {
-		dmotor = 0;
-	}
-
 	motor[0] = motor[0] + (float)dmotor;
 	if (motor[0] > 100.0) motor[0] = 100.0;
 	else if (motor[0] < 0.0) motor[0] = 0.0;
@@ -173,7 +122,6 @@ void loop() {
 }*/
 
 void setupRadio() {
-	// Serial.print("radio");
 	radio.begin();
 
 	// Use PALevel low for testing purposes only (default: high)

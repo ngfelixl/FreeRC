@@ -78,3 +78,14 @@ uint8_t Menu::getActiveElement() {
 	}
 	return index;
 }
+
+/*void Menu::execute(char *type) {
+	if (getActiveElement() == 2) { // NRF24
+		if (type == "left") {
+			;
+		}
+		else if (type == "right") {
+			;
+		}
+	}
+}*/

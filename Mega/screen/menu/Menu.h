@@ -29,4 +29,5 @@ public:
 	void display(char *type);
 	void next();
 	void previous();
+	//void execute(char *type);
 };
