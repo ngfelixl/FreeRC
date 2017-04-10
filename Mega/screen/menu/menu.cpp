@@ -25,7 +25,7 @@ void Menu::display(char *type) {
 void Menu::init_main() {
 	uint8_t index = 0;
 	for (uint8_t i = 0; i < options_size; i++) {
-		tft->setCursor(40, 60 + 30 * i);
+		tft->setCursor(30, 60 + 30 * i);
 		tft->println(options[i].getName());
 		Serial.begin(9600);
 		Serial.println(options[i].getName());
@@ -35,6 +35,7 @@ void Menu::init_main() {
 		}
 	}
 	setMarker(index);
+	printParameter();
 }
 
 void Menu::next() {
@@ -65,7 +66,7 @@ void Menu::previous() {
 
 void Menu::setMarker(uint8_t position) {
 	tft->fillRect(0, 60, 20, 200, BLACK);
-	tft->fillRect(5, 60 + 30 * position, 10, 10, ORANGE);
+	tft->fillRect(5, 60 + 30 * position, 6, 6, ORANGE);
 }
 
 uint8_t Menu::getActiveElement() {
@@ -84,16 +85,29 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 	char *action = "";
 	if (active == 2) { // NRF24
 		if (left) {
-			tft->setTextColor(WHITE);
-			tft->setCursor(10, 10);
-			tft->println(options[2].selectedParam());
+			//tft->setTextColor(WHITE);
+			//tft->println(options[2].selectedParam());
+
+			printParameter();
+		}
+		else if (right) {
+			printParameter();
 		}
 	}
 	else if (active == 3) { // Exit
 		if (x) {
-			//screen->initial_view();
 			action = "exit";
 		}
 	}
 	return action;
+}
+
+void Menu::printParameter() {
+	for (uint8_t i = 0; i < options_size; i++) {
+		if (options[i].getType() == "select") {
+			tft->setCursor(200, 60 + 30 * i);
+			tft->setTextColor(WHITE);
+			tft->println("<  Nrf selected  >");
+		}
+	}
 }

@@ -12,12 +12,24 @@ char* Option::getName() {
 }
 
 void Option::initialize() {
-	if (name == "NRF24 PA Level") {
+	//if (name == "NRF24 PA Level") {
 		char *params[4] = { "Min", "Low", "High", "Max" };
 		this->params = params;
-	}
+	//}
 }
 
 char* Option::selectedParam() {
 	return this->params[0];
+}
+
+char* Option::getType() {
+	return this->type;
+}
+
+void Option::next() {
+
+}
+
+void Option::previous() {
+
 }

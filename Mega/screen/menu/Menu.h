@@ -30,4 +30,5 @@ public:
 	void next();
 	void previous();
 	char *execute(bool left, bool right, bool x, bool circle);
+	void printParameter();
 };

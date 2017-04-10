@@ -19,5 +19,9 @@ public:
 	Option();
 	Option(char *name, char *type);
 	char* getName();
+	char* getType();
 	char* selectedParam();
+
+	void next();
+	void previous();
 };
