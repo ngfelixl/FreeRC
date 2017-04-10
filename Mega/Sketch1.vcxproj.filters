@@ -11,9 +11,6 @@
     <Filter Include="Ds4">
       <UniqueIdentifier>{bbec3818-c62e-4a67-b6c5-8d56d3da6a9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Screen\Options">
-      <UniqueIdentifier>{ba897ff0-b87b-4480-a28c-ec5feaf02d0c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Screen\Option">
       <UniqueIdentifier>{5536003b-57cc-429b-ba14-f8eb951d28f8}</UniqueIdentifier>
     </Filter>
@@ -33,9 +30,6 @@
     </ClInclude>
     <ClInclude Include="ds4\Ds4.h">
       <Filter>Ds4</Filter>
-    </ClInclude>
-    <ClInclude Include="screen\options\Options.h">
-      <Filter>Screen\Options</Filter>
     </ClInclude>
     <ClInclude Include="screen\option\Option.h">
       <Filter>Screen\Option</Filter>
@@ -59,9 +53,6 @@
     </ClCompile>
     <ClCompile Include="ds4\ds4.cpp">
       <Filter>Ds4</Filter>
-    </ClCompile>
-    <ClCompile Include="screen\options\options.cpp">
-      <Filter>Screen\Options</Filter>
     </ClCompile>
     <ClCompile Include="screen\option\option.cpp">
       <Filter>Screen\Option</Filter>

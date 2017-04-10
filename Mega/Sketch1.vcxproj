@@ -88,7 +88,6 @@
   <ItemGroup>
     <ClInclude Include="ds4\Ds4.h" />
     <ClInclude Include="screen\menu\Menu.h" />
-    <ClInclude Include="screen\options\Options.h" />
     <ClInclude Include="screen\option\Option.h" />
     <ClInclude Include="screen\option\parameter\Parameter.h" />
     <ClInclude Include="screen\Screen.h" />
@@ -98,7 +97,6 @@
   <ItemGroup>
     <ClCompile Include="ds4\ds4.cpp" />
     <ClCompile Include="screen\menu\menu.cpp" />
-    <ClCompile Include="screen\options\options.cpp" />
     <ClCompile Include="screen\option\option.cpp" />
     <ClCompile Include="screen\option\parameter\parameter.cpp" />
     <ClCompile Include="screen\screen.cpp" />
