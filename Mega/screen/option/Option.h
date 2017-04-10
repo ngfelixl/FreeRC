@@ -2,13 +2,15 @@
 #define OPTION_H
 #endif
 
+#include"parameter/Parameter.h"
+
 #define ARRAY_SIZE(X) sizeof(X)/sizeof(X[0])
 
 class Option {
 private:
 	char *name;
 	char *type;
-	char **params;
+	Parameter *params;
 
 	void initialize();
 

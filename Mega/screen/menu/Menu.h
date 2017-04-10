@@ -18,7 +18,7 @@ private:
 	Adafruit_TFTLCD *tft;
 	char *current_menu = "base";
 	void init_main();
-	Option options[4];
+	Option *options;
 	uint8_t getActiveElement();
 	void setMarker(uint8_t position);
 	int options_size = 4;

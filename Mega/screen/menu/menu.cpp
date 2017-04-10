@@ -4,6 +4,7 @@ Menu::Menu() {}
 
 Menu::Menu(Adafruit_TFTLCD *tft) {
 	this->tft = tft;
+	options = new Option[4];
 	options[0] = Option("Channels", "enter");
 	options[1] = Option("Axis Range", "enter");
 	options[2] = Option("NRF24 PA Level", "select");
@@ -107,7 +108,7 @@ void Menu::printParameter() {
 		if (options[i].getType() == "select") {
 			tft->setCursor(200, 60 + 30 * i);
 			tft->setTextColor(WHITE);
-			tft->println("<  Nrf selected  >");
+			tft->println(options[i].selectedParam());
 		}
 	}
 }

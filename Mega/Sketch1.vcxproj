@@ -90,6 +90,7 @@
     <ClInclude Include="screen\menu\Menu.h" />
     <ClInclude Include="screen\options\Options.h" />
     <ClInclude Include="screen\option\Option.h" />
+    <ClInclude Include="screen\option\parameter\Parameter.h" />
     <ClInclude Include="screen\Screen.h" />
     <ClInclude Include="__vm\.Mega.vsarduino.h" />
     <ClInclude Include="__vm\.Sketch1.vsarduino.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="screen\menu\menu.cpp" />
     <ClCompile Include="screen\options\options.cpp" />
     <ClCompile Include="screen\option\option.cpp" />
+    <ClCompile Include="screen\option\parameter\parameter.cpp" />
     <ClCompile Include="screen\screen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -20,6 +20,9 @@
     <Filter Include="Screen\Menu">
       <UniqueIdentifier>{2c828df0-9cd7-4a59-9163-f97eca45dd55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Screen\Option\Parameter">
+      <UniqueIdentifier>{5840906a-820e-4ff5-9824-d4ba17ce19af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Sketch1.vsarduino.h">
@@ -43,6 +46,9 @@
     <ClInclude Include="__vm\.Mega.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="screen\option\parameter\Parameter.h">
+      <Filter>Screen\Option\Parameter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="mega2560.ino" />
@@ -62,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="screen\menu\menu.cpp">
       <Filter>Screen\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="screen\option\parameter\parameter.cpp">
+      <Filter>Screen\Option\Parameter</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
