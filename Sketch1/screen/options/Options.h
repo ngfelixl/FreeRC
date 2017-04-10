@@ -13,8 +13,26 @@
 #include<SPFD5408_Adafruit_TFTLCD.h>
 #include"../option/Option.h"
 
+//#include <StandardCplusplus.h>
+//#include <serstream>
+//#include <string>
+//#include <vector>
+//#include <iterator>
+
 class Options {
 private:
+	/*typedef struct params {
+		int id;
+		String name;
+	}  parameter_t;
+
+	typedef struct option{
+		int id;
+		String name;
+		parameter_t params[];
+	} options_t;
+
+	options_t *menu;*/
 	Option menu[3];
 	Adafruit_TFTLCD *tft;
 	char *active_option_view;
@@ -23,7 +41,8 @@ private:
 	void setMarker();
 
 public:
-	Options(Adafruit_TFTLCD &tft);
+	Options();
+	Options(Adafruit_TFTLCD *tft);
 
 	void next();
 	void previous();

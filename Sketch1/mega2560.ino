@@ -24,6 +24,8 @@
 #include "screen/Screen.h"
 #include "ds4/Ds4.h"
 
+
+
 #define CE_pin  53
 #define CSN_pin 49
 
@@ -77,10 +79,10 @@ void loop() {
 		}
 		else if (screen.view == "options") {
 			if (controller.button.up) {
-				screen.menu->previous();
+				screen.menu.previous();
 			}
 			else if (controller.button.down) {
-				screen.menu->next();
+				screen.menu.next();
 			}
 			if (controller.button.options) {
 				screen.switch_view("control");

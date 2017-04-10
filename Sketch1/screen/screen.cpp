@@ -3,7 +3,7 @@
 
 Screen::Screen() {
 	tft = new Adafruit_TFTLCD(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
-	menu = new Options(*tft);
+	menu = Options(tft);
 }
 
 void Screen::init() {
@@ -12,7 +12,7 @@ void Screen::init() {
 	tft->setRotation(3);
 	initial_view();
 	print_servo_default();
-	menu->init();
+	menu.init();
 }
 
 bool Screen::update() {
@@ -60,7 +60,7 @@ void Screen::update_motor(float value) {
 void Screen::switch_view(String change_to) {
 	view = change_to;
 	if (view == "control") initial_view();
-	else if (view == "options") menu->print("main");
+	else if (view == "options") menu.print("main");
 	delay(500);
 }
 

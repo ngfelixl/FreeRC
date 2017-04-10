@@ -38,7 +38,7 @@ private:
 
 public:
 	String view = "control";
-	Options *menu;
+	Options menu;
 
 	Screen();
 	void init();

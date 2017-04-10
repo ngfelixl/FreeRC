@@ -6,9 +6,9 @@ void Option::display() {
 
 }
 
-void Option::init(char *name, char *type, String *params, uint8_t selected) {
+void Option::init(String name, String type, char *params[], uint8_t selected) {
 	this->name = name;
-	this->params = params;
+	;
 	this->type = type;
 	this->selected = selected;
 }

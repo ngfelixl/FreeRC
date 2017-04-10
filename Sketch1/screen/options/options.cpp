@@ -1,12 +1,15 @@
 #include"Options.h"
 
-Options::Options(Adafruit_TFTLCD &tft) {
-	this->tft = &tft;
+Options::Options(Adafruit_TFTLCD *tft) {
+	this->tft = tft;
 }
 
+Options::Options() {}
+
 void Options::init() {
-	String params[4] = { "Min", "Low", "High", "Max" };
-	String empty[1] = { "test" };
+	//String params[4] = ;
+	char *empty[] = { "test" };
+	char *params[] = { "31", "32", "23", "13" };
 	menu[0].init("Channels", "sub", empty, 0);
 	menu[1].init("NRF24 PA Level", "select", params, 1);
 	menu[2].init("Exit", "parent", empty, 0);
@@ -81,7 +84,9 @@ void Options::print(char *type) {
 			//if(menu[i].type == "select")
 			if (menu[i].type == "select") {
 				tft->setCursor(220, 60 + 30 * i);
-				tft->print(menu[i].params[0]);
+				Serial.begin(9600);
+				Serial.println(menu[i].name);
+				//tft->print(menu[i].params[0]);
 			}
 		}
 		setMarker();

@@ -17,6 +17,9 @@
     <Filter Include="Screen\Option">
       <UniqueIdentifier>{5536003b-57cc-429b-ba14-f8eb951d28f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Screen\Menu">
+      <UniqueIdentifier>{2c828df0-9cd7-4a59-9163-f97eca45dd55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Sketch1.vsarduino.h">
@@ -34,6 +37,9 @@
     <ClInclude Include="screen\option\Option.h">
       <Filter>Screen\Option</Filter>
     </ClInclude>
+    <ClInclude Include="screen\menu\Menu.h">
+      <Filter>Screen\Menu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="mega2560.ino" />
@@ -50,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="screen\option\option.cpp">
       <Filter>Screen\Option</Filter>
+    </ClCompile>
+    <ClCompile Include="screen\menu\menu.cpp">
+      <Filter>Screen\Menu</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
