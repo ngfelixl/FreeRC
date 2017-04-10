@@ -8,12 +8,16 @@ class Option {
 private:
 	char *name;
 	char *type;
+	char **params;
+
+	void initialize();
+
 
 public:
 	bool active = false;
 
 	Option();
 	Option(char *name, char *type);
-
 	char* getName();
+	char* selectedParam();
 };

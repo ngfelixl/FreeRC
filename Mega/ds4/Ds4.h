@@ -5,6 +5,10 @@
 #include <PS4USB.h>
 #include <usbhub.h>
 
+typedef struct button {
+	bool x, circle, square, triangle, up, down, left, right, options;
+};
+
 class Ds4 {
 private:
 	USB usb;
@@ -17,9 +21,7 @@ private:
 public:
 	char *status;
 	uint8_t axis[6];
-	struct button {
-		bool x, circle, square, triangle, up, down, left, right, options;
-	}button;
+	button button;
 
 	Ds4();
 	void init();

@@ -43,6 +43,7 @@ public:
 	Screen();
 	void init();
 	void initial_view();
+	void navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options);
 	//void options_navigate(char* direction);
 
 	//void switch_marker();

@@ -79,13 +79,21 @@ uint8_t Menu::getActiveElement() {
 	return index;
 }
 
-/*void Menu::execute(char *type) {
-	if (getActiveElement() == 2) { // NRF24
-		if (type == "left") {
-			;
-		}
-		else if (type == "right") {
-			;
+char* Menu::execute(bool left, bool right, bool x, bool circle) {
+	uint8_t active = getActiveElement();
+	char *action = "";
+	if (active == 2) { // NRF24
+		if (left) {
+			tft->setTextColor(WHITE);
+			tft->setCursor(10, 10);
+			tft->println(options[2].selectedParam());
 		}
 	}
-}*/
+	else if (active == 3) { // Exit
+		if (x) {
+			//screen->initial_view();
+			action = "exit";
+		}
+	}
+	return action;
+}

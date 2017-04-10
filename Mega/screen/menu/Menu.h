@@ -29,5 +29,5 @@ public:
 	void display(char *type);
 	void next();
 	void previous();
-	//void execute(char *type);
+	char *execute(bool left, bool right, bool x, bool circle);
 };

@@ -29,6 +29,10 @@ uint64_t readingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_pin, CSN_pin);
 unsigned long radioTransmission = 0, readUsb = 0, counter_check_status = 0;
 
+/*typedef struct button {
+	bool x, circle, square, triangle, up, down, left, right, options;
+}button;*/
+
 float motor[2] = { 100,0 }; // new,old
 int dmotor = 0;
 struct radioData {
@@ -67,15 +71,7 @@ void loop() {
 			}
 		}
 		else if (screen.view == "options") {
-			if (controller.button.up) {
-				screen.menu.previous();
-			}
-			else if (controller.button.down) {
-				screen.menu.next();
-			}
-			if (controller.button.options || controller.button.circle) {
-				screen.switch_view("control");
-			}
+			screen.navigate(controller.button.left, controller.button.right, controller.button.up, controller.button.down, controller.button.x, controller.button.circle, controller.button.options);
 		}
 		readUsb = millis();
 	}

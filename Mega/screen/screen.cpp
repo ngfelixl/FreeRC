@@ -22,6 +22,26 @@ bool Screen::update() {
 	return false;
 }
 
+void Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options) {
+	char *action = menu.execute(left, right, x, circle);
+	Serial.begin(9600);
+	Serial.println(action);
+
+	if (action == "exit") {
+		switch_view("control");
+	}
+
+	if (up) {
+		menu.previous();
+	}
+	else if (down) {
+		menu.next();
+	}
+	if (options || circle) {
+		switch_view("control");
+	}
+}
+
 void Screen::print_peripheral_status(int id, char *type, char *message) {
 	int color = WHITE;
 	if (type == "success") color = GREEN;
