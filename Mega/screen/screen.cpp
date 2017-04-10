@@ -24,8 +24,6 @@ bool Screen::update() {
 
 void Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options) {
 	char *action = menu.execute(left, right, x, circle);
-	Serial.begin(9600);
-	Serial.println(action);
 
 	if (action == "exit") {
 		switch_view("control");

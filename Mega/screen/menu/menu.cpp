@@ -28,8 +28,6 @@ void Menu::init_main() {
 	for (uint8_t i = 0; i < options_size; i++) {
 		tft->setCursor(30, 60 + 30 * i);
 		tft->println(options[i].getName());
-		Serial.begin(9600);
-		Serial.println(options[i].getName());
 		tft->drawLine(20, 78 + 30 * i, 300, 78 + 30 * i, DARKGRAY);
 		if (options[i].active) {
 			index = i;
@@ -88,10 +86,11 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 		if (left) {
 			//tft->setTextColor(WHITE);
 			//tft->println(options[2].selectedParam());
-
+			options[active].previous();
 			printParameter();
 		}
 		else if (right) {
+			options[active].next();
 			printParameter();
 		}
 	}
@@ -106,9 +105,11 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 void Menu::printParameter() {
 	for (uint8_t i = 0; i < options_size; i++) {
 		if (options[i].getType() == "select") {
+			tft->fillRect(200, 60 + 30 * i, 100, 8, BLACK);
 			tft->setCursor(200, 60 + 30 * i);
 			tft->setTextColor(WHITE);
 			tft->println(options[i].selectedParam());
+			//tft->println(" Hi ");
 		}
 	}
 }

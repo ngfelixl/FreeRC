@@ -20,12 +20,19 @@ void Option::initialize() {
 	params[1] = Parameter("Low");
 	params[2] = Parameter("High");
 	params[3] = Parameter("Max");
+	params[0].active = true;
 	//this->params = params;
 	//}
 }
 
 char* Option::selectedParam() {
-	return this->params[0].getName();
+	int8_t index = getActiveParameter();
+	char *output = "";
+	if(index > -1 && index < ARRAY_SIZE(params))
+		output = params[index].getName();
+	Serial.begin(9600);
+	Serial.println(index);
+	return output;
 }
 
 char* Option::getType() {
@@ -33,9 +40,30 @@ char* Option::getType() {
 }
 
 void Option::next() {
-	
+	int8_t index = getActiveParameter();
+	if (index >= 0) {
+		params[index].active = false;
+		if (index < ARRAY_SIZE(params) - 1) {
+			index = index + 1;
+		}
+		params[index].active = true;
+	}
+	else {
+		params[0].active = true;
+	}
 }
 
 void Option::previous() {
 
+}
+
+int8_t Option::getActiveParameter() {
+	int8_t index = -1;
+	for (int8_t i = 0; i < ARRAY_SIZE(params); i++) {
+		if (params[i].active) {
+			index = i;
+			break;
+		}
+	}
+	return index;
 }

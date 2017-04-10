@@ -3,6 +3,7 @@
 #endif
 
 #include"parameter/Parameter.h"
+#include<Arduino.h>
 
 #define ARRAY_SIZE(X) sizeof(X)/sizeof(X[0])
 
@@ -23,6 +24,7 @@ public:
 	char* getName();
 	char* getType();
 	char* selectedParam();
+	int8_t getActiveParameter();
 
 	void next();
 	void previous();

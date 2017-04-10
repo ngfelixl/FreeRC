@@ -9,6 +9,7 @@
 
 #define ARRAY_SIZE(X) sizeof(X)/sizeof(X[0])
 
+#include<Arduino.h>
 #include<SPFD5408_Adafruit_GFX.h>
 #include<SPFD5408_Adafruit_TFTLCD.h>
 #include"../option/Option.h"

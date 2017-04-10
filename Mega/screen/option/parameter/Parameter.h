@@ -2,13 +2,14 @@
 #define PARAMETER_H
 #endif
 
+#include<Arduino.h>
+
 class Parameter {
 private:
 	char *name;
 
 public:
-	bool active;
-
+	bool active = false;
 
 	Parameter();
 	Parameter(char *name);
