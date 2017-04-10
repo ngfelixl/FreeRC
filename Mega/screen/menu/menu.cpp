@@ -31,12 +31,13 @@ void Menu::init_main() {
 		Serial.println(options[i].getName());
 		tft->drawLine(20, 78 + 30 * i, 300, 78 + 30 * i, DARKGRAY);
 	}
+	setMarker(0);
 }
 
 void Menu::next() {
 	uint8_t index = getActiveElement();
 	options[index].active = false;
-	if (index >= options_size) {
+	if (index == options_size-1) {
 		index = 0;
 	}
 	else {
@@ -49,7 +50,7 @@ void Menu::next() {
 void Menu::previous() {
 	uint8_t index = getActiveElement();
 	options[index].active = false;
-	if (index = 0) {
+	if (index == 0) {
 		index = options_size - 1;
 	}
 	else {
