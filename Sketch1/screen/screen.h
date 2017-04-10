@@ -5,7 +5,7 @@
 #include <SPFD5408_Adafruit_GFX.h>
 #include <SPFD5408_Adafruit_TFTLCD.h>
 #include <stdlib.h>
-#include "options/Options.h"
+#include "menu/Menu.h"
 
 #define LCD_CS A3
 #define LCD_CD A2
@@ -38,7 +38,7 @@ private:
 
 public:
 	String view = "control";
-	Options menu;
+	Menu menu;
 
 	Screen();
 	void init();
