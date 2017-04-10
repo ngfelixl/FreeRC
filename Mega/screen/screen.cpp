@@ -12,7 +12,6 @@ void Screen::init() {
 	tft->setRotation(3);
 	initial_view();
 	print_servo_default();
-	//menu.init();
 }
 
 bool Screen::update() {
