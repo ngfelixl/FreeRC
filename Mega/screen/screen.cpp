@@ -60,23 +60,6 @@ void Screen::switch_view(String change_to) {
 	view = change_to;
 	if (view == "control") initial_view();
 	else if (view == "options") menu.display("");
-	delay(500);
-}
-
-void Screen::options_navigate(char* direction) {
-	if (direction == "up") {
-		option_selected = (option_selected - 1);
-	}
-	else if (direction == "down") {
-		option_selected = (option_selected + 1) % 3;
-	}
-	if (option_selected == -1) option_selected = 2;
-	switch_marker();
-}
-
-void Screen::switch_marker() {
-	tft->fillRect(0, 60, 20, 200, BLACK);
-	tft->fillRect(5, 60 + 30 * option_selected, 10, 10, ORANGE);
 }
 
 

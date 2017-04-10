@@ -74,7 +74,6 @@ void loop() {
 			screen.update_motor((float)controller.axis[4] / 255.0*100.0);
 			if (controller.button.options) {
 				screen.switch_view("options");
-				delay(500);
 			}
 		}
 		else if (screen.view == "options") {
@@ -86,7 +85,6 @@ void loop() {
 			}
 			if (controller.button.options) {
 				screen.switch_view("control");
-				delay(500);
 			}
 		}
 		//screen.print_peripheral_status(2, "success", "Connected");

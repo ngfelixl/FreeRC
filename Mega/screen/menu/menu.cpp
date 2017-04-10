@@ -12,7 +12,6 @@ Menu::Menu(Adafruit_TFTLCD *tft) {
 }
 
 void Menu::display(char *type) {
-	//active_option_view = type;
 	tft->fillScreen(BLACK);
 	tft->setTextColor(ORANGE);
 	tft->setTextSize(2);
@@ -24,14 +23,18 @@ void Menu::display(char *type) {
 }
 
 void Menu::init_main() {
+	uint8_t index = 0;
 	for (uint8_t i = 0; i < options_size; i++) {
 		tft->setCursor(40, 60 + 30 * i);
 		tft->println(options[i].getName());
 		Serial.begin(9600);
 		Serial.println(options[i].getName());
 		tft->drawLine(20, 78 + 30 * i, 300, 78 + 30 * i, DARKGRAY);
+		if (options[i].active) {
+			index = i;
+		}
 	}
-	setMarker(0);
+	setMarker(index);
 }
 
 void Menu::next() {

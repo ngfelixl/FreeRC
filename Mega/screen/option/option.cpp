@@ -9,3 +9,4 @@ Option::Option(char *name, char *type) {
 char* Option::getName() {
 	return this->name;
 }
+

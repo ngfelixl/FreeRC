@@ -43,14 +43,13 @@ public:
 	Screen();
 	void init();
 	void initial_view();
-	void options_navigate(char* direction);
+	//void options_navigate(char* direction);
 
-	void switch_marker();
+	//void switch_marker();
 	void switch_view(String view);
 	void print_servo_default();
 	void print_peripheral_status(int id, char* type, char *message);
 	void update_analog_axis(int axis, float value);
 	bool update();
 	void update_motor(float value);
-
 };

@@ -7,9 +7,9 @@
 class Option {
 private:
 	char *name;
+	char *type;
 
 public:
-	char *type;
 	bool active = false;
 
 	Option();
