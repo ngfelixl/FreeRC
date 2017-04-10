@@ -1,4 +1,4 @@
-#include"Options.h"
+/*#include"Options.h"
 
 Options::Options(Adafruit_TFTLCD *tft) {
 	this->tft = tft;
@@ -95,4 +95,4 @@ void Options::print(char *type) {
 		tft->setCursor(20, 60);
 		tft->println("Option menu not found");
 	}
-}
+}*/

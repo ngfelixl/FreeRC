@@ -78,12 +78,12 @@ void loop() {
 			}
 		}
 		else if (screen.view == "options") {
-			if (controller.button.up) {
-				//screen.menu.previous();
+			/*if (controller.button.up) {
+				; //screen.menu.previous();
 			}
 			else if (controller.button.down) {
-				//screen.menu.next();
-			}
+				; //screen.menu.next();
+			}*/
 			if (controller.button.options) {
 				screen.switch_view("control");
 				delay(500);

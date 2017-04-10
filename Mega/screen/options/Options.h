@@ -1,4 +1,4 @@
-#ifndef OPTIONS_H
+/*#ifndef OPTIONS_H
 #define OPTIONS_H
 #endif
 
@@ -21,7 +21,7 @@
 
 class Options {
 private:
-	/*typedef struct params {
+	typedef struct params {
 		int id;
 		String name;
 	}  parameter_t;
@@ -32,7 +32,7 @@ private:
 		parameter_t params[];
 	} options_t;
 
-	options_t *menu;*/
+	options_t *menu;
 	Option menu[3];
 	Adafruit_TFTLCD *tft;
 	char *active_option_view;
@@ -49,4 +49,4 @@ public:
 
 	void print(char *type);
 	void init();
-};
+};*/
