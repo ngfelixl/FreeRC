@@ -9,7 +9,6 @@
 
 #define ARRAY_SIZE(X) sizeof(X)/sizeof(X[0])
 
-
 #include<SPFD5408_Adafruit_GFX.h>
 #include<SPFD5408_Adafruit_TFTLCD.h>
 #include"../option/Option.h"
@@ -20,6 +19,9 @@ private:
 	char *current_menu = "base";
 	void init_main();
 	Option options[4];
+	uint8_t getActiveElement();
+	void setMarker(uint8_t position);
+	int options_size = 4;
 
 public:
 	Menu();

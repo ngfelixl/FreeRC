@@ -8,7 +8,7 @@ Menu::Menu(Adafruit_TFTLCD *tft) {
 	options[1] = Option("Axis Range", "enter");
 	options[2] = Option("NRF24 PA Level", "select");
 	options[3] = Option("Exit", "exit");
-	
+	options[0].active = true;
 }
 
 void Menu::display(char *type) {
@@ -24,7 +24,7 @@ void Menu::display(char *type) {
 }
 
 void Menu::init_main() {
-	for (uint8_t i = 0; i < ARRAY_SIZE(options); i++) {
+	for (uint8_t i = 0; i < options_size; i++) {
 		tft->setCursor(40, 60 + 30 * i);
 		tft->println(options[i].getName());
 		Serial.begin(9600);
@@ -34,9 +34,43 @@ void Menu::init_main() {
 }
 
 void Menu::next() {
-
+	uint8_t index = getActiveElement();
+	options[index].active = false;
+	if (index >= options_size) {
+		index = 0;
+	}
+	else {
+		index = index + 1;
+	}
+	options[index].active = true;
+	setMarker(index);
 }
 
 void Menu::previous() {
+	uint8_t index = getActiveElement();
+	options[index].active = false;
+	if (index = 0) {
+		index = options_size - 1;
+	}
+	else {
+		index = index - 1;
+	}
+	options[index].active = true;
+	setMarker(index);
+}
 
+void Menu::setMarker(uint8_t position) {
+	tft->fillRect(0, 60, 20, 200, BLACK);
+	tft->fillRect(5, 60 + 30 * position, 10, 10, ORANGE);
+}
+
+uint8_t Menu::getActiveElement() {
+	uint8_t index = -1;
+	for (uint8_t i = 0; i < options_size; i++) {
+		if (options[i].active) {
+			index = i;
+			break;
+		}
+	}
+	return index;
 }
