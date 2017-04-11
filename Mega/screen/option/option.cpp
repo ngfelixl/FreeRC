@@ -20,7 +20,8 @@ void Option::initialize() {
 	params[1] = Parameter("Low");
 	params[2] = Parameter("High");
 	params[3] = Parameter("Max");
-	params[0].active = true;
+	params_size = 4;
+	params[2].active = true;
 	//this->params = params;
 	//}
 }
@@ -28,10 +29,11 @@ void Option::initialize() {
 char* Option::selectedParam() {
 	int8_t index = getActiveParameter();
 	char *output = "";
-	if(index > -1 && index < ARRAY_SIZE(params))
+	if (index > -1 && index < params_size) {
 		output = params[index].getName();
-	Serial.begin(9600);
-	Serial.println(index);
+		Serial.begin(9600);
+		Serial.println(params[index].getName());
+	}
 	return output;
 }
 
@@ -43,7 +45,7 @@ void Option::next() {
 	int8_t index = getActiveParameter();
 	if (index >= 0) {
 		params[index].active = false;
-		if (index < ARRAY_SIZE(params) - 1) {
+		if (index < params_size - 1) {
 			index = index + 1;
 		}
 		params[index].active = true;
@@ -54,12 +56,22 @@ void Option::next() {
 }
 
 void Option::previous() {
-
+	int8_t index = getActiveParameter();
+	if (index >= 0) {
+		params[index].active = false;
+		if (index > 0) {
+			index = index - 1;
+		}
+		params[index].active = true;
+	}
+	else {
+		params[0].active = true;
+	}
 }
 
 int8_t Option::getActiveParameter() {
 	int8_t index = -1;
-	for (int8_t i = 0; i < ARRAY_SIZE(params); i++) {
+	for (int8_t i = 0; i < 4; i++) {
 		if (params[i].active) {
 			index = i;
 			break;

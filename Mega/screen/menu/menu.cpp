@@ -3,6 +3,8 @@
 Menu::Menu() {}
 
 Menu::Menu(Adafruit_TFTLCD *tft) {
+	// Not default constructor with getting the
+	// tfts address and creating the options
 	this->tft = tft;
 	options = new Option[4];
 	options[0] = Option("Channels", "enter");
@@ -13,13 +15,14 @@ Menu::Menu(Adafruit_TFTLCD *tft) {
 }
 
 void Menu::display(char *type) {
+	// Creates the title on the tft display
 	tft->fillScreen(BLACK);
 	tft->setTextColor(ORANGE);
 	tft->setTextSize(2);
 	tft->setCursor(10, 10);
 	tft->println("Options");
 	tft->setTextColor(WHITE);
-	tft->setTextSize(1.6);
+	tft->setTextSize(1);
 	init_main();
 }
 
@@ -38,28 +41,44 @@ void Menu::init_main() {
 }
 
 void Menu::next() {
+	// Same as previous except of the direction
 	int8_t index = getActiveElement();
-	options[index].active = false;
-	if (index == options_size-1) {
+	if (index > -1) {
+		options[index].active = false;
+		if (index == options_size - 1) {
+			index = 0;
+		}
+		else {
+			index = index + 1;
+		}
+		options[index].active = true;
+	} 
+	else {
+		options[0].active = true;
 		index = 0;
 	}
-	else {
-		index = index + 1;
-	}
-	options[index].active = true;
 	setMarker(index);
 }
 
 void Menu::previous() {
+	// Set active for current element to false
+	// Get previous index (modulo-like) and set
+	// Next elements active variable to true
 	int8_t index = getActiveElement();
-	options[index].active = false;
-	if (index == 0) {
-		index = options_size - 1;
+	if (index > -1) {
+		options[index].active = false;
+		if (index == 0) {
+			index = options_size - 1;
+		}
+		else {
+			index = index - 1;
+		}
+		options[index].active = true;
 	}
 	else {
-		index = index - 1;
+		options[0].active = true;
+		index = 0;
 	}
-	options[index].active = true;
 	setMarker(index);
 }
 
@@ -84,8 +103,6 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 	char *action = "";
 	if (active == 2) { // NRF24
 		if (left) {
-			//tft->setTextColor(WHITE);
-			//tft->println(options[2].selectedParam());
 			options[active].previous();
 			printParameter();
 		}
@@ -109,7 +126,7 @@ void Menu::printParameter() {
 			tft->setCursor(200, 60 + 30 * i);
 			tft->setTextColor(WHITE);
 			tft->println(options[i].selectedParam());
-			//tft->println(" Hi ");
+			Serial.println(options[i].selectedParam());
 		}
 	}
 }

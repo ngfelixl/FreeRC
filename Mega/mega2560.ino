@@ -59,7 +59,6 @@ void setup() {
 void loop() {
 	if (millis() - readUsb > 20) {
 		controller.get();
-		Serial.println(controller.axis[0]);
 		if (screen.view == "control") {
 			screen.update_analog_axis(0, controller.axis[0]);
 			screen.update_analog_axis(1, controller.axis[1]);

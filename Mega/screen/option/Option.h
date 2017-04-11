@@ -12,6 +12,7 @@ private:
 	char *name;
 	char *type;
 	Parameter *params;
+	uint8_t params_size;
 
 	void initialize();
 
