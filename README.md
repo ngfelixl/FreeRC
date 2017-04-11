@@ -13,7 +13,9 @@ remote controller (with an Arduino, PS4 controller, Radio transmitter module) an
 | NRF24L01+ TX/RX       |   5€ | NRF24L01+ TX/RX               |   5€ |
 | PS4 Controller        |  30€ | LiPo Accu                     |  20€ |
 | Adafruit 2.8" TFT LCD |  13€ | Turnigy Plush 18A, or similar |  20€ |
-|                       |      | 3-Phase Brushless Motor       |  20€ |
+| LiIon Powerbank       |  15€ | 3-Phase Brushless Motor       |  20€ |
+
+Which makes a total of 160€ for the complete RC electronics. But you'll also need equipment for soldering and voltage and current measuring, a lots of wires, optionally an op-amp for plane voltage reading and an acc and/or gyro.
 
 
 ## USB Host Shield modification
