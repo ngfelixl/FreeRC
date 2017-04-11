@@ -9,24 +9,24 @@
       <VCCodeMacros />
     </VCCodeModel>
     <BreakPoints>
-      <BreakPoint Index="1" Name="mega2560.ino, line 54" Id="9be0ca75-c833-4028-8a93-cddb1c5dbfdd" Enabled="1" Message="  Millis is currently {millis()}.&#xD;&#xA;    This tutorial debug trace point prints a message every 250ms&#xD;&#xA;    The break point property called 'Continue Execution' controls if code should pause here and wait for you to click 'Continue'.&#xD;&#xA;    To stop debug, click stop debugging or close/stop the serial monitor.&#xD;&#xA;    When debug ends, serial debug will continue to break/pause the mcu or transmit trace message, wifi debug will not.&#xD;&#xA;    This breakpoint exists at the start of the loop() function, where you see a red dot.&#xD;&#xA;    The red dot is a ‘breakpoint’. Edit the properties of a breakpoint by right clicking it or open the 'Debug&gt;Other Windows&gt;Breakpoint List'&#xD;&#xA;    This breakpoint is automatically set by Visual Micro to demonstrate the Arduino debugger.&#xD;&#xA;    Add your own breakpoints by placing the cursor on any code line and pressing F9. Press F9 again to delete the breakpoint.&#xD;&#xA;    Read more about the Visual Micro debugger at http://www.visualmicro.com/page/Debugging-for-Arduino.aspx&#xD;&#xA;    Take some time to learn about debugging, it’s worth it!&#xD;&#xA;    To switch the demo breakpoint and other tips off, deselect Visual Micro&gt;Tutorial Mode.&#xD;&#xA;    Switch debugging off by changing from tool bar (Configuratin) from 'Debug' to 'Release'" MessageTextType="0" PreProcessedMessage="  Millis is currently {0}.&#xD;&#xA;    This tutorial debug trace point prints a message every 250ms&#xD;&#xA;    The break point property called 'Continue Execution' controls if code should pause here and wait for you to click 'Continue'.&#xD;&#xA;    To stop debug, click stop debugging or close/stop the serial monitor.&#xD;&#xA;    When debug ends, serial debug will continue to break/pause the mcu or transmit trace message, wifi debug will not.&#xD;&#xA;    This breakpoint exists at the start of the loop() function, where you see a red dot.&#xD;&#xA;    The red dot is a ‘breakpoint’. Edit the properties of a breakpoint by right clicking it or open the 'Debug&gt;Other Windows&gt;Breakpoint List'&#xD;&#xA;    This breakpoint is automatically set by Visual Micro to demonstrate the Arduino debugger.&#xD;&#xA;    Add your own breakpoints by placing the cursor on any code line and pressing F9. Press F9 again to delete the breakpoint.&#xD;&#xA;    Read more about the Visual Micro debugger at http://www.visualmicro.com/page/Debugging-for-Arduino.aspx&#xD;&#xA;    Take some time to learn about debugging, it’s worth it!&#xD;&#xA;    To switch the demo breakpoint and other tips off, deselect Visual Micro&gt;Tutorial Mode.&#xD;&#xA;    Switch debugging off by changing from tool bar (Configuratin) from 'Debug' to 'Release'" Condition="millis()&gt;0 || millis()&gt;1" ConditionType="1" CurrentHits="0" File="c:\users\felix\documents\development\arduino\mega\mega2560.ino" FileLine="54" FileColumn="1" FunctionName="" FunctionLineOffset="1" FunctionColumnOffset="1" HitCountTarget="250" HitCountType="4" Language="C++" LocationType="3" Tag="&lt;vmbp Id='9be0ca75-c833-4028-8a93-cddb1c5dbfdd'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
-        <Source>47		controller.init();
-48	
-49		// Setup NRF24L01+
-50		setupRadio();
-51	}
+      <BreakPoint Index="1" Name="mega2560.ino, line 58" Id="9be0ca75-c833-4028-8a93-cddb1c5dbfdd" Enabled="1" Message="  Millis is currently {millis()}.&#xD;&#xA;    This tutorial debug trace point prints a message every 250ms&#xD;&#xA;    The break point property called 'Continue Execution' controls if code should pause here and wait for you to click 'Continue'.&#xD;&#xA;    To stop debug, click stop debugging or close/stop the serial monitor.&#xD;&#xA;    When debug ends, serial debug will continue to break/pause the mcu or transmit trace message, wifi debug will not.&#xD;&#xA;    This breakpoint exists at the start of the loop() function, where you see a red dot.&#xD;&#xA;    The red dot is a ‘breakpoint’. Edit the properties of a breakpoint by right clicking it or open the 'Debug&gt;Other Windows&gt;Breakpoint List'&#xD;&#xA;    This breakpoint is automatically set by Visual Micro to demonstrate the Arduino debugger.&#xD;&#xA;    Add your own breakpoints by placing the cursor on any code line and pressing F9. Press F9 again to delete the breakpoint.&#xD;&#xA;    Read more about the Visual Micro debugger at http://www.visualmicro.com/page/Debugging-for-Arduino.aspx&#xD;&#xA;    Take some time to learn about debugging, it’s worth it!&#xD;&#xA;    To switch the demo breakpoint and other tips off, deselect Visual Micro&gt;Tutorial Mode.&#xD;&#xA;    Switch debugging off by changing from tool bar (Configuratin) from 'Debug' to 'Release'" MessageTextType="0" PreProcessedMessage="  Millis is currently {0}.&#xD;&#xA;    This tutorial debug trace point prints a message every 250ms&#xD;&#xA;    The break point property called 'Continue Execution' controls if code should pause here and wait for you to click 'Continue'.&#xD;&#xA;    To stop debug, click stop debugging or close/stop the serial monitor.&#xD;&#xA;    When debug ends, serial debug will continue to break/pause the mcu or transmit trace message, wifi debug will not.&#xD;&#xA;    This breakpoint exists at the start of the loop() function, where you see a red dot.&#xD;&#xA;    The red dot is a ‘breakpoint’. Edit the properties of a breakpoint by right clicking it or open the 'Debug&gt;Other Windows&gt;Breakpoint List'&#xD;&#xA;    This breakpoint is automatically set by Visual Micro to demonstrate the Arduino debugger.&#xD;&#xA;    Add your own breakpoints by placing the cursor on any code line and pressing F9. Press F9 again to delete the breakpoint.&#xD;&#xA;    Read more about the Visual Micro debugger at http://www.visualmicro.com/page/Debugging-for-Arduino.aspx&#xD;&#xA;    Take some time to learn about debugging, it’s worth it!&#xD;&#xA;    To switch the demo breakpoint and other tips off, deselect Visual Micro&gt;Tutorial Mode.&#xD;&#xA;    Switch debugging off by changing from tool bar (Configuratin) from 'Debug' to 'Release'" Condition="millis()&gt;0 || millis()&gt;1" ConditionType="1" CurrentHits="0" File="c:\users\felix\documents\development\arduino\mega\mega2560.ino" FileLine="58" FileColumn="1" FunctionName="" FunctionLineOffset="1" FunctionColumnOffset="1" HitCountTarget="250" HitCountType="4" Language="C++" LocationType="3" Tag="&lt;vmbp Id='9be0ca75-c833-4028-8a93-cddb1c5dbfdd'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
+        <Source>51		controller.init();
 52	
-53	
---&gt;54	void loop() {
-55		if (millis() - readUsb &gt; 20) {
-56			controller.get();
-57			if (screen.view == "control") {
-58				screen.update_analog_axis(0, controller.axis[0]);
-59				screen.update_analog_axis(1, controller.axis[1]);
-60				screen.update_analog_axis(2, controller.axis[2]);
-61				screen.update_analog_axis(3, controller.axis[3]);
-62				screen.update_motor((float)controller.axis[4] / 255.0*100.0);
-63				if (controller.button.options) {
+53		// Setup NRF24L01+
+54		setupRadio();
+55	}
+56	
+57	
+--&gt;58	void loop() {
+59		if (millis() - readUsb &gt; 20) {
+60			controller.get();
+61			if (screen.view == "control") {
+62				screen.update_analog_axis(0, controller.axis[0]);
+63				screen.update_analog_axis(1, controller.axis[1]);
+64				screen.update_analog_axis(2, controller.axis[2]);
+65				screen.update_analog_axis(3, controller.axis[3]);
+66				screen.update_motor((float)controller.axis[4] / 255.0*100.0);
+67				if (controller.button.options) {
 </Source>
         <MessageVariables>
           <MessageVariable Name="millis()" Index="1" />

@@ -39,6 +39,10 @@ struct radioData {
 Screen screen(&radio);
 Ds4 controller;
 
+uint16_t transmission_success = 0;
+uint16_t transmission_count = 0;
+uint8_t transmission_quality = 0;
+
 
 void setup() {
 	Serial.begin(9600);
@@ -78,12 +82,21 @@ void loop() {
 		uint8_t axis = (uint8_t)map((long)controller.axis[0], 0, 255, 20, 160);
 		radio.setChannel(80);
 		radio.writeFast(&axis, sizeof(axis));
-		radio.txStandBy();
+		if (radio.txStandBy()) {
+			transmission_success++;
+		}
 		radio.setChannel(2);
 		radio.setChannel(3);
 		radio.setChannel(4);
 
 		radioTransmission = millis();
+
+		transmission_count++;
+		if (transmission_count > 100 || transmission_success > 100) {
+			transmission_quality = (uint8_t)(4.0*((float)transmission_success / (float)transmission_quality));
+			transmission_count = 0;
+			transmission_success = 0;
+		}
 	}
 
 	if (millis() - counter_check_status > CHECK_STATUS && screen.view == "control") {
@@ -99,6 +112,15 @@ void loop() {
 				screen.print_peripheral_status(2, "danger", controller.status);
 			}
 		}
+		if (transmission_quality == 4)
+			screen.print_peripheral_status(0, "success", "Very good");
+		else if(transmission_quality == 3)
+			screen.print_peripheral_status(0, "warning", "Ok");
+		else if (transmission_quality > 0)
+			screen.print_peripheral_status(0, "danger", "Bad");
+		else
+			screen.print_peripheral_status(0, "danger", "No Signal");
+
 
 		counter_check_status = millis();
 	}
