@@ -31,8 +31,6 @@ char* Option::selectedParam() {
 	char *output = "";
 	if (index > -1 && index < params_size) {
 		output = params[index].getName();
-		Serial.begin(9600);
-		Serial.println(params[index].getName());
 	}
 	return output;
 }
@@ -41,7 +39,7 @@ char* Option::getType() {
 	return this->type;
 }
 
-void Option::next() {
+char* Option::next() {
 	int8_t index = getActiveParameter();
 	if (index >= 0) {
 		params[index].active = false;
@@ -53,9 +51,10 @@ void Option::next() {
 	else {
 		params[0].active = true;
 	}
+	return params[index].getName();
 }
 
-void Option::previous() {
+char* Option::previous() {
 	int8_t index = getActiveParameter();
 	if (index >= 0) {
 		params[index].active = false;
@@ -65,8 +64,10 @@ void Option::previous() {
 		params[index].active = true;
 	}
 	else {
+		index = 0;
 		params[0].active = true;
 	}
+	return params[index].getName();
 }
 
 int8_t Option::getActiveParameter() {

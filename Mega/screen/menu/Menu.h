@@ -13,20 +13,25 @@
 #include<SPFD5408_Adafruit_GFX.h>
 #include<SPFD5408_Adafruit_TFTLCD.h>
 #include"../option/Option.h"
+#include "RF24.h"
 
 class Menu {
 private:
 	Adafruit_TFTLCD *tft;
+	RF24 *radio;
+
 	char *current_menu = "base";
-	void init_main();
 	Option *options;
+	int options_size = 4;
+
+	void init_main();
 	int8_t getActiveElement();
 	void setMarker(uint8_t position);
-	int options_size = 4;
+	void setRadioLevel(char *level);
 
 public:
 	Menu();
-	Menu(Adafruit_TFTLCD *tft);
+	Menu(Adafruit_TFTLCD *tft, RF24 *radio);
 	void display(char *type);
 	void next();
 	void previous();

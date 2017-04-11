@@ -2,10 +2,11 @@
 
 Menu::Menu() {}
 
-Menu::Menu(Adafruit_TFTLCD *tft) {
+Menu::Menu(Adafruit_TFTLCD *tft, RF24 *radio) {
 	// Not default constructor with getting the
 	// tfts address and creating the options
 	this->tft = tft;
+	this->radio = radio;
 	options = new Option[4];
 	options[0] = Option("Channels", "enter");
 	options[1] = Option("Axis Range", "enter");
@@ -103,11 +104,14 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 	char *action = "";
 	if (active == 2) { // NRF24
 		if (left) {
-			options[active].previous();
+			char* state = options[active].previous();
+			setRadioLevel(state);
 			printParameter();
+
 		}
 		else if (right) {
-			options[active].next();
+			char* state = options[active].next();
+			setRadioLevel(state);
 			printParameter();
 		}
 	}
@@ -126,7 +130,23 @@ void Menu::printParameter() {
 			tft->setCursor(200, 60 + 30 * i);
 			tft->setTextColor(WHITE);
 			tft->println(options[i].selectedParam());
-			Serial.println(options[i].selectedParam());
 		}
 	}
+}
+
+void Menu::setRadioLevel(char *level) {
+	if (level == "Min") {
+		radio->setPALevel(RF24_PA_MIN);
+	}
+	else if (level == "Low") {
+		radio->setPALevel(RF24_PA_LOW);
+	}
+	else if (level == "High") {
+		radio->setPALevel(RF24_PA_HIGH);
+	}
+	else if (level == "Max") {
+		radio->setPALevel(RF24_PA_MAX);
+	}
+	delay(20);
+	Serial.println(radio->getPALevel());
 }

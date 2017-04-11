@@ -40,7 +40,7 @@ struct radioData {
 	uint8_t motor;
 }radioData;
 
-Screen screen;
+Screen screen(&radio);
 Ds4 controller;
 
 

@@ -1,9 +1,10 @@
 #include"Screen.h"
 
 
-Screen::Screen() {
+Screen::Screen(RF24 *radio) {
 	tft = new Adafruit_TFTLCD(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
-	menu = Menu(tft);
+	this->radio = radio;
+	menu = Menu(tft, radio);
 }
 
 void Screen::init() {

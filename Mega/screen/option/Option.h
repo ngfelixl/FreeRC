@@ -27,6 +27,6 @@ public:
 	char* selectedParam();
 	int8_t getActiveParameter();
 
-	void next();
-	void previous();
+	char* next();
+	char* previous();
 };

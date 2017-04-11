@@ -6,6 +6,7 @@
 #include <SPFD5408_Adafruit_TFTLCD.h>
 #include <stdlib.h>
 #include "menu/Menu.h"
+#include "RF24.h"
 
 #define LCD_CS A3
 #define LCD_CD A2
@@ -32,15 +33,15 @@
 class Screen {
 private:
 	Adafruit_TFTLCD *tft;
+	RF24 *radio;
+
 	unsigned int update_counter = 0;
-	//short option_selected = 0;
-	//Options menu;
 
 public:
 	String view = "control";
 	Menu menu;
 
-	Screen();
+	Screen(RF24 *radio);
 	void init();
 	void initial_view();
 	void navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options);
