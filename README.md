@@ -4,16 +4,16 @@ Welcome to the Arduino based remote flight controller. This repo provides source
 remote controller (with an Arduino, PS4 controller, Radio transmitter module) and for an receiver 
 (Arduino, Radio receiver module, Servos).
 
-## Requirements
+## Hardware Requirements
 
-| Transmitter           | Receiver                      |
-|-----------------------|-------------------------------|
-| Arduino AtMega 2560   | Arduino Nano                  |
-| USB Host Shield v2.0  | 4 Servo Motors (e.g. SG90)    |
-| NRF24L01+ TX/RX       | NRF24L01+ TX/RX               |
-| PS4 Controller        | LiPo Accu                     |
-| Adafruit 2.8" TFT LCD | Turnigy Plush 18A, or similar |
-|                       | 3-Phase Brushless Motor       |
+| Transmitter           |      | Receiver                      |      |
+|-----------------------|------|-------------------------------|------|
+| Arduino AtMega 2560   |  11€ | Arduino Nano                  |   5€ |
+| USB Host Shield v2.0  |   8€ | 4 Servo Motors (e.g. SG90)    |   8€ |
+| NRF24L01+ TX/RX       |   5€ | NRF24L01+ TX/RX               |   5€ |
+| PS4 Controller        |  30€ | LiPo Accu                     |  20€ |
+| Adafruit 2.8" TFT LCD |  13€ | Turnigy Plush 18A, or similar |  20€ |
+|                       |      | 3-Phase Brushless Motor       |  20€ |
 
 
 ## USB Host Shield modification
