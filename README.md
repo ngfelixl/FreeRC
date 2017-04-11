@@ -1,8 +1,8 @@
-# Arduino RC Flight Control
+# FreeRC
 
-Welcome to the Arduino based remote flight controller. This repo provides source code for an RC
-remote controller (with an Arduino, PS4 controller, Radio transmitter module) and for an receiver 
-(Arduino, Radio receiver module, Servos).
+Welcome to the Arduino based remote flight controller FreeRC. This repo provides source code for an RC
+transmitter (with an Arduino, PS4 controller, Radio transmitter module) and for a receiver 
+(Arduino, Radio receiver module, Servos, ...).
 
 ## Hardware Requirements
 
@@ -16,11 +16,15 @@ remote controller (with an Arduino, PS4 controller, Radio transmitter module) an
 | LiIon Powerbank       |  15€ | 3-Phase Brushless Motor       |  20€ |
 
 Which makes a total of 160€ for the complete RC electronics. But you'll also need equipment for soldering and voltage and current measuring, a lots of wires, optionally an op-amp for plane voltage reading and an acc and/or gyro.
+Also a GPS module could be implemented in long future terms.
 
 
 ## USB Host Shield modification
 
-In order to use the LCDTFT Shield on top of the USB Host Shield rev 2.0, there are a few things to be done before. As both shields share the same pins (Digital 9 and 10) it make sense to change the USB Host shield pins. The tft shield occupies pins D5-D13, so the USB host shield can use e.g. D1 and D2.Therefore I rewired the SS (original D10) to D2 and the INT (originally D9) to D1. There have to be a few changes in the UsbCore.h file in the USB Host Shield Library. Go to line 43 and change it  to 
+In order to use the LCDTFT Shield on top of the USB Host Shield rev 2.0, there are a few things to be done before. As both shields share the same pins 
+(Digital 9 and 10) it make sense to change the USB Host shield pins. The tft shield occupies pins D5-D13, so the USB host shield can use e.g. D1 and D2.
+Therefore I rewired the SS (original D10) to D2 and the INT (originally D9) to D1. There have to be a few changes in the UsbCore.h file in the USB Host Shield Library.
+Go to line 43 and change it  to 
 ```c
 typedef MAX3421e<P2, P1> MAX3421E; // Official Arduinos (UNO, Duemilanove, Mega ...
 ```
@@ -29,7 +33,7 @@ Now your Usb Host Shield will work as well, if you rewired it correctly.
 ## Installation
 
 The *_nano.ino file is the logic for the Arduino Nano and the *_mega.ino file is the source code
-for controlling the Arduino AtMega 2560 (would work with an Uno R3 as well). The pin configuration for
+for controlling the Arduino AtMega 2560 (would work with some modifications with an Uno R3 as well, but there are too few pins for USB shield and Display). The pin configuration for
 the NRF24L01 modules looks as follows
 
 | Description | Nano | AtMega 2560 |
