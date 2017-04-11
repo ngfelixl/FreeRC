@@ -59,7 +59,7 @@ void Screen::print_servo_default() {
 	tft->drawLine(67 + 20, 100 + 130 / 2, 67 + 175 - 20, 100 + 130 / 2, GREEN);
 }
 
-void Screen::update_analog_axis(int axis, float value) {
+/*void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t) {
 	// axis 0 -> left x
 	// axis 1 -> left y
 	// axis 2 -> right x
@@ -68,6 +68,34 @@ void Screen::update_analog_axis(int axis, float value) {
 	int j = floor(axis / 2);
 	tft->fillRect(261 + i * 30, 101 + j * 75 + (53 - (value / 255) * 53), 4, (value / 255) * 53, ORANGE);
 	tft->fillRect(261 + i * 30, 101 + j * 75, 4, 53 - (value / 255) * 53, DARKGRAY);
+}*/
+
+void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y) {
+	// axis 0 -> left x
+	// axis 1 -> left y
+	// axis 2 -> right x
+	// axis 3 -> right y
+	//uint8_t i = axis%2;
+	//uint8_t j = floor(axis / 2);
+
+	uint8_t width = 50;
+	uint8_t height = 50;
+
+	//tft->fillRect(261 + i * 30, 101 + j * 75 + (53 - (value / 255) * 53), 4, (value / 255) * 53, ORANGE);
+	//tft->fillRect(261 + i * 30, 101 + j * 75, 4, 53 - (value / 255) * 53, DARKGRAY);
+
+	if (axis == 0) { // Left Stick
+		if (x != left_axis_pos[0] || y != left_axis_pos[1]) {
+			tft->drawLine(261 + left_axis_pos[0] / 255.0*width, 101 + left_axis_pos[1] / 255.0*height, 265 + left_axis_pos[0] / 255.0*width, 101 + left_axis_pos[1] / 255.0 * height, BLACK);
+			tft->drawLine(263 + left_axis_pos[0] / 255.0*width, 99 + left_axis_pos[1] / 255.0*height, 263 + left_axis_pos[0] / 255.0*width, 103 + left_axis_pos[1] / 255.0 * height, BLACK);
+
+			tft->drawLine(261 + x / 255.0*width, 101 + y / 255.0*height, 265 + x / 255.0*width, 101 + y / 255.0 * height, ORANGE);
+			tft->drawLine(263 + x / 255.0*width, 99 + y / 255.0*height, 263 + x / 255.0*width, 103 + y / 255.0 * height, ORANGE);
+
+			left_axis_pos[0] = x;
+			left_axis_pos[1] = y;
+		}
+	}
 }
 
 void Screen::update_motor(float value) {

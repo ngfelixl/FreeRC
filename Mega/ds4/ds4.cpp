@@ -29,6 +29,8 @@ void Ds4::get() {
 		button.circle = ps4.getButtonClick(CIRCLE);
 		button.square = ps4.getButtonClick(SQUARE);
 		button.triangle = ps4.getButtonClick(TRIANGLE);
+
+		battery = ps4.getBatteryLevel();
 	}
 }
 

@@ -59,10 +59,10 @@ void loop() {
 	if (millis() - readUsb > 20) {
 		controller.get();
 		if (screen.view == "control") {
-			screen.update_analog_axis(0, controller.axis[0]);
-			screen.update_analog_axis(1, controller.axis[1]);
-			screen.update_analog_axis(2, controller.axis[2]);
-			screen.update_analog_axis(3, controller.axis[3]);
+			screen.update_analog_axis(0, controller.axis[0], controller.axis[1]);
+			screen.update_analog_axis(1, controller.axis[2], controller.axis[3]);
+			//screen.update_analog_axis(2, controller.axis[2]);
+			//screen.update_analog_axis(3, controller.axis[3]);
 			screen.update_motor((float)controller.axis[4] / 255.0*100.0);
 			if (controller.button.options) {
 				screen.switch_view("options");

@@ -36,6 +36,8 @@ private:
 	RF24 *radio;
 
 	unsigned int update_counter = 0;
+	uint8_t left_axis_pos[2] = { 0, 0 };
+	uint8_t right_axis_pos[2] = { 0,0 };
 
 public:
 	String view = "control";
@@ -51,7 +53,7 @@ public:
 	void switch_view(String view);
 	void print_servo_default();
 	void print_peripheral_status(int id, char* type, char *message);
-	void update_analog_axis(int axis, float value);
+	void update_analog_axis(uint8_t axis, uint8_t x, uint8_t y);
 	bool update();
 	void update_motor(float value);
 };

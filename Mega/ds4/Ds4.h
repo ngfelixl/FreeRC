@@ -22,6 +22,7 @@ public:
 	char *status;
 	uint8_t axis[6];
 	button button;
+	uint8_t battery;
 
 	Ds4();
 	void init();
