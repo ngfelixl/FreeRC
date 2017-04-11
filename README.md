@@ -6,17 +6,15 @@ remote controller (with an Arduino, PS4 controller, Radio transmitter module) an
 
 ## Requirements
 
-For the transmitter electronics
-- Arduino AtMega 2560
-- Arduino USB Host Shield
-- NRF24L01 Transmitter/Receiver Module
-- PS4 Controller
+| Transmitter           | Receiver                      |
+|-----------------------|-------------------------------|
+| Arduino AtMega 2560   | Arduino Nano                  |
+| USB Host Shield v2.0  | 4 Servo Motors (e.g. SG90)    |
+| NRF24L01+ TX/RX       | NRF24L01+ TX/RX               |
+| PS4 Controller        | LiPo Accu                     |
+| Adafruit 2.8" TFT LCD | Turnigy Plush 18A, or similar |
+|                       | 3-Phase Brushless Motor       |
 
-For the receiver electronics
-- Arduino Nano
-- 4 Servo Motors
-- LiPo Accumulators, or similar
-- Motor controller with 5V DV Output
 
 ## USB Host Shield modification
 
