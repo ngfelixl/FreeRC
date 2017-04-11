@@ -95,12 +95,23 @@ void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y) {
 			left_axis_pos[0] = x;
 			left_axis_pos[1] = y;
 		}
+	}else if (axis == 1) { // Left Stick
+		if (x != right_axis_pos[0] || y != right_axis_pos[1]) {
+			tft->drawLine(255 + right_axis_pos[0] / 255.0*width, 177 + right_axis_pos[1] / 255.0*height, 259 + right_axis_pos[0] / 255.0*width, 177 + right_axis_pos[1] / 255.0 * height, BLACK);
+			tft->drawLine(257 + right_axis_pos[0] / 255.0*width, 175 + right_axis_pos[1] / 255.0*height, 257 + right_axis_pos[0] / 255.0*width, 179 + right_axis_pos[1] / 255.0 * height, BLACK);
+
+			tft->drawLine(255 + x / 255.0*width, 177 + y / 255.0*height, 259 + x / 255.0*width, 177 + y / 255.0 * height, ORANGE);
+			tft->drawLine(257 + x / 255.0*width, 175 + y / 255.0*height, 257 + x / 255.0*width, 179 + y / 255.0 * height, ORANGE);
+
+			right_axis_pos[0] = x;
+			right_axis_pos[1] = y;
+		}
 	}
 }
 
 void Screen::update_motor(float value) {
-	tft->fillRect(11, 101, 4, 54 - value / 100 * 54, DARKGRAY);
-	tft->fillRect(11, 101 + 54 - value / 100 * 54, 4, value / 100 * 54, ORANGE);
+	tft->fillRect(11, 101, 4, 62 - value / 100 * 62, DARKGRAY);
+	tft->fillRect(11, 101 + 62 - value / 100 * 62, 4, value / 100 * 62, ORANGE);
 }
 
 void Screen::switch_view(String change_to) {
@@ -140,7 +151,7 @@ void Screen::initial_view() {
 	// Draw Motor Status box
 	tft->setCursor(10, 90);
 	tft->println("Motor");
-	tft->drawRect(10, 100, 25, 56, WHITE);
+	tft->drawRect(10, 100, 6, 64, WHITE);
 	tft->setTextColor(TEALBLUE);
 	/*tft->setCursor(40, 95);
 	tft->println("100");
