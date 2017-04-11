@@ -78,19 +78,19 @@ void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y) {
 	//uint8_t i = axis%2;
 	//uint8_t j = floor(axis / 2);
 
-	uint8_t width = 50;
-	uint8_t height = 50;
+	uint8_t width = 48;
+	uint8_t height = 48;
 
 	//tft->fillRect(261 + i * 30, 101 + j * 75 + (53 - (value / 255) * 53), 4, (value / 255) * 53, ORANGE);
 	//tft->fillRect(261 + i * 30, 101 + j * 75, 4, 53 - (value / 255) * 53, DARKGRAY);
 
 	if (axis == 0) { // Left Stick
 		if (x != left_axis_pos[0] || y != left_axis_pos[1]) {
-			tft->drawLine(261 + left_axis_pos[0] / 255.0*width, 101 + left_axis_pos[1] / 255.0*height, 265 + left_axis_pos[0] / 255.0*width, 101 + left_axis_pos[1] / 255.0 * height, BLACK);
-			tft->drawLine(263 + left_axis_pos[0] / 255.0*width, 99 + left_axis_pos[1] / 255.0*height, 263 + left_axis_pos[0] / 255.0*width, 103 + left_axis_pos[1] / 255.0 * height, BLACK);
+			tft->drawLine(11 + left_axis_pos[0] / 255.0*width, 177 + left_axis_pos[1] / 255.0*height, 15 + left_axis_pos[0] / 255.0*width, 177 + left_axis_pos[1] / 255.0 * height, BLACK);
+			tft->drawLine(13 + left_axis_pos[0] / 255.0*width, 175 + left_axis_pos[1] / 255.0*height, 13 + left_axis_pos[0] / 255.0*width, 179 + left_axis_pos[1] / 255.0 * height, BLACK);
 
-			tft->drawLine(261 + x / 255.0*width, 101 + y / 255.0*height, 265 + x / 255.0*width, 101 + y / 255.0 * height, ORANGE);
-			tft->drawLine(263 + x / 255.0*width, 99 + y / 255.0*height, 263 + x / 255.0*width, 103 + y / 255.0 * height, ORANGE);
+			tft->drawLine(11 + x / 255.0*width, 177 + y / 255.0*height, 15 + x / 255.0*width, 177 + y / 255.0 * height, ORANGE);
+			tft->drawLine(13 + x / 255.0*width, 175 + y / 255.0*height, 13 + x / 255.0*width, 179 + y / 255.0 * height, ORANGE);
 
 			left_axis_pos[0] = x;
 			left_axis_pos[1] = y;
@@ -99,8 +99,8 @@ void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y) {
 }
 
 void Screen::update_motor(float value) {
-	tft->fillRect(11, 101, 4, 128 - value / 100 * 128, DARKGRAY);
-	tft->fillRect(11, 101 + 128 - value / 100 * 128, 4, value / 100 * 128, ORANGE);
+	tft->fillRect(11, 101, 4, 54 - value / 100 * 54, DARKGRAY);
+	tft->fillRect(11, 101 + 54 - value / 100 * 54, 4, value / 100 * 54, ORANGE);
 }
 
 void Screen::switch_view(String change_to) {
@@ -140,26 +140,32 @@ void Screen::initial_view() {
 	// Draw Motor Status box
 	tft->setCursor(10, 90);
 	tft->println("Motor");
-	tft->drawRect(10, 100, 25, 130, WHITE);
+	tft->drawRect(10, 100, 25, 56, WHITE);
 	tft->setTextColor(TEALBLUE);
-	tft->setCursor(40, 95);
+	/*tft->setCursor(40, 95);
 	tft->println("100");
 	tft->setCursor(40, 160);
 	tft->println("50");
 	tft->setCursor(40, 225);
 	tft->println("0");
 	tft->setTextColor(WHITE);
+	*/
+	// Draw Left Axis Box
+	tft->drawRect(10, 174, 56, 56, WHITE);
 
-	// Draw Global Servo Status box
+	// Draw Right Axis Box
+	tft->drawRect(254, 174, 56, 56, WHITE);
+
+	// Draw Accelerometer box
 	tft->setCursor(67, 90);
 	tft->println("Servo");
-	tft->drawRect(67, 100, 175, 130, WHITE);
+	tft->drawRect(76, 100, 168, 130, WHITE);
 
 	// Draw PS4 Status box
-	for (int i = 0; i<2; i++) {
+	/*for (int i = 0; i<2; i++) {
 		for (int j = 0; j<2; j++) {
 			tft->drawRect(260 + i * 30, 100 + j * 75, 20, 55, WHITE);
 			tft->drawLine(256 + i * 30, 101 + 26 + j * 75, 259 + i * 30, 101 + 26 + j * 75, WHITE);
 		}
-	}
+	}*/
 }
