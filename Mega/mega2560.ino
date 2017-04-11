@@ -23,15 +23,11 @@
 
 #define CHECK_STATUS 500
 
-// Declare radio data
+// Declare and initiate radio data
 uint64_t writingPipe = 0xF0F0F0F0AA;
 uint64_t readingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_pin, CSN_pin);
 unsigned long radioTransmission = 0, readUsb = 0, counter_check_status = 0;
-
-/*typedef struct button {
-	bool x, circle, square, triangle, up, down, left, right, options;
-}button;*/
 
 float motor[2] = { 100,0 }; // new,old
 int dmotor = 0;
@@ -47,7 +43,6 @@ Ds4 controller;
 void setup() {
 	Serial.begin(9600);
 	screen.init();
-	screen.print_peripheral_status(0, "success", "Hello world!");
 
 	controller.init();
 
@@ -76,19 +71,20 @@ void loop() {
 	}
 
 	
-	/*if (millis() - radioTransmission > 20) {
+	if (millis() - radioTransmission > 4) {
 		// Write the radioData struct to the NRF24L01 module to send the data
 		// and print success or error message
-		radio.stopListening();
-		radio.writeFast(&radioData, sizeof(radioData));
-		if (radio.txStandBy()) {
-			//peripheralData.statusId[0] = 1; // success
-		}
-		else {
-			//peripheralData.statusId[0] = 2; // failed
-		}
+
+		uint8_t axis = (uint8_t)map((long)controller.axis[0], 0, 255, 20, 160);
+		radio.setChannel(80);
+		radio.writeFast(&axis, sizeof(axis));
+		radio.txStandBy();
+		radio.setChannel(2);
+		radio.setChannel(3);
+		radio.setChannel(4);
+
 		radioTransmission = millis();
-	}*/
+	}
 
 	if (millis() - counter_check_status > CHECK_STATUS && screen.view == "control") {
 		if (controller.connected()) {
@@ -106,24 +102,18 @@ void loop() {
 
 		counter_check_status = millis();
 	}
+	Serial.println(millis());
 }
-
-// Show DS4 Values on screen
-/*void ds4read() {
-	motor[0] = motor[0] + (float)dmotor;
-	if (motor[0] > 100.0) motor[0] = 100.0;
-	else if (motor[0] < 0.0) motor[0] = 0.0;
-	radioData.motor = (int)map(motor[0], 0, 100, 20, 160);
-}*/
 
 void setupRadio() {
 	radio.begin();
 
 	// Use PALevel low for testing purposes only (default: high)
+	// PALevel now adjustable via options menu, default: high
 	radio.setPALevel(RF24_PA_HIGH);
-	radio.setPayloadSize(sizeof(radioData));
+	radio.setPayloadSize(sizeof(uint8_t));
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openWritingPipe(writingPipe);
-	radio.openReadingPipe(1, readingPipe);
+	//radio.openReadingPipe(1, readingPipe);
 }

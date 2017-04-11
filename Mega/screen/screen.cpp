@@ -66,13 +66,13 @@ void Screen::update_analog_axis(int axis, float value) {
 	// axis 3 -> right y
 	int i = axis%2;
 	int j = floor(axis / 2);
-	tft->fillRect(261 + i * 30, 101 + j * 75 + (53 - (value / 255) * 53), 18, (value / 255) * 53, ORANGE);
-	tft->fillRect(261 + i * 30, 101 + j * 75, 18, 53 - (value / 255) * 53, DARKGRAY);
+	tft->fillRect(261 + i * 30, 101 + j * 75 + (53 - (value / 255) * 53), 4, (value / 255) * 53, ORANGE);
+	tft->fillRect(261 + i * 30, 101 + j * 75, 4, 53 - (value / 255) * 53, DARKGRAY);
 }
 
 void Screen::update_motor(float value) {
-	tft->fillRect(11, 101, 23, 128 - value / 100 * 128, DARKGRAY);
-	tft->fillRect(11, 101 + 128 - value / 100 * 128, 23, value / 100 * 128, ORANGE);
+	tft->fillRect(11, 101, 4, 128 - value / 100 * 128, DARKGRAY);
+	tft->fillRect(11, 101 + 128 - value / 100 * 128, 4, value / 100 * 128, ORANGE);
 }
 
 void Screen::switch_view(String change_to) {

@@ -21,6 +21,8 @@
 #include "RF24.h"
 #include "printf.h"
 #include <Servo.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 // Define Pins for NRF24
 #define CE_PIN 7
@@ -40,45 +42,51 @@ uint64_t writingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_PIN, CSN_PIN);
 unsigned int radioRead=0, servoWrite=0;
 
-struct {
+/*struct {
 	uint8_t servo[3]; // 0=roll, 1=height, 2=side
 	uint8_t motor; // servo position values
-}radioData;
+}radioData;*/
+
+uint8_t radioData[4];
 
 void setup() {
-	Serial.begin(9600);
+	Serial.begin(115200);
 	radio.begin();
-
+	delay(100);
+	radio.printDetails();
 	// Set the PA Level low to prevent power supply related issues since this is a
 	// getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
-	radio.setPALevel(RF24_PA_HIGH);
+	radio.setPALevel(RF24_PA_LOW);
 	radio.setPayloadSize(sizeof(radioData));
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openReadingPipe(1, readingPipe);
-	radio.openWritingPipe(writingPipe);
+	//radio.openWritingPipe(writingPipe);
 
-	servo[4].attach(MOTOR_PIN);
-	servo[0].attach(SERVO_LEFT_PIN);
-	servo[1].attach(SERVO_RIGHT_PIN);
-	servo[2].attach(SERVO_HEIGHT_PIN);
-	servo[3].attach(SERVO_SIDE_PIN);
+	servo[0].attach(MOTOR_PIN);
+	servo[1].attach(SERVO_LEFT_PIN);
+	servo[2].attach(SERVO_RIGHT_PIN);
+	servo[3].attach(SERVO_HEIGHT_PIN);
+	servo[4].attach(SERVO_SIDE_PIN);
 }
 
 void loop() {
 	radio.startListening();
+	radio.setChannel(80);
 	if (radio.available()) {
-		radio.read(&radioData, sizeof(radioData));
+		radio.read(&radioData[, sizeof(radioData));
+		Serial.println("Radiodata arrived at channel 80");
+		setServo(3, radioData);
 	}
 
 	if (millis() - servoWrite > 200) {
-		Serial.println(radioData.motor);
+		//Serial.println(radioData.motor);
 		// MOTOR SERVO
-		setServo(4, radioData.motor);
-		setServo(0, radioData.servo[0]);
-		setServo(1, 180-radioData.servo[0]);
-		setServo(2, radioData.servo[1]);
-		setServo(3, radioData.servo[2]);
+		//setServo(4, radioData.motor);
+		//setServo(0, radioData.servo[0]);
+		//setServo(1, 180-radioData.servo[0]);
+		//setServo(2, radioData.servo[1]);
+		//setServo(3, radioData.servo[2]);
 
 		servoWrite = millis();
 	}
