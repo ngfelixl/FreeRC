@@ -116,8 +116,9 @@ void Screen::update_motor(float value) {
 
 void Screen::update_battery(uint8_t ds4_battery) {
 	if (this->ds4_battery != ds4_battery) {
-		tft->fillRect(303, 11, 6, ds4_battery/255.0*18, DARKGRAY);
-		tft->fillRect(303, 11, 6, ds4_battery/255.0*18, GREEN);
+		tft->fillRect(303, 11, 6, 18-ds4_battery/15.0*18, DARKGRAY);
+		tft->fillRect(303, 11+18-18*ds4_battery/15.0, 6, ds4_battery/15.0*18, GREEN);
+		this->ds4_battery = ds4_battery;
 	}
 }
 

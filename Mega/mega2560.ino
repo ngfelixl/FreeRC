@@ -63,6 +63,8 @@ void loop() {
 			screen.update_analog_axis(1, controller.axis[2], controller.axis[3]);
 
 			screen.update_motor((float)controller.axis[4] / 255.0*100.0);
+			Serial.println(controller.battery);
+			screen.update_battery(controller.battery);
 			if (controller.button.options) {
 				screen.switch_view("options");
 			}
@@ -123,7 +125,6 @@ void loop() {
 
 		counter_check_status = millis();
 	}
-	Serial.println(millis());
 }
 
 void setupRadio() {

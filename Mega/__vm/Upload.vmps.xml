@@ -25,8 +25,8 @@
 63				screen.update_analog_axis(1, controller.axis[2], controller.axis[3]);
 64	
 65				screen.update_motor((float)controller.axis[4] / 255.0*100.0);
-66				if (controller.button.options) {
-67					screen.switch_view("options");
+66				Serial.println(controller.battery);
+67				screen.update_battery(controller.battery);
 </Source>
         <MessageVariables>
           <MessageVariable Name="millis()" Index="1" />
