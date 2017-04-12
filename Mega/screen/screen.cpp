@@ -29,6 +29,7 @@ char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool c
 
 	if (action == "exit") {
 		switch_view("control");
+		output = "back to control";
 	}
 
 	if (up) {

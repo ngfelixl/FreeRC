@@ -21,20 +21,11 @@
 #define CE_pin  53
 #define CSN_pin 49
 
-#define CHECK_STATUS 500
-
 // Declare and initiate radio data
 uint64_t writingPipe = 0xF0F0F0F0AA;
 uint64_t readingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_pin, CSN_pin);
 unsigned long radioTransmission = 0, readUsb = 0, counter_check_status = 0;
-
-float motor[2] = { 100,0 }; // new,old
-int dmotor = 0;
-struct radioData {
-	uint8_t servo[3];
-	uint8_t motor;
-}radioData;
 
 Ds4 controller;
 Screen screen(&radio);
@@ -43,18 +34,15 @@ uint16_t transmission_success = 0;
 uint16_t transmission_count = 0;
 uint8_t transmission_quality = 0;
 
-const long check_status = 500;
 char* navigation_status = "";
 
 
 void setup() {
 	Serial.begin(9600);
+
 	screen.init();
-
 	controller.init();
-
-	// Setup NRF24L01+
-	setupRadio();
+	setupRadio(); // Setup NRF24L01+
 }
 
 
@@ -106,18 +94,20 @@ void loop() {
 	}
 
 	if (millis() - counter_check_status > 500 && screen.view == "control") {
+		// Check if a force update is required. This is the case when
+		// returning to control view
 		bool force = false;
-
 		if (navigation_status == "back to control")
 			force = true;
 
+		// Update the battery level and the controller status
 		screen.update_battery(controller.battery, force);
 		if (controller.connected())
 			screen.print_peripheral_status(2, "success", "Connected", force);
 		else
 			screen.print_peripheral_status(2, "danger", "Error", force);
 		
-
+		// Update the transmission quality
 		if (transmission_quality == 4)
 			screen.print_peripheral_status(0, "success", "Very good", force);
 		else if(transmission_quality == 3)
@@ -127,6 +117,7 @@ void loop() {
 		else
 			screen.print_peripheral_status(0, "danger", "No Signal", force);
 
+		// Reset Force message
 		if (navigation_status == "back to control")
 			navigation_status = "";
 
