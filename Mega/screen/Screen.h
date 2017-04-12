@@ -38,7 +38,8 @@ private:
 	unsigned int update_counter = 0;
 	uint8_t left_axis_pos[2] = { 0, 0 };
 	uint8_t right_axis_pos[2] = { 0,0 };
-	uint8_t ds4_battery = 0;
+	uint8_t ds4_battery_state = 0;
+	uint8_t motor_state = -1;
 
 public:
 	String view = "control";
@@ -47,7 +48,7 @@ public:
 	Screen(RF24 *radio);
 	void init();
 	void initial_view();
-	void navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options);
+	char* navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options);
 	//void options_navigate(char* direction);
 
 	//void switch_marker();
@@ -56,6 +57,6 @@ public:
 	void print_peripheral_status(int id, char* type, char *message);
 	void update_analog_axis(uint8_t axis, uint8_t x, uint8_t y);
 	bool update();
-	void update_motor(float value);
-	void update_battery(uint8_t ds4_battery);
+	void update_motor(uint8_t motor);
+	void update_battery(uint8_t ds4_battery, bool force);
 };

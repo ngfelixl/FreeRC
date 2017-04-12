@@ -5,11 +5,13 @@
 #include <PS4USB.h>
 #include <usbhub.h>
 
+
+
+class Ds4 {
 typedef struct button {
 	bool x, circle, square, triangle, up, down, left, right, options;
 };
 
-class Ds4 {
 private:
 	USB usb;
 	PS4USB ps4 = PS4USB(&usb);
@@ -23,6 +25,7 @@ public:
 	uint8_t axis[6];
 	button button;
 	uint8_t battery;
+	uint8_t motor;
 
 	Ds4();
 	void init();

@@ -36,12 +36,15 @@ struct radioData {
 	uint8_t motor;
 }radioData;
 
-Screen screen(&radio);
 Ds4 controller;
+Screen screen(&radio);
 
 uint16_t transmission_success = 0;
 uint16_t transmission_count = 0;
 uint8_t transmission_quality = 0;
+
+const long check_status = 500;
+char* navigation_status = "";
 
 
 void setup() {
@@ -62,15 +65,17 @@ void loop() {
 			screen.update_analog_axis(0, controller.axis[0], controller.axis[1]);
 			screen.update_analog_axis(1, controller.axis[2], controller.axis[3]);
 
-			screen.update_motor((float)controller.axis[4] / 255.0*100.0);
+			//uint8_t motor = 100 * controller.axis[4] / 255.0;
+			//Serial.println(sprintf("Motor: %d      Axis: %d", motor, controller.axis[4]));
+			screen.update_motor(controller.axis[4]);
 			Serial.println(controller.battery);
-			screen.update_battery(controller.battery);
 			if (controller.button.options) {
+				controller.status = "options";
 				screen.switch_view("options");
 			}
 		}
 		else if (screen.view == "options") {
-			screen.navigate(controller.button.left, controller.button.right, controller.button.up, controller.button.down, controller.button.x, controller.button.circle, controller.button.options);
+			navigation_status = screen.navigate(controller.button.left, controller.button.right, controller.button.up, controller.button.down, controller.button.x, controller.button.circle, controller.button.options);
 		}
 		readUsb = millis();
 	}
@@ -100,7 +105,7 @@ void loop() {
 		}
 	}
 
-	if (millis() - counter_check_status > CHECK_STATUS && screen.view == "control") {
+	if (millis() - counter_check_status > 500 && screen.view == "control") {
 		if (controller.connected()) {
 			if (controller.status != "Connected") {
 				controller.status = "Connected";
@@ -113,6 +118,16 @@ void loop() {
 				screen.print_peripheral_status(2, "danger", controller.status);
 			}
 		}
+
+
+
+		if (navigation_status == "back to control")
+			screen.update_battery(controller.battery, true);
+		else
+			screen.update_battery(controller.battery, false);
+
+
+
 		if (transmission_quality == 4)
 			screen.print_peripheral_status(0, "success", "Very good");
 		else if(transmission_quality == 3)

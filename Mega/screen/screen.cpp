@@ -23,8 +23,9 @@ bool Screen::update() {
 	return false;
 }
 
-void Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options) {
+char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options) {
 	char *action = menu.execute(left, right, x, circle);
+	char *output = "";
 
 	if (action == "exit") {
 		switch_view("control");
@@ -38,7 +39,9 @@ void Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool ci
 	}
 	if (options || circle) {
 		switch_view("control");
+		output = "back to control";
 	}
+	return output;
 }
 
 void Screen::print_peripheral_status(int id, char *type, char *message) {
@@ -59,30 +62,10 @@ void Screen::print_servo_default() {
 	tft->drawLine(67 + 20, 100 + 130 / 2, 67 + 175 - 20, 100 + 130 / 2, GREEN);
 }
 
-/*void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t) {
-	// axis 0 -> left x
-	// axis 1 -> left y
-	// axis 2 -> right x
-	// axis 3 -> right y
-	int i = axis%2;
-	int j = floor(axis / 2);
-	tft->fillRect(261 + i * 30, 101 + j * 75 + (53 - (value / 255) * 53), 4, (value / 255) * 53, ORANGE);
-	tft->fillRect(261 + i * 30, 101 + j * 75, 4, 53 - (value / 255) * 53, DARKGRAY);
-}*/
-
 void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y) {
-	// axis 0 -> left x
-	// axis 1 -> left y
-	// axis 2 -> right x
-	// axis 3 -> right y
-	//uint8_t i = axis%2;
-	//uint8_t j = floor(axis / 2);
 
 	uint8_t width = 48;
 	uint8_t height = 48;
-
-	//tft->fillRect(261 + i * 30, 101 + j * 75 + (53 - (value / 255) * 53), 4, (value / 255) * 53, ORANGE);
-	//tft->fillRect(261 + i * 30, 101 + j * 75, 4, 53 - (value / 255) * 53, DARKGRAY);
 
 	if (axis == 0) { // Left Stick
 		if (x != left_axis_pos[0] || y != left_axis_pos[1]) {
@@ -109,16 +92,19 @@ void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y) {
 	}
 }
 
-void Screen::update_motor(float value) {
-	tft->fillRect(11, 101, 4, 62 - value / 100 * 62, DARKGRAY);
-	tft->fillRect(11, 101 + 62 - value / 100 * 62, 4, value / 100 * 62, ORANGE);
+void Screen::update_motor(uint8_t motor) {
+	//if (motor != motor_state) {
+		tft->fillRect(11, 101, 4, 62 - motor / 255.0 * 62, DARKGRAY);
+		tft->fillRect(11, 101 + 62 - motor / 255.0 * 62, 4, motor / 255.0 * 62, ORANGE);
+		motor_state = motor;
+	//}
 }
 
-void Screen::update_battery(uint8_t ds4_battery) {
-	if (this->ds4_battery != ds4_battery) {
+void Screen::update_battery(uint8_t ds4_battery, bool force) {
+	if (ds4_battery_state != ds4_battery || force) {
 		tft->fillRect(303, 11, 6, 18-ds4_battery/15.0*18, DARKGRAY);
 		tft->fillRect(303, 11+18-18*ds4_battery/15.0, 6, ds4_battery/15.0*18, GREEN);
-		this->ds4_battery = ds4_battery;
+		ds4_battery_state = ds4_battery;
 	}
 }
 
