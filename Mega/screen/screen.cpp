@@ -44,16 +44,35 @@ char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool c
 	return output;
 }
 
-void Screen::print_peripheral_status(int id, char *type, char *message) {
-	int color = WHITE;
-	if (type == "success") color = GREEN;
-	else if (type == "warning") color = YELLOW;
-	else if (type == "danger") color = RED;
+void Screen::print_peripheral_status(int id, char *type, char *message, bool force) {
+	char *status = "";
+	bool status_updated=false; 
 
-	tft->setTextColor(color);
-	tft->setCursor(150, 40 + 10 * id);
-	tft->fillRect(150, 40 + 10 * id, 100, 10, BLACK);
-	tft->println(message);
+	if (id == 0)
+		status = transmitter_status;
+	else if (id == 2)
+		status = controller_status;
+
+
+	if (status != message || force) {
+		int color = WHITE;
+		if (type == "success") color = GREEN;
+		else if (type == "warning") color = YELLOW;
+		else if (type == "danger") color = RED;
+
+		tft->setTextColor(color);
+		tft->setCursor(150, 40 + 10 * id);
+		tft->fillRect(150, 40 + 10 * id, 100, 10, BLACK);
+		tft->println(message);
+		status_updated = true;
+	}
+
+	if (status_updated) {
+		if (id == 0)
+			transmitter_status = message;
+		else if (id == 2)
+			controller_status = message;
+	}
 }
 
 void Screen::print_servo_default() {
@@ -62,13 +81,13 @@ void Screen::print_servo_default() {
 	tft->drawLine(67 + 20, 100 + 130 / 2, 67 + 175 - 20, 100 + 130 / 2, GREEN);
 }
 
-void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y) {
+void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y, bool force) {
 
 	uint8_t width = 48;
 	uint8_t height = 48;
 
 	if (axis == 0) { // Left Stick
-		if (x != left_axis_pos[0] || y != left_axis_pos[1]) {
+		if (x != left_axis_pos[0] || y != left_axis_pos[1] || force) {
 			tft->drawLine(11 + left_axis_pos[0] / 255.0*width, 177 + left_axis_pos[1] / 255.0*height, 15 + left_axis_pos[0] / 255.0*width, 177 + left_axis_pos[1] / 255.0 * height, BLACK);
 			tft->drawLine(13 + left_axis_pos[0] / 255.0*width, 175 + left_axis_pos[1] / 255.0*height, 13 + left_axis_pos[0] / 255.0*width, 179 + left_axis_pos[1] / 255.0 * height, BLACK);
 
@@ -79,7 +98,7 @@ void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y) {
 			left_axis_pos[1] = y;
 		}
 	}else if (axis == 1) { // Left Stick
-		if (x != right_axis_pos[0] || y != right_axis_pos[1]) {
+		if (x != right_axis_pos[0] || y != right_axis_pos[1] || force) {
 			tft->drawLine(255 + right_axis_pos[0] / 255.0*width, 177 + right_axis_pos[1] / 255.0*height, 259 + right_axis_pos[0] / 255.0*width, 177 + right_axis_pos[1] / 255.0 * height, BLACK);
 			tft->drawLine(257 + right_axis_pos[0] / 255.0*width, 175 + right_axis_pos[1] / 255.0*height, 257 + right_axis_pos[0] / 255.0*width, 179 + right_axis_pos[1] / 255.0 * height, BLACK);
 

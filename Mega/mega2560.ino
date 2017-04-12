@@ -62,8 +62,8 @@ void loop() {
 	if (millis() - readUsb > 20) {
 		controller.get();
 		if (screen.view == "control") {
-			screen.update_analog_axis(0, controller.axis[0], controller.axis[1]);
-			screen.update_analog_axis(1, controller.axis[2], controller.axis[3]);
+			screen.update_analog_axis(0, controller.axis[0], controller.axis[1], false);
+			screen.update_analog_axis(1, controller.axis[2], controller.axis[3], false);
 
 			//uint8_t motor = 100 * controller.axis[4] / 255.0;
 			//Serial.println(sprintf("Motor: %d      Axis: %d", motor, controller.axis[4]));
@@ -106,37 +106,29 @@ void loop() {
 	}
 
 	if (millis() - counter_check_status > 500 && screen.view == "control") {
-		if (controller.connected()) {
-			if (controller.status != "Connected") {
-				controller.status = "Connected";
-				screen.print_peripheral_status(2, "success", controller.status);
-			}
-		}
-		else {
-			if (controller.status != "Error") {
-				controller.status = "Error";
-				screen.print_peripheral_status(2, "danger", controller.status);
-			}
-		}
-
-
+		bool force = false;
 
 		if (navigation_status == "back to control")
-			screen.update_battery(controller.battery, true);
+			force = true;
+
+		screen.update_battery(controller.battery, force);
+		if (controller.connected())
+			screen.print_peripheral_status(2, "success", "Connected", force);
 		else
-			screen.update_battery(controller.battery, false);
-
-
+			screen.print_peripheral_status(2, "danger", "Error", force);
+		
 
 		if (transmission_quality == 4)
-			screen.print_peripheral_status(0, "success", "Very good");
+			screen.print_peripheral_status(0, "success", "Very good", force);
 		else if(transmission_quality == 3)
-			screen.print_peripheral_status(0, "warning", "Ok");
+			screen.print_peripheral_status(0, "warning", "Ok", force);
 		else if (transmission_quality > 0)
-			screen.print_peripheral_status(0, "danger", "Bad");
+			screen.print_peripheral_status(0, "danger", "Bad", force);
 		else
-			screen.print_peripheral_status(0, "danger", "No Signal");
+			screen.print_peripheral_status(0, "danger", "No Signal", force);
 
+		if (navigation_status == "back to control")
+			navigation_status = "";
 
 		counter_check_status = millis();
 	}
