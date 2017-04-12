@@ -58,7 +58,7 @@ void Screen::print_peripheral_status(int id, char *type, char *message, bool for
 	if (status != message || force) {
 		int color = WHITE;
 		if (type == "success") color = GREEN;
-		else if (type == "warning") color = YELLOW;
+		else if (type == "warning") color = GREEN;
 		else if (type == "danger") color = RED;
 
 		tft->setTextColor(color);
@@ -183,6 +183,7 @@ void Screen::initial_view() {
 
 	// Draw Battery Level Boxes
 	tft->drawRect(302, 10, 8, 20, WHITE);
+	tft->drawRect(304, 8, 4, 3, WHITE);
 
 	// Draw Accelerometer box
 	tft->setCursor(67, 90);

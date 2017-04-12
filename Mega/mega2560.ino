@@ -56,7 +56,6 @@ void loop() {
 			//uint8_t motor = 100 * controller.axis[4] / 255.0;
 			//Serial.println(sprintf("Motor: %d      Axis: %d", motor, controller.axis[4]));
 			screen.update_motor(controller.axis[4]);
-			Serial.println(controller.battery);
 			if (controller.button.options) {
 				controller.status = "options";
 				screen.switch_view("options");
@@ -68,29 +67,34 @@ void loop() {
 		readUsb = millis();
 	}
 
-	
+
+	//Serial.println(radioTransmission);
 	if (millis() - radioTransmission > 4) {
 		// Write the radioData struct to the NRF24L01 module to send the data
 		// and print success or error message
 
+		radioTransmission = millis();
 		uint8_t axis = (uint8_t)map((long)controller.axis[0], 0, 255, 20, 160);
 		radio.setChannel(80);
 		radio.writeFast(&axis, sizeof(axis));
 		if (radio.txStandBy()) {
 			transmission_success++;
 		}
-		radio.setChannel(2);
-		radio.setChannel(3);
-		radio.setChannel(4);
+		//radio.setChannel(2);
+		//radio.setChannel(3);
+		//radio.setChannel(4);
 
-		radioTransmission = millis();
 
 		transmission_count++;
-		if (transmission_count > 100 || transmission_success > 100) {
-			transmission_quality = (uint8_t)(4.0*((float)transmission_success / (float)transmission_quality));
+		if (transmission_count >= 100 || transmission_success >= 100) {
+			//Serial.println(transmission_count);
+			//Serial.println(transmission_success);
+			transmission_quality = 10 * transmission_success / 100.0;
+			//Serial.println(transmission_quality);
 			transmission_count = 0;
 			transmission_success = 0;
 		}
+		//Serial.println(radioTransmission);
 	}
 
 	if (millis() - counter_check_status > 500 && screen.view == "control") {
@@ -108,9 +112,9 @@ void loop() {
 			screen.print_peripheral_status(2, "danger", "Error", force);
 		
 		// Update the transmission quality
-		if (transmission_quality == 4)
+		if (transmission_quality > 8)
 			screen.print_peripheral_status(0, "success", "Very good", force);
-		else if(transmission_quality == 3)
+		else if(transmission_quality > 5)
 			screen.print_peripheral_status(0, "warning", "Ok", force);
 		else if (transmission_quality > 0)
 			screen.print_peripheral_status(0, "danger", "Bad", force);
