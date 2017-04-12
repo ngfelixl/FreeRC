@@ -32,6 +32,9 @@ void Ds4::get() {
 
 		battery = ps4.getBatteryLevel();
 	}
+	else {
+		usb_setup();
+	}
 }
 
 void Ds4::usb_setup() {

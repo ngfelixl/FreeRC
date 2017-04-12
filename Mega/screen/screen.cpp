@@ -56,12 +56,10 @@ void Screen::print_peripheral_status(int id, char *type, char *message, bool for
 
 
 	if (status != message || force) {
-		int color = WHITE;
-		if (type == "success") color = GREEN;
-		else if (type == "warning") color = GREEN;
-		else if (type == "danger") color = RED;
+		if (type == "success") tft->setTextColor(GREEN);
+		else if (type == "warning") tft->setTextColor(YELLOW);
+		else if (type == "danger") tft->setTextColor(RED);
 
-		tft->setTextColor(color);
 		tft->setCursor(150, 40 + 10 * id);
 		tft->fillRect(150, 40 + 10 * id, 100, 10, BLACK);
 		tft->println(message);
@@ -92,6 +90,9 @@ void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y, bool force) 
 			tft->drawLine(11 + left_axis_pos[0] / 255.0*width, 177 + left_axis_pos[1] / 255.0*height, 15 + left_axis_pos[0] / 255.0*width, 177 + left_axis_pos[1] / 255.0 * height, BLACK);
 			tft->drawLine(13 + left_axis_pos[0] / 255.0*width, 175 + left_axis_pos[1] / 255.0*height, 13 + left_axis_pos[0] / 255.0*width, 179 + left_axis_pos[1] / 255.0 * height, BLACK);
 
+			tft->drawLine(11 + 24, 177 + 24, 15 + 24, 177 + 24, TEALBLUE);
+			tft->drawLine(13 + 24, 175 + 24, 13 + 24, 179 + 24, TEALBLUE);
+
 			tft->drawLine(11 + x / 255.0*width, 177 + y / 255.0*height, 15 + x / 255.0*width, 177 + y / 255.0 * height, ORANGE);
 			tft->drawLine(13 + x / 255.0*width, 175 + y / 255.0*height, 13 + x / 255.0*width, 179 + y / 255.0 * height, ORANGE);
 
@@ -102,6 +103,9 @@ void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y, bool force) 
 		if (x != right_axis_pos[0] || y != right_axis_pos[1] || force) {
 			tft->drawLine(255 + right_axis_pos[0] / 255.0*width, 177 + right_axis_pos[1] / 255.0*height, 259 + right_axis_pos[0] / 255.0*width, 177 + right_axis_pos[1] / 255.0 * height, BLACK);
 			tft->drawLine(257 + right_axis_pos[0] / 255.0*width, 175 + right_axis_pos[1] / 255.0*height, 257 + right_axis_pos[0] / 255.0*width, 179 + right_axis_pos[1] / 255.0 * height, BLACK);
+
+			tft->drawLine(255 + 24, 177 + 24, 259 + 24, 177 + 24, TEALBLUE);
+			tft->drawLine(257 + 24, 175 + 24, 257 + 24, 179 + 24, TEALBLUE);
 
 			tft->drawLine(255 + x / 255.0*width, 177 + y / 255.0*height, 259 + x / 255.0*width, 177 + y / 255.0 * height, ORANGE);
 			tft->drawLine(257 + x / 255.0*width, 175 + y / 255.0*height, 257 + x / 255.0*width, 179 + y / 255.0 * height, ORANGE);

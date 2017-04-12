@@ -68,11 +68,9 @@ void loop() {
 	}
 
 
-	//Serial.println(radioTransmission);
 	if (millis() - radioTransmission > 4) {
 		// Write the radioData struct to the NRF24L01 module to send the data
 		// and print success or error message
-
 		radioTransmission = millis();
 		uint8_t axis = (uint8_t)map((long)controller.axis[0], 0, 255, 20, 160);
 		radio.setChannel(80);
@@ -87,14 +85,10 @@ void loop() {
 
 		transmission_count++;
 		if (transmission_count >= 100 || transmission_success >= 100) {
-			//Serial.println(transmission_count);
-			//Serial.println(transmission_success);
-			transmission_quality = 10 * transmission_success / 100.0;
-			//Serial.println(transmission_quality);
+			transmission_quality = (uint8_t)(10 * transmission_success / 100.0);
 			transmission_count = 0;
 			transmission_success = 0;
 		}
-		//Serial.println(radioTransmission);
 	}
 
 	if (millis() - counter_check_status > 500 && screen.view == "control") {
