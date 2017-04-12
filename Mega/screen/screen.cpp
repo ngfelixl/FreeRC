@@ -49,7 +49,7 @@ void Screen::print_peripheral_status(int id, char *type, char *message) {
 
 	tft->setTextColor(color);
 	tft->setCursor(150, 40 + 10 * id);
-	tft->fillRect(150, 40 + 10 * id, 320, 10, BLACK);
+	tft->fillRect(150, 40 + 10 * id, 100, 10, BLACK);
 	tft->println(message);
 }
 
@@ -114,6 +114,13 @@ void Screen::update_motor(float value) {
 	tft->fillRect(11, 101 + 62 - value / 100 * 62, 4, value / 100 * 62, ORANGE);
 }
 
+void Screen::update_battery(uint8_t ds4_battery) {
+	if (this->ds4_battery != ds4_battery) {
+		tft->fillRect(303, 11, 6, ds4_battery/255.0*18, DARKGRAY);
+		tft->fillRect(303, 11, 6, ds4_battery/255.0*18, GREEN);
+	}
+}
+
 void Screen::switch_view(String change_to) {
 	view = change_to;
 	if (view == "control") initial_view();
@@ -166,6 +173,9 @@ void Screen::initial_view() {
 
 	// Draw Right Axis Box
 	tft->drawRect(254, 174, 56, 56, WHITE);
+
+	// Draw Battery Level Boxes
+	tft->drawRect(302, 10, 8, 20, WHITE);
 
 	// Draw Accelerometer box
 	tft->setCursor(67, 90);

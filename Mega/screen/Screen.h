@@ -38,6 +38,7 @@ private:
 	unsigned int update_counter = 0;
 	uint8_t left_axis_pos[2] = { 0, 0 };
 	uint8_t right_axis_pos[2] = { 0,0 };
+	uint8_t ds4_battery = 0;
 
 public:
 	String view = "control";
@@ -56,4 +57,5 @@ public:
 	void update_analog_axis(uint8_t axis, uint8_t x, uint8_t y);
 	bool update();
 	void update_motor(float value);
+	void update_battery(uint8_t ds4_battery);
 };
