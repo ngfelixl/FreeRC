@@ -148,5 +148,4 @@ void Menu::setRadioLevel(char *level) {
 		radio->setPALevel(RF24_PA_MAX);
 	}
 	delay(20);
-	Serial.println(radio->getPALevel());
 }

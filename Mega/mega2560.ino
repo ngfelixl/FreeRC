@@ -40,8 +40,6 @@ float voltage_sum = 0, voltage_avg = 0;
 
 
 void setup() {
-	Serial.begin(9600);
-
 	screen.init();
 	controller.init();
 	setupRadio(); // Setup NRF24L01+
@@ -50,13 +48,13 @@ void setup() {
 
 void loop() {
 	if (millis() - readUsb > 20) {
+		readUsb = millis();
 		controller.get();
 		if (screen.view == "control") {
 			screen.update_analog_axis(0, controller.axis[0], controller.axis[1], false);
 			screen.update_analog_axis(1, controller.axis[2], controller.axis[3], false);
 
 			//uint8_t motor = 100 * controller.axis[4] / 255.0;
-			//Serial.println(sprintf("Motor: %d      Axis: %d", motor, controller.axis[4]));
 			screen.update_motor(controller.axis[4]);
 			if (controller.button.options) {
 				controller.status = "options";
@@ -66,13 +64,13 @@ void loop() {
 		else if (screen.view == "options") {
 			navigation_status = screen.navigate(controller.button.left, controller.button.right, controller.button.up, controller.button.down, controller.button.x, controller.button.circle, controller.button.options);
 		}
-		readUsb = millis();
 	}
 
 
 	if (millis() - radioTransmission > 4) {
 		// Write the radioData struct to the NRF24L01 module to send the data
 		// and print success or error message
+		radioTransmission = millis();
 		uint8_t axis = map(controller.axis[0], 0, 255, 20, 160);
 
 		radio.setChannel(80);
@@ -87,7 +85,6 @@ void loop() {
 				voltage_avg = voltage_sum / 20.0;
 				voltage_sum = 0.0;
 				voltage_count = 0;
-				Serial.println(voltage_avg);
 			}
 		}
 
@@ -95,9 +92,7 @@ void loop() {
 			transmission_success++;
 		}
 
-		radioTransmission = millis();
 
-		//}
 		//radio.setChannel(2);
 		//radio.setChannel(3);
 		//radio.setChannel(4);
@@ -121,6 +116,7 @@ void loop() {
 
 		// Update the battery level and the controller status
 		screen.update_battery(controller.battery, force);
+		screen.update_voltage(voltage_avg, force);
 		if (controller.connected())
 			screen.print_peripheral_status(2, "success", "Connected", force);
 		else
@@ -136,6 +132,8 @@ void loop() {
 		else
 			screen.print_peripheral_status(0, "danger", "No Signal", force);
 
+
+		
 
 		// Reset Force message
 		if (navigation_status == "back to control")

@@ -131,12 +131,30 @@ void Screen::update_battery(uint8_t ds4_battery, bool force) {
 		tft->fillRect(303, 11+18-18*ds4_battery/15.0, 6, ds4_battery/15.0*18, GREEN);
 		ds4_battery_state = ds4_battery;
 	}
+	delay(5);
 }
 
 void Screen::switch_view(String change_to) {
 	view = change_to;
 	if (view == "control") initial_view();
 	else if (view == "options") menu.display("");
+}
+
+void Screen::update_voltage(float voltage, bool force) {
+	if (battery_state != voltage || force) {
+		if (voltage < 10) {
+			tft->setTextColor(ORANGE);
+			tft->setCursor(278, 40);
+		}
+		else {
+			tft->setTextColor(WHITE);
+			tft->setCursor(272, 40);
+		}
+		tft->fillRect(272, 40, 30, 10, BLACK);
+		tft->println(voltage);
+		battery_state = voltage;
+	}
+	delay(3);
 }
 
 
@@ -171,7 +189,6 @@ void Screen::initial_view() {
 	tft->setCursor(10, 90);
 	tft->println("Motor");
 	tft->drawRect(10, 100, 6, 64, WHITE);
-	tft->setTextColor(TEALBLUE);
 	/*tft->setCursor(40, 95);
 	tft->println("100");
 	tft->setCursor(40, 160);
@@ -194,6 +211,9 @@ void Screen::initial_view() {
 	tft->setCursor(67, 90);
 	tft->println("Servo");
 	tft->drawRect(76, 100, 168, 130, WHITE);
+
+	tft->setCursor(304, 40);
+	tft->println("V");
 
 	// Draw PS4 Status box
 	/*for (int i = 0; i<2; i++) {

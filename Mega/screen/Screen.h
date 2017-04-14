@@ -42,6 +42,7 @@ private:
 	uint8_t right_axis_pos[2] = { 0,0 };
 	uint8_t ds4_battery_state = 0;
 	uint8_t motor_state = -1;
+	float battery_state = 0.0;
 
 public:
 	String view = "control";
@@ -61,4 +62,5 @@ public:
 	bool update();
 	void update_motor(uint8_t motor);
 	void update_battery(uint8_t ds4_battery, bool force);
+	void update_voltage(float voltage, bool force);
 };
