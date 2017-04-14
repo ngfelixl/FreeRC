@@ -64,6 +64,7 @@ void Screen::print_peripheral_status(int id, char *type, char *message, bool for
 		tft->fillRect(150, 40 + 10 * id, 100, 10, BLACK);
 		tft->println(message);
 		status_updated = true;
+		delay(3);
 	}
 
 	if (status_updated) {

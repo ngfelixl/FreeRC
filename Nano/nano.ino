@@ -40,17 +40,13 @@ Servo servo[5]; // 4=motor, 0=left, 1=right=-left, 2=height-ctr, 3=side-ctr
 uint64_t readingPipe = 0xF0F0F0F0AA;
 uint64_t writingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_PIN, CSN_PIN);
-unsigned int radioRead=0, servoWrite=0;
+unsigned long radioRead = 0, servoWrite = 0, readBattery = 0;
 
-/*struct {
-	uint8_t servo[3]; // 0=roll, 1=height, 2=side
-	uint8_t motor; // servo position values
-}radioData;*/
-
-uint8_t radioData[4];
+uint8_t radioData;
+uint8_t voltage;
 
 void setup() {
-	Serial.begin(115200);
+	Serial.begin(9600);
 	radio.begin();
 	delay(100);
 	radio.printDetails();
@@ -58,10 +54,11 @@ void setup() {
 	// getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
 	radio.setPALevel(RF24_PA_LOW);
 	radio.setPayloadSize(sizeof(radioData));
+	radio.enableAckPayload();
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openReadingPipe(1, readingPipe);
-	//radio.openWritingPipe(writingPipe);
+	radio.openWritingPipe(writingPipe);
 
 	servo[0].attach(MOTOR_PIN);
 	servo[1].attach(SERVO_LEFT_PIN);
@@ -74,12 +71,17 @@ void loop() {
 	radio.startListening();
 	radio.setChannel(80);
 	if (radio.available()) {
-		radio.read(&radioData[, sizeof(radioData));
-		Serial.println("Radiodata arrived at channel 80");
-		setServo(3, radioData);
+		radio.read(&radioData, sizeof(radioData));
+		radio.writeAckPayload(1, &voltage, sizeof(voltage));
 	}
 
-	if (millis() - servoWrite > 200) {
+	if (millis() - readBattery > 500) {
+		voltage = analogRead(0) / 1024.0 * 5 * 2.5 / 1.1 * 10;
+		Serial.println(voltage);
+		readBattery = millis();
+	}
+
+	if (millis() - servoWrite > 5) {
 		//Serial.println(radioData.motor);
 		// MOTOR SERVO
 		//setServo(4, radioData.motor);
@@ -88,8 +90,12 @@ void loop() {
 		//setServo(2, radioData.servo[1]);
 		//setServo(3, radioData.servo[2]);
 
+		setServo(4, radioData);
 		servoWrite = millis();
+
 	}
+
+
 }
 
 void setServo(uint8_t id, uint8_t value) {

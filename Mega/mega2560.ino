@@ -35,6 +35,8 @@ uint16_t transmission_count = 0;
 uint8_t transmission_quality = 0;
 
 char* navigation_status = "";
+uint8_t voltage = 0, voltage_count = 0;
+float voltage_sum = 0, voltage_avg = 0;
 
 
 void setup() {
@@ -71,13 +73,31 @@ void loop() {
 	if (millis() - radioTransmission > 4) {
 		// Write the radioData struct to the NRF24L01 module to send the data
 		// and print success or error message
-		radioTransmission = millis();
-		uint8_t axis = (uint8_t)map((long)controller.axis[0], 0, 255, 20, 160);
+		uint8_t axis = map(controller.axis[0], 0, 255, 20, 160);
+
 		radio.setChannel(80);
 		radio.writeFast(&axis, sizeof(axis));
+
+		if (radio.isAckPayloadAvailable()) {
+			radio.read(&voltage, sizeof(voltage));
+			voltage_sum = voltage_sum + voltage/10.0;
+			voltage_count++;
+
+			if (voltage_count == 20) {
+				voltage_avg = voltage_sum / 20.0;
+				voltage_sum = 0.0;
+				voltage_count = 0;
+				Serial.println(voltage_avg);
+			}
+		}
+
 		if (radio.txStandBy()) {
 			transmission_success++;
 		}
+
+		radioTransmission = millis();
+
+		//}
 		//radio.setChannel(2);
 		//radio.setChannel(3);
 		//radio.setChannel(4);
@@ -85,11 +105,12 @@ void loop() {
 
 		transmission_count++;
 		if (transmission_count >= 100 || transmission_success >= 100) {
-			transmission_quality = (uint8_t)(10 * transmission_success / 100.0);
+			transmission_quality = 10 * transmission_success / 100.0;
 			transmission_count = 0;
 			transmission_success = 0;
 		}
 	}
+
 
 	if (millis() - counter_check_status > 500 && screen.view == "control") {
 		// Check if a force update is required. This is the case when
@@ -108,12 +129,13 @@ void loop() {
 		// Update the transmission quality
 		if (transmission_quality > 8)
 			screen.print_peripheral_status(0, "success", "Very good", force);
-		else if(transmission_quality > 5)
+		else if (transmission_quality > 5)
 			screen.print_peripheral_status(0, "warning", "Ok", force);
 		else if (transmission_quality > 0)
 			screen.print_peripheral_status(0, "danger", "Bad", force);
 		else
 			screen.print_peripheral_status(0, "danger", "No Signal", force);
+
 
 		// Reset Force message
 		if (navigation_status == "back to control")
@@ -133,5 +155,7 @@ void setupRadio() {
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openWritingPipe(writingPipe);
+	radio.enableAckPayload();
+	//radio.enableDynamicAck();
 	//radio.openReadingPipe(1, readingPipe);
 }
