@@ -110,6 +110,8 @@ void loop() {
 	if (millis() - counter_check_status > 500 && screen.view == "control") {
 		// Check if a force update is required. This is the case when
 		// returning to control view
+		screen.draw_plane((controller.axis[0] - 127) /64.0, (controller.axis[1] - 127) / 64.0, -9);
+
 		bool force = false;
 		if (navigation_status == "back to control")
 			force = true;

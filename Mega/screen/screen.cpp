@@ -11,8 +11,8 @@ void Screen::init() {
 	tft->reset();
 	tft->begin(0x9341);
 	tft->setRotation(3);
+	delay(50);
 	initial_view();
-	print_servo_default();
 }
 
 bool Screen::update() {
@@ -75,11 +75,6 @@ void Screen::print_peripheral_status(int id, char *type, char *message, bool for
 	}
 }
 
-void Screen::print_servo_default() {
-	// Servo field dim 175x130, pos 67,100
-	tft->drawLine(67 + 175 / 2, 120, 67 + 175 / 2, 210, GREEN);
-	tft->drawLine(67 + 20, 100 + 130 / 2, 67 + 175 - 20, 100 + 130 / 2, GREEN);
-}
 
 void Screen::update_analog_axis(uint8_t axis, uint8_t x, uint8_t y, bool force) {
 
@@ -157,6 +152,47 @@ void Screen::update_voltage(float voltage, bool force) {
 	delay(3);
 }
 
+void Screen::draw_plane(double x, double y, double z) {
+	// { 76, 100, 168, 130 }
+	// double rotation = 0.2;
+
+	if (Rot[0][0] != NULL) {
+		for (uint8_t i = 0; i < 12; i++) {
+			line[0] = origin[0] + Rot[0][0] * plane_vec[i][0] + Rot[0][1] * plane_vec[i][1] + Rot[0][2] * plane_vec[i][2];
+			line[2] = origin[0] + Rot[0][0] * plane_vec[i][3] + Rot[0][1] * plane_vec[i][4] + Rot[0][2] * plane_vec[i][5];
+
+			line[1] = origin[0] + Rot[2][0] * plane_vec[i][0] + Rot[2][1] * plane_vec[i][1] + Rot[2][2] * plane_vec[i][2];
+			line[3] = origin[0] + Rot[2][0] * plane_vec[i][3] + Rot[2][1] * plane_vec[i][4] + Rot[2][2] * plane_vec[i][5];
+			tft->drawLine(line[0], line[1], line[2], line[3], BLACK);
+		}
+	}
+
+	double d = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+	alpha = acos(x / d) + PI/2;
+	phi = acos(z / d);
+	double n[3] = { cos(alpha), sin(alpha), 0 };
+	Rot[0][0] = n[0] * n[0] * (1 - cos(phi)) + cos(phi);
+	Rot[0][1] = n[0] * n[1] * (1 - cos(phi)) - n[2] * sin(phi);
+	Rot[0][2] = n[0] * n[2] * (1 - cos(phi)) + n[1] * sin(phi);
+
+	Rot[1][0] = n[0] * n[1] * (1 - cos(phi)) + n[2] * sin(phi);
+	Rot[1][1] = n[1] * n[1] * (1 - cos(phi)) + cos(phi);
+	Rot[1][2] = n[1] * n[2] * (1 - cos(phi)) - n[0] * sin(phi);
+
+	Rot[2][0] = n[0] * n[2] * (1 - cos(phi)) - n[1] * sin(phi);
+	Rot[2][1] = n[1] * n[2] * (1 - cos(phi)) + n[0] * sin(phi);
+	Rot[2][2] = n[2] * n[2] * (1 - cos(phi)) + cos(phi);
+
+	for (uint8_t i = 0; i < 12; i++) {
+		line[0] = origin[0] + Rot[0][0] * plane_vec[i][0] + Rot[0][1] * plane_vec[i][1] + Rot[0][2] * plane_vec[i][2];
+		line[2] = origin[0] + Rot[0][0] * plane_vec[i][3] + Rot[0][1] * plane_vec[i][4] + Rot[0][2] * plane_vec[i][5];
+
+		line[1] = origin[0] + Rot[2][0] * plane_vec[i][0] + Rot[2][1] * plane_vec[i][1] + Rot[2][2] * plane_vec[i][2];
+		line[3] = origin[0] + Rot[2][0] * plane_vec[i][3] + Rot[2][1] * plane_vec[i][4] + Rot[2][2] * plane_vec[i][5];
+		tft->drawLine(line[0], line[1], line[2], line[3], ORANGE);
+	}
+}
+
 
 void Screen::initial_view() {
 	tft->fillScreen(BLACK);
@@ -189,14 +225,7 @@ void Screen::initial_view() {
 	tft->setCursor(10, 90);
 	tft->println("Motor");
 	tft->drawRect(10, 100, 6, 64, WHITE);
-	/*tft->setCursor(40, 95);
-	tft->println("100");
-	tft->setCursor(40, 160);
-	tft->println("50");
-	tft->setCursor(40, 225);
-	tft->println("0");
-	tft->setTextColor(WHITE);
-	*/
+
 	// Draw Left Axis Box
 	tft->drawRect(10, 174, 56, 56, WHITE);
 
@@ -208,18 +237,12 @@ void Screen::initial_view() {
 	tft->drawRect(304, 8, 4, 3, WHITE);
 
 	// Draw Accelerometer box
-	tft->setCursor(67, 90);
-	tft->println("Servo");
 	tft->drawRect(76, 100, 168, 130, WHITE);
+
+
+	draw_plane(0.0, 0.0, 9);
+
 
 	tft->setCursor(304, 40);
 	tft->println("V");
-
-	// Draw PS4 Status box
-	/*for (int i = 0; i<2; i++) {
-		for (int j = 0; j<2; j++) {
-			tft->drawRect(260 + i * 30, 100 + j * 75, 20, 55, WHITE);
-			tft->drawLine(256 + i * 30, 101 + 26 + j * 75, 259 + i * 30, 101 + 26 + j * 75, WHITE);
-		}
-	}*/
 }

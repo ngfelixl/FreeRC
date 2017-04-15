@@ -44,6 +44,26 @@ private:
 	uint8_t motor_state = -1;
 	float battery_state = 0.0;
 
+
+	int16_t plane_vec[12][6] = {
+		{ 0, 30, 0, 0, -58, 0 }, // Rumpf
+		{ 0, 30, -4, 0, -70, -4 }, // Rumpf
+		{ -60, 0, 0, 60, 0, 0 }, // Flügel front
+		{ -60, -10, 0, 60, -10, 0 }, // Flügel hinten
+		{ -20, -70, 18, 20, -70, 18 }, // Side rudder
+		{ 0, -70, -4, 0, -70, 18 }, // Height rudder
+		{ 60, 0, 0, 60, -10, 0 },
+		{ -60, 0, 0, -60, -10, 0},
+		{ -20, -65, 18, 20, -65, 18},
+		{ -20, -65, 18, -20, -70, 18},
+		{ 20, -65, 18, 20, -70, 18},
+		{ 0, -65, 18, 0, -58, 0}
+	};
+	int16_t line[4];
+	int16_t origin[2] = { 160, 165 };
+	double phi = 0, alpha = 0;
+	double Rot[3][3];
+
 public:
 	String view = "control";
 	Menu menu;
@@ -56,11 +76,11 @@ public:
 
 	//void switch_marker();
 	void switch_view(String view);
-	void print_servo_default();
 	void print_peripheral_status(int id, char* type, char *message, bool force);
 	void update_analog_axis(uint8_t axis, uint8_t x, uint8_t y, bool force);
 	bool update();
 	void update_motor(uint8_t motor);
 	void update_battery(uint8_t ds4_battery, bool force);
 	void update_voltage(float voltage, bool force);
+	void draw_plane(double x, double y, double z);
 };
