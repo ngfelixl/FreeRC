@@ -167,9 +167,11 @@ void Screen::draw_plane(double x, double y, double z) {
 		}
 	}
 
-	double d = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
-	alpha = acos(x / d) + PI/2;
-	phi = acos(z / d);
+	double d = sqrt(x * x + y * y + z * z);
+	double norm[3] = { x / d, y / d, z / d };
+	//double d_xy = sqrt(x * x + y * y);
+	alpha = acos(norm[0]) + PI/2;
+	phi = acos(norm[2]);
 	double n[3] = { cos(alpha), sin(alpha), 0 };
 	Rot[0][0] = n[0] * n[0] * (1 - cos(phi)) + cos(phi);
 	Rot[0][1] = n[0] * n[1] * (1 - cos(phi)) - n[2] * sin(phi);
