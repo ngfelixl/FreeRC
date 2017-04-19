@@ -42,18 +42,18 @@ uint64_t writingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_PIN, CSN_PIN);
 unsigned long radioRead = 0, servoWrite = 0, readBattery = 0;
 
-uint8_t radioData;
+uint8_t transmission[5];
 uint8_t voltage;
 
 void setup() {
 	Serial.begin(9600);
 	radio.begin();
 	delay(100);
-	radio.printDetails();
+
 	// Set the PA Level low to prevent power supply related issues since this is a
 	// getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
 	radio.setPALevel(RF24_PA_LOW);
-	radio.setPayloadSize(sizeof(radioData));
+	radio.setPayloadSize(sizeof(transmission));
 	radio.enableAckPayload();
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
@@ -71,7 +71,7 @@ void loop() {
 	radio.startListening();
 	radio.setChannel(80);
 	if (radio.available()) {
-		radio.read(&radioData, sizeof(radioData));
+		radio.read(&transmission, sizeof(transmission));
 		radio.writeAckPayload(1, &voltage, sizeof(voltage));
 	}
 
@@ -84,22 +84,23 @@ void loop() {
 	if (millis() - servoWrite > 5) {
 		//Serial.println(radioData.motor);
 		// MOTOR SERVO
-		//setServo(4, radioData.motor);
-		//setServo(0, radioData.servo[0]);
-		//setServo(1, 180-radioData.servo[0]);
-		//setServo(2, radioData.servo[1]);
-		//setServo(3, radioData.servo[2]);
+		//setServo(0, radioData.motor);
+		//setServo(1, radioData.servo[0]);
+		//setServo(2, 180-radioData.servo[0]);
+		//setServo(3, radioData.servo[1]);
+		//setServo(4, radioData.servo[2]);
+		for (uint8_t i = 0; i < 5; i++) {
+			setServo(i, transmission[i]);
+		}
 
-		setServo(4, radioData);
+		//setServo(4, transmission[1]);
 		servoWrite = millis();
 
 	}
-
-
 }
 
 void setServo(uint8_t id, uint8_t value) {
-	if (value >= 0 && value <= 180) {
+	if (value != NULL && value >= 0 && value <= 180) {
 		servo[id].write(value);
 	}
 }

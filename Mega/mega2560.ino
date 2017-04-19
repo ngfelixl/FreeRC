@@ -27,8 +27,6 @@ uint64_t readingPipe = 0xF0F0F0F0BB;
 RF24 radio(CE_pin, CSN_pin);
 unsigned long radioTransmission = 0, readUsb = 0, counter_check_status = 0;
 
-Ds4 controller;
-Screen screen(&radio);
 
 uint16_t transmission_success = 0;
 uint16_t transmission_count = 0;
@@ -38,8 +36,11 @@ char* navigation_status = "";
 uint8_t voltage = 0, voltage_count = 0;
 float voltage_sum = 0, voltage_avg = 0;
 
-uint8_t channel_map[4] = { 0, 0, 0, 0 }; // Values in range 0-7
+uint8_t channel_map[4] = { 2, 0, 0, 2 }; // Values in range 0-7
+uint8_t transmission[5] = { 0, 0, 0, 0, 0 }; // Moter, Channel 1-4
 
+Ds4 controller;
+Screen screen(&radio, channel_map);
 
 void setup() {
 	screen.init();
@@ -53,10 +54,14 @@ void loop() {
 		readUsb = millis();
 		controller.get();
 		if (screen.view == "control") {
+			for (uint8_t i = 0; i < 4; i++) {
+				uint8_t axis_id = channel_map[i] / 2;
+				if(axis_id >= 0 && axis_id <= 3)
+					transmission[i + 1] = map(controller.axis[axis_id] * ((channel_map[i]+1)%2 - channel_map[i]%2) + channel_map[i]%2 * 255, 0, 255, 20, 160);
+			}
 			screen.update_analog_axis(0, controller.axis[0], controller.axis[1], false);
 			screen.update_analog_axis(1, controller.axis[2], controller.axis[3], false);
 
-			//uint8_t motor = 100 * controller.axis[4] / 255.0;
 			screen.update_motor(controller.axis[4]);
 			if (controller.button.options) {
 				controller.status = "options";
@@ -75,8 +80,7 @@ void loop() {
 		radioTransmission = millis();
 		uint8_t axis = map(controller.axis[0], 0, 255, 20, 160);
 
-		radio.setChannel(80);
-		radio.writeFast(&axis, sizeof(axis));
+		radio.writeFast(&transmission, sizeof(transmission));
 
 		if (radio.isAckPayloadAvailable()) {
 			radio.read(&voltage, sizeof(voltage));
@@ -155,7 +159,8 @@ void setupRadio() {
 	// Use PALevel low for testing purposes only (default: high)
 	// PALevel now adjustable via options menu, default: high
 	radio.setPALevel(RF24_PA_HIGH);
-	radio.setPayloadSize(sizeof(uint8_t));
+	radio.setPayloadSize(sizeof(transmission));
+	radio.setChannel(80);
 
 	// Open a writing and reading pipe on each radio, with opposite addresses
 	radio.openWritingPipe(writingPipe);

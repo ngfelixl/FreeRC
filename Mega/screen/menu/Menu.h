@@ -19,6 +19,7 @@ class Menu {
 private:
 	Adafruit_TFTLCD *tft;
 	RF24 *radio;
+	uint8_t *channel_map;
 
 	char *current_menu = "base";
 	Option *options;
@@ -28,11 +29,13 @@ private:
 	int8_t getActiveElement();
 	void setMarker(uint8_t position);
 	void setRadioLevel(char *level);
+	void setChannelMap(uint8_t id, uint8_t value);
 	char *title;
 
 public:
 	Menu();
-	Menu(Adafruit_TFTLCD *tft, RF24 *radio, char* menu_type);
+	Menu(Adafruit_TFTLCD *tft, RF24 *radio);
+	Menu(Adafruit_TFTLCD *tft, uint8_t *channel_map);
 	void display(char *type);
 	void next();
 	void previous();

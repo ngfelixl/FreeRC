@@ -2,34 +2,41 @@
 
 Menu::Menu() {}
 
-Menu::Menu(Adafruit_TFTLCD *tft, RF24 *radio, char* menu_type) {
+Menu::Menu(Adafruit_TFTLCD *tft, RF24 *radio) {
 	// Not default constructor with getting the
-	// tfts address and creating the options
+	// tfts address and creating the main options menu
+	char* menu_type = "main";
 	this->tft = tft;
 	this->radio = radio;
 
-	if (menu_type == "main") {
-		options = new Option[4];
-		options[0] = Option("Channels", "enter");
-		options[1] = Option("Axis Range", "enter");
-		options[2] = Option("NRF24 PA Level", "select");
-		options[3] = Option("Exit", "exit");
-		options[0].active = true;
-		options_size = 4;
-		title = "Options";
-	}
-	else if (menu_type == "channels") {
-		options = new Option[5];
-		options[0] = Option("Channel 1", "channel");
-		options[1] = Option("Channel 2", "channel");
-		options[2] = Option("Channel 3", "channel");
-		options[3] = Option("Channel 4", "channel");
-		options[4] = Option("Exit", "exit");
-		options[0].active = true;
-		options_size = 5;
-		title = "Channels";
-	}
+	options = new Option[4];
+	options[0] = Option("Channels", "enter");
+	options[1] = Option("Axis Range", "enter");
+	options[2] = Option("NRF24 PA Level", "select");
+	options[3] = Option("Exit", "exit");
+	options[0].active = true;
+	options_size = 4;
+	title = "Options";
 }
+
+Menu::Menu(Adafruit_TFTLCD *tft, uint8_t *channel_map) {
+	// Not default constructor with getting the
+	// tfts address and creating the options for the channel selection
+	char* menu_type = "channel";
+	this->tft = tft;
+	this->channel_map = channel_map;
+
+	options = new Option[5];
+	options[0] = Option("Channel 1", "channel");
+	options[1] = Option("Channel 2", "channel");
+	options[2] = Option("Channel 3", "channel");
+	options[3] = Option("Channel 4", "channel");
+	options[4] = Option("Exit", "exit");
+	options[0].active = true;
+	options_size = 5;
+	title = "Channels";
+}
+
 
 void Menu::display(char *type) {
 	// Creates the title on the tft display
@@ -136,10 +143,12 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 	else if (options[active].getType() == "channel") {
 		if (left) {
 			options[active].previous();
+			setChannelMap(active + 1, options[active].getActiveParameter());
 			printParameter(active);
 		}
 		else if (right) {
 			options[active].next();
+			setChannelMap(active + 1, options[active].getActiveParameter());
 			printParameter(active);
 		}
 	}
@@ -168,6 +177,11 @@ void Menu::printParameter(int8_t id) {
 			tft->println(options[id].selectedParam());
 		}
 	}
+}
+
+void Menu::setChannelMap(uint8_t id, uint8_t value) {
+	if(id >= 1 && id <= 4)
+		channel_map[id] = value;
 }
 
 void Menu::setRadioLevel(char *level) {

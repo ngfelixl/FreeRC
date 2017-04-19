@@ -34,6 +34,7 @@ class Screen {
 private:
 	Adafruit_TFTLCD *tft;
 	RF24 *radio;
+	uint8_t *channel_map;
 
 	unsigned int update_counter = 0;
 	char *controller_status = "";
@@ -69,7 +70,7 @@ public:
 	Menu menu;
 	Menu menu_channels;
 
-	Screen(RF24 *radio);
+	Screen(RF24 *radio, uint8_t *channel_map);
 	void init();
 	void initial_view();
 	char* navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options);
