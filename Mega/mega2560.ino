@@ -110,7 +110,9 @@ void loop() {
 	if (millis() - counter_check_status > 500 && screen.view == "control") {
 		// Check if a force update is required. This is the case when
 		// returning to control view
-		screen.draw_plane((controller.axis[0] - 127) /32.0, (controller.axis[1] - 127) / 32.0, -9);
+
+		// Draw the plane object with the acceleration values (acceleration not implemented yet)
+		// screen.draw_plane((controller.axis[0] - 127) /32.0, (controller.axis[1] - 127) / 32.0, -9);
 
 		bool force = false;
 		if (navigation_status == "back to control")

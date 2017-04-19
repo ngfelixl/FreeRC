@@ -67,6 +67,7 @@ private:
 public:
 	String view = "control";
 	Menu menu;
+	Menu menu_channels;
 
 	Screen(RF24 *radio);
 	void init();

@@ -2,17 +2,33 @@
 
 Menu::Menu() {}
 
-Menu::Menu(Adafruit_TFTLCD *tft, RF24 *radio) {
+Menu::Menu(Adafruit_TFTLCD *tft, RF24 *radio, char* menu_type) {
 	// Not default constructor with getting the
 	// tfts address and creating the options
 	this->tft = tft;
 	this->radio = radio;
-	options = new Option[4];
-	options[0] = Option("Channels", "enter");
-	options[1] = Option("Axis Range", "enter");
-	options[2] = Option("NRF24 PA Level", "select");
-	options[3] = Option("Exit", "exit");
-	options[0].active = true;
+
+	if (menu_type == "main") {
+		options = new Option[4];
+		options[0] = Option("Channels", "enter");
+		options[1] = Option("Axis Range", "enter");
+		options[2] = Option("NRF24 PA Level", "select");
+		options[3] = Option("Exit", "exit");
+		options[0].active = true;
+		options_size = 4;
+		title = "Options";
+	}
+	else if (menu_type == "channels") {
+		options = new Option[5];
+		options[0] = Option("Channel 1", "select");
+		options[1] = Option("Channel 2", "select");
+		options[2] = Option("Channel 3", "select");
+		options[3] = Option("Channel 4", "select");
+		options[4] = Option("Exit", "exit");
+		options[0].active = true;
+		options_size = 5;
+		title = "Channels";
+	}
 }
 
 void Menu::display(char *type) {
@@ -21,7 +37,7 @@ void Menu::display(char *type) {
 	tft->setTextColor(ORANGE);
 	tft->setTextSize(2);
 	tft->setCursor(10, 10);
-	tft->println("Options");
+	tft->println(title);
 	tft->setTextColor(WHITE);
 	tft->setTextSize(1);
 	init_main();
@@ -102,12 +118,16 @@ int8_t Menu::getActiveElement() {
 char* Menu::execute(bool left, bool right, bool x, bool circle) {
 	int8_t active = getActiveElement();
 	char *action = "";
-	if (active == 2) { // NRF24
+	if (active == 0) { // Select channels
+		if (x) {
+			action = "goto channels";
+		}
+	}
+	else if (active == 2) { // NRF24
 		if (left) {
 			char* state = options[active].previous();
 			setRadioLevel(state);
 			printParameter();
-
 		}
 		else if (right) {
 			char* state = options[active].next();

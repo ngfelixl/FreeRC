@@ -4,7 +4,8 @@
 Screen::Screen(RF24 *radio) {
 	tft = new Adafruit_TFTLCD(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 	this->radio = radio;
-	menu = Menu(tft, radio);
+	menu = Menu(tft, radio, "main");
+	menu_channels = Menu(tft, radio, "channels");
 }
 
 void Screen::init() {
@@ -24,12 +25,21 @@ bool Screen::update() {
 }
 
 char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options) {
-	char *action = menu.execute(left, right, x, circle);
+	char *action = "";
+	if (view == "options")
+		action = menu.execute(left, right, x, circle);
+	if (view == "channels")
+		action = menu_channels.execute(left, right, x, circle);
+
 	char *output = "";
 
 	if (action == "exit") {
 		switch_view("control");
 		output = "back to control";
+	}
+
+	if (action == "goto channels") {
+		switch_view("channels");
 	}
 
 	if (up) {
@@ -133,6 +143,7 @@ void Screen::switch_view(String change_to) {
 	view = change_to;
 	if (view == "control") initial_view();
 	else if (view == "options") menu.display("");
+	else if (view == "channels") menu_channels.display("");
 }
 
 void Screen::update_voltage(float voltage, bool force) {
@@ -153,8 +164,9 @@ void Screen::update_voltage(float voltage, bool force) {
 }
 
 void Screen::draw_plane(double x, double y, double z) {
-	// { 76, 100, 168, 130 }
-	// double rotation = 0.2;
+	// Draws black lines over the old orange lines
+	// Calculates the new rotation matrix and the position of the new lines
+	// in x and z plane. Afterwards print the new lines on the tft
 
 	if (Rot[0][0] != NULL) {
 		for (uint8_t i = 0; i < 12; i++) {
@@ -169,7 +181,6 @@ void Screen::draw_plane(double x, double y, double z) {
 
 	double d = sqrt(x * x + y * y + z * z);
 	double norm[3] = { x / d, y / d, z / d };
-	//double d_xy = sqrt(x * x + y * y);
 	alpha = acos(norm[0]) + PI/2;
 	phi = acos(norm[2]);
 	double n[3] = { cos(alpha), sin(alpha), 0 };

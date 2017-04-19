@@ -22,16 +22,17 @@ private:
 
 	char *current_menu = "base";
 	Option *options;
-	int options_size = 4;
+	int options_size = 0;
 
 	void init_main();
 	int8_t getActiveElement();
 	void setMarker(uint8_t position);
 	void setRadioLevel(char *level);
+	char *title;
 
 public:
 	Menu();
-	Menu(Adafruit_TFTLCD *tft, RF24 *radio);
+	Menu(Adafruit_TFTLCD *tft, RF24 *radio, char* menu_type);
 	void display(char *type);
 	void next();
 	void previous();
