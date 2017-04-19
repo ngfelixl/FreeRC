@@ -26,38 +26,53 @@ bool Screen::update() {
 
 char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options) {
 	char *action = "";
-	if (view == "options")
+	char *output = "";
+	if (view == "options") {
 		action = menu.execute(left, right, x, circle);
-	if (view == "channels")
+
+
+		if (action == "exit") {
+			switch_view("control");
+			output = "back to control";
+		}
+
+		if (action == "Channels") {
+			switch_view("channels");
+		}
+
+
+		if (up) {
+			menu.previous();
+		}
+		else if (down) {
+			menu.next();
+		}
+		if (options || circle) {
+			switch_view("control");
+			output = "back to control";
+		}
+	}
+	else if (view == "channels") {
 		action = menu_channels.execute(left, right, x, circle);
 
-	char *output = "";
-
-	if (action == "exit") {
-		switch_view("control");
-		output = "back to control";
-	}
-
-	if (action == "Channels") {
-		switch_view("channels");
-	}
-
-	if (up) {
-		if (view == "channels")
+		if (up) {
 			menu_channels.previous();
-		else
-			menu.previous();
-	}
-	else if (down) {
-		if (view == "channels")
+		}
+		else if (down) {
 			menu_channels.next();
-		else
-			menu.next();
+		}
+
+		if (options) {
+			switch_view("control");
+			output = "back to control";
+		}
+
+		if (circle || action == "exit") {
+			switch_view("options");
+		}
 	}
-	if (options || circle) {
-		switch_view("control");
-		output = "back to control";
-	}
+	
+
 	return output;
 }
 
