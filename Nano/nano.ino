@@ -82,20 +82,11 @@ void loop() {
 	}
 
 	if (millis() - servoWrite > 5) {
-		//Serial.println(radioData.motor);
-		// MOTOR SERVO
-		//setServo(0, radioData.motor);
-		//setServo(1, radioData.servo[0]);
-		//setServo(2, 180-radioData.servo[0]);
-		//setServo(3, radioData.servo[1]);
-		//setServo(4, radioData.servo[2]);
 		for (uint8_t i = 0; i < 5; i++) {
 			setServo(i, transmission[i]);
 		}
 
-		//setServo(4, transmission[1]);
 		servoWrite = millis();
-
 	}
 }
 
