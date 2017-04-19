@@ -38,6 +38,8 @@ char* navigation_status = "";
 uint8_t voltage = 0, voltage_count = 0;
 float voltage_sum = 0, voltage_avg = 0;
 
+uint8_t channel_map[4] = { 0, 0, 0, 0 }; // Values in range 0-7
+
 
 void setup() {
 	screen.init();
