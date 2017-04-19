@@ -123,7 +123,7 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 			action = options[active].getName();
 		}
 	}
-	else if (active == 2) { // NRF24
+	else if (options[active].getName() == "NRF24 PA Level") { // NRF24
 		if (left) {
 			char* state = options[active].previous();
 			setRadioLevel(state);
@@ -135,7 +135,7 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 			printParameter();
 		}
 	}
-	else if (options[active].getName() == "Exit") { // Exit
+	else if (options[active].getType() == "exit") { // Exit
 		if (x) {
 			action = "exit";
 		}
