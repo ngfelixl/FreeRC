@@ -20,10 +20,10 @@ Menu::Menu(Adafruit_TFTLCD *tft, RF24 *radio, char* menu_type) {
 	}
 	else if (menu_type == "channels") {
 		options = new Option[5];
-		options[0] = Option("Channel 1", "select");
-		options[1] = Option("Channel 2", "select");
-		options[2] = Option("Channel 3", "select");
-		options[3] = Option("Channel 4", "select");
+		options[0] = Option("Channel 1", "channel");
+		options[1] = Option("Channel 2", "channel");
+		options[2] = Option("Channel 3", "channel");
+		options[3] = Option("Channel 4", "channel");
 		options[4] = Option("Exit", "exit");
 		options[0].active = true;
 		options_size = 5;
@@ -54,7 +54,7 @@ void Menu::init_main() {
 		}
 	}
 	setMarker(index);
-	printParameter();
+	printParameter(-1);
 }
 
 void Menu::next() {
@@ -118,38 +118,54 @@ int8_t Menu::getActiveElement() {
 char* Menu::execute(bool left, bool right, bool x, bool circle) {
 	int8_t active = getActiveElement();
 	char *action = "";
-	if (options[active].getType() == "enter") { // Select channels
-		if (x) {
-			action = options[active].getName();
-		}
+	if (options[active].getType() == "enter" && x) { // Select channels
+		action = options[active].getName();
 	}
 	else if (options[active].getName() == "NRF24 PA Level") { // NRF24
 		if (left) {
 			char* state = options[active].previous();
 			setRadioLevel(state);
-			printParameter();
+			printParameter(active);
 		}
 		else if (right) {
 			char* state = options[active].next();
 			setRadioLevel(state);
-			printParameter();
+			printParameter(active);
 		}
 	}
-	else if (options[active].getType() == "exit") { // Exit
-		if (x) {
-			action = "exit";
+	else if (options[active].getType() == "channel") {
+		if (left) {
+			options[active].previous();
+			printParameter(active);
 		}
+		else if (right) {
+			options[active].next();
+			printParameter(active);
+		}
+	}
+	else if (options[active].getType() == "exit" && x) { // Exit
+		action = "exit";
 	}
 	return action;
 }
 
-void Menu::printParameter() {
-	for (uint8_t i = 0; i < options_size; i++) {
-		if (options[i].getType() == "select") {
-			tft->fillRect(200, 60 + 30 * i, 100, 8, BLACK);
-			tft->setCursor(200, 60 + 30 * i);
+void Menu::printParameter(int8_t id) {
+	if (id == -1) {
+		for (uint8_t i = 0; i < options_size; i++) {
+			if (options[i].getType() == "select" || options[i].getType() == "channel") {
+				tft->fillRect(200, 60 + 30 * i, 100, 8, BLACK);
+				tft->setCursor(200, 60 + 30 * i);
+				tft->setTextColor(WHITE);
+				tft->println(options[i].selectedParam());
+			}
+		}
+	}
+	else {
+		if (options[id].getType() == "select" || options[id].getType() == "channel") {
+			tft->fillRect(200, 60 + 30 * id, 100, 8, BLACK);
+			tft->setCursor(200, 60 + 30 * id);
 			tft->setTextColor(WHITE);
-			tft->println(options[i].selectedParam());
+			tft->println(options[id].selectedParam());
 		}
 	}
 }

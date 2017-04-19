@@ -24,7 +24,7 @@ void Option::initialize() {
 		params_size = 4;
 		params[2].active = true;
 	}
-	else if (name == "Channel 1") {
+	else if (type == "channel") {
 		params = new Parameter[8];
 		params[0] = Parameter("Left X");
 		params[1] = Parameter("- Left X");
@@ -35,7 +35,16 @@ void Option::initialize() {
 		params[6] = Parameter("Right Y");
 		params[7] = Parameter("- Right Y");
 		params_size = 8;
-		params[2].active = true;
+
+		if (name == "Channel 1") {
+			params[2].active = true;
+		}
+		else if (name == "Channel 2") {
+			params[5].active = true;
+		}
+		else {
+			params[0].active = true;
+		}
 	}
 	//this->params = params;
 	//}
@@ -87,7 +96,7 @@ char* Option::previous() {
 
 int8_t Option::getActiveParameter() {
 	int8_t index = -1;
-	for (int8_t i = 0; i < 4; i++) {
+	for (int8_t i = 0; i < params_size; i++) {
 		if (params[i].active) {
 			index = i;
 			break;

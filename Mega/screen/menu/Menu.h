@@ -37,5 +37,5 @@ public:
 	void next();
 	void previous();
 	char *execute(bool left, bool right, bool x, bool circle);
-	void printParameter();
+	void printParameter(int8_t id);
 };

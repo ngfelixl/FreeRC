@@ -55,6 +55,76 @@
           <MessageVariable Name="position" Index="1" />
         </MessageVariables>
       </BreakPoint>
+      <BreakPoint Index="3" Name="menu.cpp, line 164" Id="119aa473-a826-43da-a353-a471c438c722" Enabled="1" Message="{id}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\felix\documents\development\arduino\mega\screen\menu\menu.cpp" FileLine="164" FileColumn="1" FunctionName="printParameter(int8_t id)" FunctionLineOffset="13" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='119aa473-a826-43da-a353-a471c438c722'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
+        <Source>157					tft-&gt;setCursor(200, 60 + 30 * i);
+158					tft-&gt;setTextColor(WHITE);
+159					tft-&gt;println(options[i].selectedParam());
+160				}
+161			}
+162		}
+163		else {
+--&gt;164			if (options[id].getType() == "select" || options[id].getType() == "channel") {
+165				tft-&gt;fillRect(200, 60 + 30 * id, 100, 8, BLACK);
+166				tft-&gt;setCursor(200, 60 + 30 * id);
+167				tft-&gt;setTextColor(WHITE);
+168				tft-&gt;println(options[id].selectedParam());
+169			}
+170		}
+171	}
+172	
+173	void Menu::setRadioLevel(char *level) {
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="id" Index="1" />
+        </MessageVariables>
+      </BreakPoint>
+      <BreakPoint Index="4" Name="option.cpp, line 69" Id="f2e19fe0-2ba9-4f7b-8605-93cce84c755c" Enabled="1" Message="{index}{params_size}" MessageTextType="2" PreProcessedMessage="{0}{1}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\felix\documents\development\arduino\mega\screen\option\option.cpp" FileLine="69" FileColumn="1" FunctionName="next()" FunctionLineOffset="4" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='f2e19fe0-2ba9-4f7b-8605-93cce84c755c'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
+        <Source>62	char* Option::getType() {
+63		return this-&gt;type;
+64	}
+65	
+66	char* Option::next() {
+67		int8_t index = getActiveParameter();
+68		if (index &gt;= 0) {
+--&gt;69			params[index].active = false;
+70			if (index &lt; params_size - 1) {
+71				index = index + 1;
+72			}
+73			params[index].active = true;
+74		}
+75		else {
+76			params[0].active = true;
+77		}
+78		return params[index].getName();
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="index" Index="1" />
+          <MessageVariable Name="params_size" Index="2" />
+        </MessageVariables>
+      </BreakPoint>
+      <BreakPoint Index="5" Name="option.cpp, line 59" Id="fae9049c-e75b-4dbf-a6b4-ca3e2258631f" Enabled="1" Message="{output}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\felix\documents\development\arduino\mega\screen\option\option.cpp" FileLine="59" FileColumn="1" FunctionName="selectedParam()" FunctionLineOffset="7" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='fae9049c-e75b-4dbf-a6b4-ca3e2258631f'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
+        <Source>52	
+53	char* Option::selectedParam() {
+54		int8_t index = getActiveParameter();
+55		char *output = "";
+56		if (index &gt; -1 &amp;&amp; index &lt; params_size) {
+57			output = params[index].getName();
+58		}
+--&gt;59		return output;
+60	}
+61	
+62	char* Option::getType() {
+63		return this-&gt;type;
+64	}
+65	
+66	char* Option::next() {
+67		int8_t index = getActiveParameter();
+68		if (index &gt;= 0) {
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="output" Index="1" />
+        </MessageVariables>
+      </BreakPoint>
     </BreakPoints>
   </Program>
 </VisualMicro>
