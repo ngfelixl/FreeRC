@@ -100,7 +100,7 @@ void Menu::previous() {
 }
 
 void Menu::setMarker(uint8_t position) {
-	tft->fillRect(0, 60, 20, 200, BLACK);
+	tft->fillRect(0, 60, 20, 160, BLACK);
 	tft->fillRect(5, 60 + 30 * position, 6, 6, ORANGE);
 }
 
@@ -118,9 +118,9 @@ int8_t Menu::getActiveElement() {
 char* Menu::execute(bool left, bool right, bool x, bool circle) {
 	int8_t active = getActiveElement();
 	char *action = "";
-	if (active == 0) { // Select channels
+	if (options[active].getType() == "enter") { // Select channels
 		if (x) {
-			action = "goto channels";
+			action = options[active].getName();
 		}
 	}
 	else if (active == 2) { // NRF24
@@ -135,7 +135,7 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 			printParameter();
 		}
 	}
-	else if (active == 3) { // Exit
+	else if (options[active].getName() == "Exit") { // Exit
 		if (x) {
 			action = "exit";
 		}

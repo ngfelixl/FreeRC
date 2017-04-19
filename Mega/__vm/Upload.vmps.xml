@@ -32,6 +32,52 @@
           <MessageVariable Name="millis()" Index="1" />
         </MessageVariables>
       </BreakPoint>
+      <BreakPoint Index="2" Name="menu.cpp, line 103" Id="4e301205-8ede-4420-a8e3-ada0c9b198c7" Enabled="1" Message="{position}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\felix\documents\development\arduino\mega\screen\menu\menu.cpp" FileLine="103" FileColumn="1" FunctionName="setMarker(uint8_t position)" FunctionLineOffset="2" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='4e301205-8ede-4420-a8e3-ada0c9b198c7'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
+        <Source>96			options[0].active = true;
+97			index = 0;
+98		}
+99		setMarker(index);
+100	}
+101	
+102	void Menu::setMarker(uint8_t position) {
+--&gt;103		tft-&gt;fillRect(0, 60, 20, 160, BLACK);
+104		tft-&gt;fillRect(5, 60 + 30 * position, 6, 6, ORANGE);
+105	}
+106	
+107	int8_t Menu::getActiveElement() {
+108		int8_t index = -1;
+109		for (int8_t i = 0; i &lt; options_size; i++) {
+110			if (options[i].active) {
+111				index = i;
+112				break;
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="position" Index="1" />
+        </MessageVariables>
+      </BreakPoint>
+      <BreakPoint Index="3" Name="screen.cpp, line 28" Id="640e7b14-e1e7-48b8-94e9-4b1804163af3" Enabled="1" Message="{view}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\felix\documents\development\arduino\mega\screen\screen.cpp" FileLine="28" FileColumn="1" FunctionName="navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options)" FunctionLineOffset="2" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='640e7b14-e1e7-48b8-94e9-4b1804163af3'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
+        <Source>21			update_counter = millis();
+22			return true;
+23		}
+24		return false;
+25	}
+26	
+27	char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options) {
+--&gt;28		char *action = "";
+29		if (view == "options")
+30			action = menu.execute(left, right, x, circle);
+31		if (view == "channels")
+32			action = menu_channels.execute(left, right, x, circle);
+33	
+34		char *output = "";
+35	
+36		if (action == "exit") {
+37			switch_view("control");
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="view" Index="1" />
+        </MessageVariables>
+      </BreakPoint>
     </BreakPoints>
   </Program>
 </VisualMicro>

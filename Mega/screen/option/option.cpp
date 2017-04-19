@@ -15,13 +15,28 @@ void Option::initialize() {
 	//if (name == "NRF24 PA Level") {
 	//Parameter params[4];
 	//char name[6] = " Min ";
-	params = new Parameter[4];
-	params[0] = Parameter("Min");
-	params[1] = Parameter("Low");
-	params[2] = Parameter("High");
-	params[3] = Parameter("Max");
-	params_size = 4;
-	params[2].active = true;
+	if (name == "NRF24 PA Level") {
+		params = new Parameter[4];
+		params[0] = Parameter("Min");
+		params[1] = Parameter("Low");
+		params[2] = Parameter("High");
+		params[3] = Parameter("Max");
+		params_size = 4;
+		params[2].active = true;
+	}
+	else if (name == "Channel 1") {
+		params = new Parameter[8];
+		params[0] = Parameter("Left X");
+		params[1] = Parameter("- Left X");
+		params[2] = Parameter("Left Y");
+		params[3] = Parameter("- Left Y");
+		params[4] = Parameter("Right X");
+		params[5] = Parameter("- Right X");
+		params[6] = Parameter("Right Y");
+		params[7] = Parameter("- Right Y");
+		params_size = 8;
+		params[2].active = true;
+	}
 	//this->params = params;
 	//}
 }

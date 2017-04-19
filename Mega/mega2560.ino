@@ -61,7 +61,7 @@ void loop() {
 				screen.switch_view("options");
 			}
 		}
-		else if (screen.view == "options") {
+		else if (screen.view == "options" || screen.view == "channels") {
 			navigation_status = screen.navigate(controller.button.left, controller.button.right, controller.button.up, controller.button.down, controller.button.x, controller.button.circle, controller.button.options);
 		}
 	}

@@ -38,15 +38,21 @@ char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool c
 		output = "back to control";
 	}
 
-	if (action == "goto channels") {
+	if (action == "Channels") {
 		switch_view("channels");
 	}
 
 	if (up) {
-		menu.previous();
+		if (view == "channels")
+			menu_channels.previous();
+		else
+			menu.previous();
 	}
 	else if (down) {
-		menu.next();
+		if (view == "channels")
+			menu_channels.next();
+		else
+			menu.next();
 	}
 	if (options || circle) {
 		switch_view("control");
