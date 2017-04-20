@@ -37,7 +37,7 @@ uint8_t voltage = 0, voltage_count = 0;
 float voltage_sum = 0, voltage_avg = 0;
 
 uint8_t channel_map[4] = { 0, 0, 0, 0 }; // Values in range 0-7
-uint8_t axis_range_min[4] = { 20, 20, 20, 20 }; // Values in range 0-7
+uint8_t axis_range_min[4] = { 30, 20, 20, 20 }; // Values in range 0-7
 uint8_t axis_range_max[4] = { 160, 160, 160, 160 }; // Values in range 0-7
 uint8_t transmission[5] = { 0, 0, 0, 0, 0 }; // Moter, Channel 1-4
 
