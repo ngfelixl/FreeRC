@@ -65,6 +65,8 @@ private:
 	double phi = 0, alpha = 0;
 	double Rot[3][3];
 
+	void initial_view();
+
 public:
 	String view = "control";
 	Menu menu;
@@ -73,11 +75,7 @@ public:
 
 	Screen(RF24 *radio, uint8_t *channel_map, uint8_t *axis_range_min, uint8_t *axis_range_max);
 	void init();
-	void initial_view();
 	char* navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options);
-	//void options_navigate(char* direction);
-
-	//void switch_marker();
 	void switch_view(String view);
 	void print_peripheral_status(int id, char* type, char *message, bool force);
 	void update_analog_axis(uint8_t axis, uint8_t x, uint8_t y, bool force);

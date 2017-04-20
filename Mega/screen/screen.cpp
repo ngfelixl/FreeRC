@@ -77,6 +77,7 @@ char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool c
 		}
 	}
 	else if (view == "range") {
+		action = menu_range.execute(left, right, x, circle);
 		if (up) {
 			menu_range.previous();
 		}
@@ -243,6 +244,8 @@ void Screen::draw_plane(double x, double y, double z) {
 		tft->drawLine(line[0], line[1], line[2], line[3], ORANGE);
 	}
 }
+
+
 
 
 void Screen::initial_view() {

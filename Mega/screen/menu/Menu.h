@@ -34,6 +34,7 @@ private:
 	void setRadioDatarate(char *rate);
 	void setChannelMap(uint8_t id, uint8_t value);
 	char *title;
+	void display_range_adjustment(uint8_t id);
 
 public:
 	Menu();

@@ -181,6 +181,9 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 			printParameter(active);
 		}
 	}
+	else if (options[active].getType() == "range" && x) {
+		display_range_adjustment(active);
+	}
 	else if (options[active].getType() == "exit" && x) { // Exit
 		action = "exit";
 	}
@@ -206,6 +209,27 @@ void Menu::printParameter(int8_t id) {
 			tft->println(options[id].selectedParam());
 		}
 	}
+}
+
+void Menu::display_range_adjustment(uint8_t id) {
+	tft->fillScreen(BLACK);
+	tft->setCursor(10, 10);
+	tft->setTextColor(ORANGE);
+	tft->setTextSize(2);
+	tft->println(options[id].getName());
+	tft->drawLine(40, 220, 280, 220, WHITE);
+	tft->drawLine(160, 100, 160, 220, WHITE);
+	tft->drawCircle(160, 220, 120, WHITE);
+	tft->drawCircle(160, 220, 60, WHITE);
+	float center = (axis_range_min[id] + axis_range_max[id]) / 2.0;
+	tft->drawLine(cos(PI - axis_range_min[id] / 180.0*PI) * 120 + 160, -sin(PI - axis_range_min[id] / 180.0*PI) * 120 + 220, 160, 220, ORANGE);
+	tft->drawLine(cos(PI - axis_range_max[id] / 180.0*PI) * 120 + 160, -sin(PI - axis_range_max[id] / 180.0*PI) * 120 + 220, 160, 220, ORANGE);
+	tft->drawLine(cos(PI - center / 180.0*PI) * 60 + 160, -sin(PI - center / 180.0*PI) * 60 + 220, 160, 220, ORANGE);
+	tft->setTextColor(WHITE);
+	tft->setCursor(30, 100);
+	tft->println(axis_range_min[id]);
+	tft->setCursor(250, 100);
+	tft->println(axis_range_max[id]);
 }
 
 void Menu::setChannelMap(uint8_t id, uint8_t value) {
