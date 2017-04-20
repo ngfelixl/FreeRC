@@ -24,30 +24,27 @@ void Option::initialize() {
 		params_size = 4;
 		params[2].active = true;
 	}
+	else if (name == "NRF24 Data Rate") {
+		params = new Parameter[3];
+		params[0] = Parameter("250 kb/s");
+		params[1] = Parameter("1 Mb/s");
+		params[2] = Parameter("2 Mb/s");
+		params_size = 3;
+		params[0].active = true;
+	}
 	else if (type == "channel") {
 		params = new Parameter[8];
 		params[0] = Parameter("Left X");
-		params[1] = Parameter("- Left X");
+		params[1] = Parameter("Left X Inv.");
 		params[2] = Parameter("Left Y");
-		params[3] = Parameter("- Left Y");
+		params[3] = Parameter("Left Y Inv.");
 		params[4] = Parameter("Right X");
-		params[5] = Parameter("- Right X");
+		params[5] = Parameter("Right X Inv.");
 		params[6] = Parameter("Right Y");
-		params[7] = Parameter("- Right Y");
+		params[7] = Parameter("Right Y Inv.");
 		params_size = 8;
-
-		if (name == "Channel 1") {
-			params[2].active = true;
-		}
-		else if (name == "Channel 2") {
-			params[5].active = true;
-		}
-		else {
-			params[0].active = true;
-		}
+		params[0].active = true;
 	}
-	//this->params = params;
-	//}
 }
 
 char* Option::selectedParam() {

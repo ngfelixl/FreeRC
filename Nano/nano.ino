@@ -29,11 +29,11 @@
 #define CSN_PIN 8
 
 // Define Pins for Servos
-#define MOTOR_PIN 2
-#define SERVO_LEFT_PIN 3
-#define SERVO_RIGHT_PIN 4
-#define SERVO_HEIGHT_PIN 5
-#define SERVO_SIDE_PIN 6
+#define MOTOR 2
+#define CHANNEL_1 3
+#define CHANNEL_2 4
+#define CHANNEL_3 5
+#define CHANNEL_4 6
 
 Servo servo[5]; // 4=motor, 0=left, 1=right=-left, 2=height-ctr, 3=side-ctr
 
@@ -61,11 +61,11 @@ void setup() {
 	radio.openReadingPipe(1, readingPipe);
 	radio.openWritingPipe(writingPipe);
 
-	servo[0].attach(MOTOR_PIN);
-	servo[1].attach(SERVO_LEFT_PIN);
-	servo[2].attach(SERVO_RIGHT_PIN);
-	servo[3].attach(SERVO_HEIGHT_PIN);
-	servo[4].attach(SERVO_SIDE_PIN);
+	servo[0].attach(MOTOR);
+	servo[1].attach(CHANNEL_1);
+	servo[2].attach(CHANNEL_2);
+	servo[3].attach(CHANNEL_3);
+	servo[4].attach(CHANNEL_4);
 }
 
 void loop() {

@@ -36,7 +36,7 @@ char* navigation_status = "";
 uint8_t voltage = 0, voltage_count = 0;
 float voltage_sum = 0, voltage_avg = 0;
 
-uint8_t channel_map[4] = { 2, 0, 0, 2 }; // Values in range 0-7
+uint8_t channel_map[4] = { 0, 0, 0, 0 }; // Values in range 0-7
 uint8_t transmission[5] = { 0, 0, 0, 0, 0 }; // Moter, Channel 1-4
 
 Ds4 controller;

@@ -9,13 +9,14 @@ Menu::Menu(Adafruit_TFTLCD *tft, RF24 *radio) {
 	this->tft = tft;
 	this->radio = radio;
 
-	options = new Option[4];
+	options = new Option[5];
 	options[0] = Option("Channels", "enter");
 	options[1] = Option("Axis Range", "enter");
 	options[2] = Option("NRF24 PA Level", "select");
-	options[3] = Option("Exit", "exit");
+	options[3] = Option("NRF24 Data Rate", "select");
+	options[4] = Option("Exit", "exit");
 	options[0].active = true;
-	options_size = 4;
+	options_size = 5;
 	title = "Options";
 }
 
@@ -143,12 +144,12 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 	else if (options[active].getType() == "channel") {
 		if (left) {
 			options[active].previous();
-			setChannelMap(active + 1, options[active].getActiveParameter());
+			setChannelMap(active, options[active].getActiveParameter());
 			printParameter(active);
 		}
 		else if (right) {
 			options[active].next();
-			setChannelMap(active + 1, options[active].getActiveParameter());
+			setChannelMap(active, options[active].getActiveParameter());
 			printParameter(active);
 		}
 	}
@@ -180,7 +181,7 @@ void Menu::printParameter(int8_t id) {
 }
 
 void Menu::setChannelMap(uint8_t id, uint8_t value) {
-	if(id >= 1 && id <= 4)
+	if(id >= 0 && id <= 3)
 		channel_map[id] = value;
 }
 
