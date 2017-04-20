@@ -32,31 +32,6 @@
           <MessageVariable Name="millis()" Index="1" />
         </MessageVariables>
       </BreakPoint>
-      <BreakPoint Index="2" Name="nano.ino, line 95" Id="d830c9b0-be00-4804-bade-e090450947b9" Enabled="1" Message="{transmission[0]}{transmission[1]}{transmission[2]}" MessageTextType="2" PreProcessedMessage="{0}{1}{2}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\felix\documents\development\arduino\nano\nano.ino" FileLine="95" FileColumn="1" FunctionName="loop()" FunctionLineOffset="26" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='d830c9b0-be00-4804-bade-e090450947b9'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
-        <Source>88			//setServo(1, radioData.servo[0]);
-89			//setServo(2, 180-radioData.servo[0]);
-90			//setServo(3, radioData.servo[1]);
-91			//setServo(4, radioData.servo[2]);
-92			for (uint8_t i = 0; i &lt; 5; i++) {
-93				setServo(i, transmission[i]);
-94			}
---&gt;95	
-96			//setServo(4, transmission[1]);
-97			servoWrite = millis();
-98	
-99		}
-100	}
-101	
-102	void setServo(uint8_t id, uint8_t value) {
-103		if (value != NULL &amp;&amp; value &gt;= 0 &amp;&amp; value &lt;= 180) {
-104			servo[id].write(value);
-</Source>
-        <MessageVariables>
-          <MessageVariable Name="transmission[0]" Index="1" />
-          <MessageVariable Name="transmission[1]" Index="2" />
-          <MessageVariable Name="transmission[2]" Index="3" />
-        </MessageVariables>
-      </BreakPoint>
     </BreakPoints>
   </Program>
 </VisualMicro>

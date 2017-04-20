@@ -159,6 +159,7 @@ void setupRadio() {
 	// Use PALevel low for testing purposes only (default: high)
 	// PALevel now adjustable via options menu, default: high
 	radio.setPALevel(RF24_PA_HIGH);
+	radio.setDataRate(RF24_250KBPS);
 	radio.setPayloadSize(sizeof(transmission));
 	radio.setChannel(80);
 
