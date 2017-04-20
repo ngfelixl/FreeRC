@@ -17,18 +17,18 @@ void Option::initialize() {
 	//char name[6] = " Min ";
 	if (name == "NRF24 PA Level") {
 		params = new Parameter[4];
-		params[0] = Parameter("Min");
-		params[1] = Parameter("Low");
-		params[2] = Parameter("High");
-		params[3] = Parameter("Max");
+		params[0] = Parameter("  1.5 mW");
+		params[1] = Parameter("  6.3 mW");
+		params[2] = Parameter(" 25.1 mW");
+		params[3] = Parameter("100.0 mW");
 		params_size = 4;
 		params[2].active = true;
 	}
 	else if (name == "NRF24 Data Rate") {
 		params = new Parameter[3];
 		params[0] = Parameter("250 kb/s");
-		params[1] = Parameter("1 Mb/s");
-		params[2] = Parameter("2 Mb/s");
+		params[1] = Parameter("  1 Mb/s");
+		params[2] = Parameter("  2 Mb/s");
 		params_size = 3;
 		params[0].active = true;
 	}

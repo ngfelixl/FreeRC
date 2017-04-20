@@ -214,16 +214,16 @@ void Menu::setChannelMap(uint8_t id, uint8_t value) {
 }
 
 void Menu::setRadioLevel(char *level) {
-	if (level == "Min") {
+	if (level == "  1.5 mW") {
 		radio->setPALevel(RF24_PA_MIN);
 	}
-	else if (level == "Low") {
+	else if (level == "  6.3 mW") {
 		radio->setPALevel(RF24_PA_LOW);
 	}
-	else if (level == "High") {
+	else if (level == " 25.1 mW") {
 		radio->setPALevel(RF24_PA_HIGH);
 	}
-	else if (level == "Max") {
+	else if (level == "100.0 mW") {
 		radio->setPALevel(RF24_PA_MAX);
 	}
 	delay(20);
@@ -233,10 +233,10 @@ void Menu::setRadioDatarate(char *rate) {
 	if (rate == "250 kb/s") {
 		radio->setDataRate(RF24_250KBPS);
 	}
-	else if (rate == "1 Mb/s") {
+	else if (rate == "  1 Mb/s") {
 		radio->setDataRate(RF24_1MBPS);
 	}
-	else if (rate == "2 Mb/s") {
+	else if (rate == "  2 Mb/s") {
 		radio->setDataRate(RF24_2MBPS);
 	}
 }
