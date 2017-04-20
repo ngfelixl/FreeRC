@@ -1,12 +1,13 @@
 #include"Screen.h"
 
 
-Screen::Screen(RF24 *radio, uint8_t *channel_map) {
+Screen::Screen(RF24 *radio, uint8_t *channel_map, uint8_t *axis_range_min, uint8_t *axis_range_max) {
 	tft = new Adafruit_TFTLCD(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 	this->radio = radio;
 	this->channel_map = channel_map;
 	menu = Menu(tft, radio);
 	menu_channels = Menu(tft, channel_map);
+	menu_range = Menu(tft, axis_range_min, axis_range_max);
 }
 
 void Screen::init() {
@@ -40,6 +41,9 @@ char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool c
 		if (action == "Channels") {
 			switch_view("channels");
 		}
+		else if (action == "Axis Range") {
+			switch_view("range");
+		}
 
 
 		if (up) {
@@ -68,6 +72,17 @@ char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool c
 			output = "back to control";
 		}
 
+		if (circle || action == "exit") {
+			switch_view("options");
+		}
+	}
+	else if (view == "range") {
+		if (up) {
+			menu_range.previous();
+		}
+		else if (down) {
+			menu_range.next();
+		}
 		if (circle || action == "exit") {
 			switch_view("options");
 		}
@@ -166,6 +181,7 @@ void Screen::switch_view(String change_to) {
 	if (view == "control") initial_view();
 	else if (view == "options") menu.display("");
 	else if (view == "channels") menu_channels.display("");
+	else if (view == "range") menu_range.display("");
 }
 
 void Screen::update_voltage(float voltage, bool force) {
@@ -275,7 +291,7 @@ void Screen::initial_view() {
 	tft->drawRect(76, 100, 168, 130, WHITE);
 
 
-	draw_plane(0.0, 0.0, 9);
+	draw_plane(-4, 0, -9);
 
 
 	tft->setCursor(304, 40);

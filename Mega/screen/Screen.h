@@ -69,8 +69,9 @@ public:
 	String view = "control";
 	Menu menu;
 	Menu menu_channels;
+	Menu menu_range;
 
-	Screen(RF24 *radio, uint8_t *channel_map);
+	Screen(RF24 *radio, uint8_t *channel_map, uint8_t *axis_range_min, uint8_t *axis_range_max);
 	void init();
 	void initial_view();
 	char* navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options);

@@ -20,6 +20,8 @@ private:
 	Adafruit_TFTLCD *tft;
 	RF24 *radio;
 	uint8_t *channel_map;
+	uint8_t *axis_range_min;
+	uint8_t *axis_range_max;
 
 	char *current_menu = "base";
 	Option *options;
@@ -29,6 +31,7 @@ private:
 	int8_t getActiveElement();
 	void setMarker(uint8_t position);
 	void setRadioLevel(char *level);
+	void setRadioDatarate(char *rate);
 	void setChannelMap(uint8_t id, uint8_t value);
 	char *title;
 
@@ -36,6 +39,7 @@ public:
 	Menu();
 	Menu(Adafruit_TFTLCD *tft, RF24 *radio);
 	Menu(Adafruit_TFTLCD *tft, uint8_t *channel_map);
+	Menu(Adafruit_TFTLCD *tft, uint8_t *axis_range_min, uint8_t *axis_range_max);
 	void display(char *type);
 	void next();
 	void previous();

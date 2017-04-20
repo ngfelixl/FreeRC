@@ -37,10 +37,12 @@ uint8_t voltage = 0, voltage_count = 0;
 float voltage_sum = 0, voltage_avg = 0;
 
 uint8_t channel_map[4] = { 0, 0, 0, 0 }; // Values in range 0-7
+uint8_t axis_range_min[4] = { 20, 20, 20, 20 }; // Values in range 0-7
+uint8_t axis_range_max[4] = { 160, 160, 160, 160 }; // Values in range 0-7
 uint8_t transmission[5] = { 0, 0, 0, 0, 0 }; // Moter, Channel 1-4
 
 Ds4 controller;
-Screen screen(&radio, channel_map);
+Screen screen(&radio, channel_map, axis_range_min, axis_range_max);
 
 void setup() {
 	screen.init();
@@ -57,7 +59,7 @@ void loop() {
 			for (uint8_t i = 0; i < 4; i++) {
 				uint8_t axis_id = channel_map[i] / 2;
 				if(axis_id >= 0 && axis_id <= 3)
-					transmission[i + 1] = map(controller.axis[axis_id] * ((channel_map[i]+1)%2 - channel_map[i]%2) + channel_map[i]%2 * 255, 0, 255, 20, 160);
+					transmission[i + 1] = map(controller.axis[axis_id] * ((channel_map[i]+1)%2 - channel_map[i]%2) + channel_map[i]%2 * 255, 0, 255, axis_range_min[i], axis_range_max[i]);
 			}
 			screen.update_analog_axis(0, controller.axis[0], controller.axis[1], false);
 			screen.update_analog_axis(1, controller.axis[2], controller.axis[3], false);
@@ -68,7 +70,7 @@ void loop() {
 				screen.switch_view("options");
 			}
 		}
-		else if (screen.view == "options" || screen.view == "channels") {
+		else if (screen.view == "options" || screen.view == "channels" || screen.view == "range") {
 			navigation_status = screen.navigate(controller.button.left, controller.button.right, controller.button.up, controller.button.down, controller.button.x, controller.button.circle, controller.button.options);
 		}
 	}

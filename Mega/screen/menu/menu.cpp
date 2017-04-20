@@ -5,7 +5,6 @@ Menu::Menu() {}
 Menu::Menu(Adafruit_TFTLCD *tft, RF24 *radio) {
 	// Not default constructor with getting the
 	// tfts address and creating the main options menu
-	char* menu_type = "main";
 	this->tft = tft;
 	this->radio = radio;
 
@@ -23,7 +22,6 @@ Menu::Menu(Adafruit_TFTLCD *tft, RF24 *radio) {
 Menu::Menu(Adafruit_TFTLCD *tft, uint8_t *channel_map) {
 	// Not default constructor with getting the
 	// tfts address and creating the options for the channel selection
-	char* menu_type = "channel";
 	this->tft = tft;
 	this->channel_map = channel_map;
 
@@ -36,6 +34,24 @@ Menu::Menu(Adafruit_TFTLCD *tft, uint8_t *channel_map) {
 	options[0].active = true;
 	options_size = 5;
 	title = "Channels";
+}
+
+Menu::Menu(Adafruit_TFTLCD *tft, uint8_t *axis_range_min, uint8_t *axis_range_max) {
+	// Not default constructor with getting the
+	// tfts address and creating the options for the axis range adjustment
+	this->tft = tft;
+	this->axis_range_min = axis_range_min;
+	this->axis_range_max = axis_range_max;
+
+	options = new Option[5];
+	options[0] = Option("Channel 1", "range");
+	options[1] = Option("Channel 2", "range");
+	options[2] = Option("Channel 3", "range");
+	options[3] = Option("Channel 4", "range");
+	options[4] = Option("Exit", "exit");
+	options[0].active = true;
+	options_size = 5;
+	title = "Axis Range";
 }
 
 
@@ -141,6 +157,18 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 			printParameter(active);
 		}
 	}
+	else if (options[active].getName() == "NRF24 Data Rate") { // NRF24
+		if (left) {
+			char* state = options[active].previous();
+			setRadioDatarate(state);
+			printParameter(active);
+		}
+		else if (right) {
+			char* state = options[active].next();
+			setRadioDatarate(state);
+			printParameter(active);
+		}
+	}
 	else if (options[active].getType() == "channel") {
 		if (left) {
 			options[active].previous();
@@ -199,4 +227,16 @@ void Menu::setRadioLevel(char *level) {
 		radio->setPALevel(RF24_PA_MAX);
 	}
 	delay(20);
+}
+
+void Menu::setRadioDatarate(char *rate) { 
+	if (rate == "250 kb/s") {
+		radio->setDataRate(RF24_250KBPS);
+	}
+	else if (rate == "1 Mb/s") {
+		radio->setDataRate(RF24_1MBPS);
+	}
+	else if (rate == "2 Mb/s") {
+		radio->setDataRate(RF24_2MBPS);
+	}
 }
