@@ -7,7 +7,7 @@ Screen::Screen(RF24 *radio, uint8_t *channel_map, uint8_t *axis_range_min, uint8
 	this->channel_map = channel_map;
 	menu = Menu(tft, radio);
 	menu_channels = Menu(tft, channel_map);
-	menu_range = Menu(tft, axis_range_min, axis_range_max);
+	menu_range = Menu(tft, axis_range_min, axis_range_max, &view);
 }
 
 void Screen::init() {
@@ -86,6 +86,21 @@ char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool c
 		}
 		if (circle || action == "exit") {
 			switch_view("options");
+		}
+	}
+	else if (view == "set_range") {
+		action = menu_range.execute(left, right, x, circle);
+		if (left || right) {
+			menu_range.range_toggle();
+		}
+		else if (up) {
+			menu_range.range_set(+1);
+		}
+		else if (down) {
+			menu_range.range_set(-1);
+		}
+		if (circle) {
+			switch_view("range");
 		}
 	}
 	

@@ -32,6 +32,29 @@
           <MessageVariable Name="millis()" Index="1" />
         </MessageVariables>
       </BreakPoint>
+      <BreakPoint Index="2" Name="screen.cpp, line 92" Id="af9cf346-8254-4c72-a0bd-22424e01b9d1" Enabled="1" Message="{view}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\felix\documents\development\arduino\mega\screen\screen.cpp" FileLine="92" FileColumn="1" FunctionName="navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options)" FunctionLineOffset="64" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='af9cf346-8254-4c72-a0bd-22424e01b9d1'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
+        <Source>85				menu_range.next();
+86			}
+87			if (circle || action == "exit") {
+88				switch_view("options");
+89			}
+90		}
+91		else if (view == "set_range") {
+--&gt;92			action = menu_range.execute(left, right, x, circle);
+93			if (left || right) {
+94				menu_range.range_toggle();
+95			}
+96			else if (up) {
+97				menu_range.range_set(+1);
+98			}
+99			else if (down) {
+100				menu_range.range_set(-1);
+101			}
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="view" Index="1" />
+        </MessageVariables>
+      </BreakPoint>
     </BreakPoints>
   </Program>
 </VisualMicro>

@@ -24,8 +24,11 @@ private:
 	uint8_t *axis_range_max;
 
 	char *current_menu = "base";
+	String *view;
 	Option *options;
 	int options_size = 0;
+	bool min_selected = true; // true = min, false = max
+	uint8_t channel;
 
 	void init_main();
 	int8_t getActiveElement();
@@ -35,15 +38,19 @@ private:
 	void setChannelMap(uint8_t id, uint8_t value);
 	char *title;
 	void display_range_adjustment(uint8_t id);
+	void range_display_values(bool overwrite);
+	void range_display_chart(uint16_t color);
 
 public:
 	Menu();
 	Menu(Adafruit_TFTLCD *tft, RF24 *radio);
 	Menu(Adafruit_TFTLCD *tft, uint8_t *channel_map);
-	Menu(Adafruit_TFTLCD *tft, uint8_t *axis_range_min, uint8_t *axis_range_max);
+	Menu(Adafruit_TFTLCD *tft, uint8_t *axis_range_min, uint8_t *axis_range_max, String *view);
 	void display(char *type);
 	void next();
 	void previous();
 	char *execute(bool left, bool right, bool x, bool circle);
 	void printParameter(int8_t id);
+	void range_toggle();
+	void range_set(int8_t value);
 };

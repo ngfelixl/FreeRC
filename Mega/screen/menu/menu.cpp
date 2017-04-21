@@ -36,12 +36,13 @@ Menu::Menu(Adafruit_TFTLCD *tft, uint8_t *channel_map) {
 	title = "Channels";
 }
 
-Menu::Menu(Adafruit_TFTLCD *tft, uint8_t *axis_range_min, uint8_t *axis_range_max) {
+Menu::Menu(Adafruit_TFTLCD *tft, uint8_t *axis_range_min, uint8_t *axis_range_max, String *view) {
 	// Not default constructor with getting the
 	// tfts address and creating the options for the axis range adjustment
 	this->tft = tft;
 	this->axis_range_min = axis_range_min;
 	this->axis_range_max = axis_range_max;
+	this->view = view;
 
 	options = new Option[5];
 	options[0] = Option("Channel 1", "range");
@@ -182,6 +183,8 @@ char* Menu::execute(bool left, bool right, bool x, bool circle) {
 		}
 	}
 	else if (options[active].getType() == "range" && x) {
+		channel = active;
+		*view = "set_range";
 		display_range_adjustment(active);
 	}
 	else if (options[active].getType() == "exit" && x) { // Exit
@@ -218,20 +221,70 @@ void Menu::display_range_adjustment(uint8_t id) {
 	tft->setTextSize(2);
 	tft->println(options[id].getName());
 	tft->drawLine(30, 220, 290, 220, WHITE);
-	tft->drawLine(160, 90, 160, 220, WHITE);
+	tft->drawLine(160, 90, 160, 160, WHITE);
 	tft->drawCircle(160, 220, 120, WHITE);
 	tft->fillRect(40, 221, 3, 19, BLACK);
 	tft->fillRect(278, 221, 3, 19, BLACK);
-	//tft->drawCircle(160, 220, 60, WHITE);
-	float center = (axis_range_min[id] + axis_range_max[id]) / 2.0;
-	tft->drawLine(cos(PI - axis_range_min[id] / 180.0*PI) * 119 + 160, -sin(PI - axis_range_min[id] / 180.0*PI) * 119 + 220, 160, 220, ORANGE);
-	tft->drawLine(cos(PI - axis_range_max[id] / 180.0*PI) * 119 + 160, -sin(PI - axis_range_max[id] / 180.0*PI) * 119 + 220, 160, 220, ORANGE);
-	tft->drawLine(cos(PI - center / 180.0*PI) * 60 + 160, -sin(PI - center / 180.0*PI) * 60 + 220, 160, 220, ORANGE);
-	tft->setTextColor(WHITE);
-	tft->setCursor(30, 100);
-	tft->println(axis_range_min[id]);
-	tft->setCursor(250, 100);
-	tft->println(axis_range_max[id]);
+	min_selected = false;
+	range_display_chart(ORANGE);
+	min_selected = true;
+	range_display_chart(ORANGE);
+	range_display_values(false);
+}
+
+void Menu::range_set(int8_t value) {
+	range_display_values(true);
+	range_display_chart(BLACK);
+	if (min_selected) {
+		axis_range_min[channel] = axis_range_min[channel] + value;
+	}
+	else {
+		axis_range_max[channel] = axis_range_max[channel] + value;
+	}
+	range_display_chart(ORANGE);
+	range_display_values(false);
+}
+
+void Menu::range_toggle() {
+	min_selected = !min_selected;
+	range_display_values(false);
+}
+
+void Menu::range_display_chart(uint16_t color) {
+	float center = (axis_range_min[channel] + axis_range_max[channel]) / 2.0;
+	if(min_selected)
+		tft->drawLine(cos(PI - axis_range_min[channel] / 180.0*PI) * 119 + 160, -sin(PI - axis_range_min[channel] / 180.0*PI) * 119 + 220, 160, 220, color);
+	else
+		tft->drawLine(cos(PI - axis_range_max[channel] / 180.0*PI) * 119 + 160, -sin(PI - axis_range_max[channel] / 180.0*PI) * 119 + 220, 160, 220, color);
+	tft->drawLine(cos(PI - center / 180.0*PI) * 59 + 160, -sin(PI - center / 180.0*PI) * 59 + 220, 160, 220, color);
+}
+
+void Menu::range_display_values(bool overwrite) {
+	if (overwrite) {
+		tft->setTextColor(BLACK);
+		if (min_selected) {
+			tft->setCursor(30, 100);
+			tft->println(axis_range_min[channel]);
+		}
+		else {
+			tft->setCursor(250, 100);
+			tft->println(axis_range_max[channel]);
+		}
+	}
+	else {
+		if (min_selected)
+			tft->setTextColor(WHITE);
+		else
+			tft->setTextColor(DARKGRAY);
+		tft->setCursor(30, 100);
+		tft->println(axis_range_min[channel]);
+		if (min_selected)
+			tft->setTextColor(DARKGRAY);
+		else
+			tft->setTextColor(WHITE);
+		tft->setCursor(250, 100);
+		tft->println(axis_range_max[channel]);
+	}
 }
 
 void Menu::setChannelMap(uint8_t id, uint8_t value) {
