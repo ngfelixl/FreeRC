@@ -44,11 +44,11 @@
 93			if (left || right) {
 94				menu_range.range_toggle();
 95			}
-96			else if (up) {
-97				menu_range.range_set(+1);
+96			else if (r1) {
+97				menu_range.range_set(+10);
 98			}
-99			else if (down) {
-100				menu_range.range_set(-1);
+99			else if (l1) {
+100				menu_range.range_set(-10);
 101			}
 </Source>
         <MessageVariables>

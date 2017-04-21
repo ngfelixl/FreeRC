@@ -71,7 +71,7 @@ void loop() {
 			}
 		}
 		else if (screen.view == "options" || screen.view == "channels" || screen.view == "range" || screen.view == "set_range") {
-			navigation_status = screen.navigate(controller.button.left, controller.button.right, controller.button.up, controller.button.down, controller.button.x, controller.button.circle, controller.button.options);
+			navigation_status = screen.navigate(controller.button.left, controller.button.right, controller.button.up, controller.button.down, controller.button.x, controller.button.circle, controller.button.options, controller.button.l1, controller.button.r1);
 		}
 	}
 

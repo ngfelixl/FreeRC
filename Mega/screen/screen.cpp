@@ -26,7 +26,7 @@ bool Screen::update() {
 	return false;
 }
 
-char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options) {
+char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options, bool l1, bool r1) {
 	char *action = "";
 	char *output = "";
 	if (view == "options") {
@@ -92,6 +92,12 @@ char* Screen::navigate(bool left, bool right, bool up, bool down, bool x, bool c
 		action = menu_range.execute(left, right, x, circle);
 		if (left || right) {
 			menu_range.range_toggle();
+		}
+		else if (r1) {
+			menu_range.range_set(+10);
+		}
+		else if (l1) {
+			menu_range.range_set(-10);
 		}
 		else if (up) {
 			menu_range.range_set(+1);

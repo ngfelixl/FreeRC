@@ -9,7 +9,7 @@
 
 class Ds4 {
 typedef struct button {
-	bool x, circle, square, triangle, up, down, left, right, options;
+	bool x, circle, square, triangle, up, down, left, right, options, r1, l1;
 };
 
 private:

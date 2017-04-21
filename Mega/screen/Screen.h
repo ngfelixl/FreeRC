@@ -75,7 +75,7 @@ public:
 
 	Screen(RF24 *radio, uint8_t *channel_map, uint8_t *axis_range_min, uint8_t *axis_range_max);
 	void init();
-	char* navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options);
+	char* navigate(bool left, bool right, bool up, bool down, bool x, bool circle, bool options, bool l1, bool r1);
 	void switch_view(String view);
 	void print_peripheral_status(int id, char* type, char *message, bool force);
 	void update_analog_axis(uint8_t axis, uint8_t x, uint8_t y, bool force);
