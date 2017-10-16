@@ -4,8 +4,10 @@ Welcome to the Arduino based remote flight controller FreeRC. This repo provides
 transmitter (with an Arduino, PS4 controller, Radio transmitter module) and for a receiver 
 (Arduino, Radio receiver module, Servos, ...).
 
-<img src="https://user-images.githubusercontent.com/24190530/31602041-160d7a88-b25c-11e7-8fe2-89360db4aa30.JPG" height="200" align="left" style="float: left">
-<img src="https://user-images.githubusercontent.com/24190530/31602042-16490490-b25c-11e7-90cb-1749337c5cb8.JPG" height="200" align="left" style="float: left">
+<div style="position: relative; width: 100%">
+    <img src="https://user-images.githubusercontent.com/24190530/31602041-160d7a88-b25c-11e7-8fe2-89360db4aa30.JPG" height="200" align="left" style="float: left">
+    <img src="https://user-images.githubusercontent.com/24190530/31602042-16490490-b25c-11e7-90cb-1749337c5cb8.JPG" height="200" align="left" style="float: left">
+</div>
 <br/>
 
 ## Hardware Requirements
