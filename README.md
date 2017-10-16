@@ -5,19 +5,20 @@ transmitter (with an Arduino, PS4 controller, Radio transmitter module) and for 
 (Arduino, Radio receiver module, Servos, ...).
 
 <img src="https://user-images.githubusercontent.com/24190530/31602041-160d7a88-b25c-11e7-8fe2-89360db4aa30.JPG" width="300">
+<img src="https://user-images.githubusercontent.com/24190530/31602042-16490490-b25c-11e7-90cb-1749337c5cb8.JPG" width="300">
 
 ## Hardware Requirements
 
 | Transmitter           |      | Receiver                      |      |
 |-----------------------|------|-------------------------------|------|
-| Arduino AtMega 2560   |  11� | Arduino Nano                  |   5� |
-| USB Host Shield v2.0  |   8� | 4 Servo Motors (e.g. SG90)    |   8� |
-| NRF24L01+ TX/RX       |   5� | NRF24L01+ TX/RX               |   5� |
-| PS4 Controller        |  30� | LiPo Accu                     |  20� |
-| Adafruit 2.8" TFT LCD |  13� | Turnigy Plush 18A, or similar |  20� |
-| LiIon Powerbank       |  15� | 3-Phase Brushless Motor       |  20� |
+| Arduino AtMega 2560   |  11€ | Arduino Nano                  |   5€ |
+| USB Host Shield v2.0  |   8€ | 4 Servo Motors (e.g. SG90)    |   8€ |
+| NRF24L01+ TX/RX       |   5€ | NRF24L01+ TX/RX               |   5€ |
+| PS4 Controller        |  30€ | LiPo Accu                     |  20€ |
+| Adafruit 2.8" TFT LCD |  13€ | Turnigy Plush 18A, or similar |  20€ |
+| LiIon Powerbank       |  15€ | 3-Phase Brushless Motor       |  20€ |
 
-Which makes a total of 160� for the complete RC electronics. But you'll also need equipment for soldering and voltage and current measuring, a lots of wires, optionally an op-amp for plane voltage reading and an acc and/or gyro.
+Which makes a total of 160€ for the complete RC electronics. But you'll also need equipment for soldering and voltage and current measuring, a lots of wires, optionally an op-amp for plane voltage reading and an acc and/or gyro.
 Also a GPS module could be implemented in long future terms.
 
 
