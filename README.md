@@ -8,14 +8,14 @@ transmitter (with an Arduino, PS4 controller, Radio transmitter module) and for 
 
 | Transmitter           |      | Receiver                      |      |
 |-----------------------|------|-------------------------------|------|
-| Arduino AtMega 2560   |  11€ | Arduino Nano                  |   5€ |
-| USB Host Shield v2.0  |   8€ | 4 Servo Motors (e.g. SG90)    |   8€ |
-| NRF24L01+ TX/RX       |   5€ | NRF24L01+ TX/RX               |   5€ |
-| PS4 Controller        |  30€ | LiPo Accu                     |  20€ |
-| Adafruit 2.8" TFT LCD |  13€ | Turnigy Plush 18A, or similar |  20€ |
-| LiIon Powerbank       |  15€ | 3-Phase Brushless Motor       |  20€ |
+| Arduino AtMega 2560   |  11ï¿½ | Arduino Nano                  |   5ï¿½ |
+| USB Host Shield v2.0  |   8ï¿½ | 4 Servo Motors (e.g. SG90)    |   8ï¿½ |
+| NRF24L01+ TX/RX       |   5ï¿½ | NRF24L01+ TX/RX               |   5ï¿½ |
+| PS4 Controller        |  30ï¿½ | LiPo Accu                     |  20ï¿½ |
+| Adafruit 2.8" TFT LCD |  13ï¿½ | Turnigy Plush 18A, or similar |  20ï¿½ |
+| LiIon Powerbank       |  15ï¿½ | 3-Phase Brushless Motor       |  20ï¿½ |
 
-Which makes a total of 160€ for the complete RC electronics. But you'll also need equipment for soldering and voltage and current measuring, a lots of wires, optionally an op-amp for plane voltage reading and an acc and/or gyro.
+Which makes a total of 160ï¿½ for the complete RC electronics. But you'll also need equipment for soldering and voltage and current measuring, a lots of wires, optionally an op-amp for plane voltage reading and an acc and/or gyro.
 Also a GPS module could be implemented in long future terms.
 
 
@@ -29,6 +29,8 @@ Go to line 43 and change it  to
 typedef MAX3421e<P2, P1> MAX3421E; // Official Arduinos (UNO, Duemilanove, Mega ...
 ```
 Now your Usb Host Shield will work as well, if you rewired it correctly.
+
+![Host shield mod](https://user-images.githubusercontent.com/24190530/31602043-16850d96-b25c-11e7-8e06-8b6389cc83ee.JPG)
 
 ## Installation
 
