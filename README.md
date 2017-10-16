@@ -4,6 +4,8 @@ Welcome to the Arduino based remote flight controller FreeRC. This repo provides
 transmitter (with an Arduino, PS4 controller, Radio transmitter module) and for a receiver 
 (Arduino, Radio receiver module, Servos, ...).
 
+<img src="https://user-images.githubusercontent.com/24190530/31602041-160d7a88-b25c-11e7-8fe2-89360db4aa30.JPG" width="300">
+
 ## Hardware Requirements
 
 | Transmitter           |      | Receiver                      |      |
@@ -30,7 +32,7 @@ typedef MAX3421e<P2, P1> MAX3421E; // Official Arduinos (UNO, Duemilanove, Mega 
 ```
 Now your Usb Host Shield will work as well, if you rewired it correctly.
 
-<img src="https://user-images.githubusercontent.com/24190530/31602043-16850d96-b25c-11e7-8e06-8b6389cc83ee.JPG" width="200">
+<img src="https://user-images.githubusercontent.com/24190530/31602043-16850d96-b25c-11e7-8e06-8b6389cc83ee.JPG" width="300" style="float: left">
 
 ## Installation
 
