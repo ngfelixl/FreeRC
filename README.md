@@ -7,6 +7,7 @@ transmitter (with an Arduino, PS4 controller, Radio transmitter module) and for 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/24190530/31602041-160d7a88-b25c-11e7-8fe2-89360db4aa30.JPG" height="200">
     <img src="https://user-images.githubusercontent.com/24190530/31602042-16490490-b25c-11e7-90cb-1749337c5cb8.JPG" height="200">
+    <img src="https://user-images.githubusercontent.com/24190530/31602045-170382de-b25c-11e7-9faf-1f0ef63cc148.JPG" height="200">
 </p>
 
 
@@ -35,8 +36,9 @@ Go to line 43 and change it  to
 typedef MAX3421e<P2, P1> MAX3421E; // Official Arduinos (UNO, Duemilanove, Mega ...
 ```
 Now your Usb Host Shield will work as well, if you rewired it correctly.
-
-<img src="https://user-images.githubusercontent.com/24190530/31602043-16850d96-b25c-11e7-8e06-8b6389cc83ee.JPG" width="300" style="float: left">
+<p align="left">
+    <img src="https://user-images.githubusercontent.com/24190530/31602043-16850d96-b25c-11e7-8e06-8b6389cc83ee.JPG" height="200" style="float: left">
+</p>
 
 ## Installation
 
@@ -62,6 +64,15 @@ The servo pin configuration is set to
 | Motor | Roll-aileron left | Roll-aileron right | Pitch elevator | Side rudder |
 | ---   | ---               | ---                | ---            | ---         |
 | 2     | 3                 | 4                  | 5              | 6           |
+
+
+## 3D Files
+
+Here is an example of the 3D printed body
+<p align="left">
+    <img src="https://user-images.githubusercontent.com/24190530/31602044-16bc7132-b25c-11e7-9189-9f552e15763e.JPG" height="200">
+</p>
+
 
 # References
 
