@@ -30,7 +30,7 @@ typedef MAX3421e<P2, P1> MAX3421E; // Official Arduinos (UNO, Duemilanove, Mega 
 ```
 Now your Usb Host Shield will work as well, if you rewired it correctly.
 
-![Host shield mod](https://user-images.githubusercontent.com/24190530/31602043-16850d96-b25c-11e7-8e06-8b6389cc83ee.JPG = 250)
+<img src="https://user-images.githubusercontent.com/24190530/31602043-16850d96-b25c-11e7-8e06-8b6389cc83ee.JPG" width="200">
 
 ## Installation
 
